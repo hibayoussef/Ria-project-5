@@ -50,7 +50,7 @@ function Order(props) {
         className="flex flex-col flex-1 items-center justify-center h-full"
       >
         <Typography color="textSecondary" variant="h5">
-          There is no such salary details!
+          There is no such Receipt details!
         </Typography>
         <Button
           className="mt-24"
@@ -59,7 +59,7 @@ function Order(props) {
           to="/apps/e-commerce/orders"
           color="inherit"
         >
-          Go to Salaries Page
+          Go to Receipts Page
         </Button>
       </motion.div>
     );
@@ -89,7 +89,7 @@ function Order(props) {
                   <Icon className="text-20">
                     {theme.direction === "ltr" ? "arrow_back" : "arrow_forward"}
                   </Icon>
-                  <span className="mx-4 font-medium">Salaries</span>
+                  <span className="mx-4 font-medium">Receipts</span>
                 </Typography>
               </motion.div>
 
@@ -120,7 +120,7 @@ function Order(props) {
           scrollButtons="auto"
           classes={{ root: "w-full h-64" }}
         >
-          <Tab className="h-64" label="Salary Details" />
+          <Tab className="h-64" label="Receipt Details" />
           {/* <Tab className="h-64" label="Products" />
           <Tab className="h-64" label="Invoice" /> */}
         </Tabs>
