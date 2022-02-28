@@ -86,6 +86,7 @@ class JwtService extends FuseUtils.EventEmitter {
         .then((response) => {
           if (response.data.data) {
             const res = response.data.data;
+            console.log("ressssss: ", res);
             // format user so we save dashboard user dto ##note
             const user = {
               uuid: "XgbuVEXBU5gtSKdbQRP1Zbbby1i1",
@@ -107,6 +108,24 @@ class JwtService extends FuseUtils.EventEmitter {
     });
   };
 
+  resetPassword = (oldPassword, newPassword, email) => {
+    return new Promise((resolve, reject) => {
+      axios
+        .post("/auth/change-password", {
+          oldPassword,
+          newPassword,
+          email,
+        })
+        .then((response) => {
+          console.log("reset password response: ", response);
+          resolve(response);
+        })
+        .catch((err) => {
+          console.log(err);
+          reject(err);
+        });
+    });
+  };
   signInWithToken = () => {
     return new Promise((resolve, reject) => {
       axios
@@ -134,7 +153,7 @@ class JwtService extends FuseUtils.EventEmitter {
   getUserData = () => {
     return new Promise((resolve, reject) => {
       axios
-        .get("user/me", {
+        .get("users/me", {
           data: {
             access_token: this.getAccessToken(),
           },
@@ -152,8 +171,10 @@ class JwtService extends FuseUtils.EventEmitter {
                 email: res.email,
               },
             };
-            if (response.data.data.accessToken)
+            if (response.data.data.accessToken) {
               this.setSession(response.data.data.accessToken);
+              console.log("access token: ", response.data.data.accessToken);
+            }
             resolve(user);
             resolve(response.data.user);
           } else {

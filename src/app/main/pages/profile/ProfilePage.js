@@ -12,6 +12,7 @@ import clsx from "clsx";
 import AboutTab from "./tabs/AboutTab";
 import PhotosVideosTab from "./tabs/PhotosVideosTab";
 import TimelineTab from "./tabs/TimelineTab";
+import IconButton from "@material-ui/core/IconButton";
 
 const useStyles = makeStyles((theme) => ({
   avatar: {
@@ -40,7 +41,6 @@ function ProfilePage() {
   function handleTabChange(event, value) {
     setSelectedTab(value);
   }
-
   return (
     <FusePageSimple
       classes={{
@@ -59,10 +59,24 @@ function ProfilePage() {
               initial={{ scale: 0 }}
               animate={{ scale: 1, transition: { delay: 0.1 } }}
             >
-              <Avatar
-                className={clsx(classes.avatar, "-mt-64  w-128 h-128")}
-                src="assets/images/avatars/Velazquez.jpg"
-              />
+              {/* <input
+                type="file"
+                // onChange={handleChange}
+                id="upload"
+                accept="image/*"
+              /> */}
+              {/* <label htmlFor="upload"> */}
+              <IconButton
+                color="primary"
+                aria-label="upload picture"
+                component="span"
+              >
+                <Avatar
+                  className={clsx(classes.avatar, "-mt-64  w-128 h-128")}
+                  // src={file}
+                />
+              </IconButton>
+              {/* </label> */}
             </motion.div>
             <div className="flex flex-col md:flex-row flex-1 items-center justify-between p-8">
               <motion.div

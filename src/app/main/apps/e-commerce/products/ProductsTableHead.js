@@ -15,49 +15,42 @@ import Tooltip from "@material-ui/core/Tooltip";
 import clsx from "clsx";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { removeProducts } from "../store/productsSlice";
+import { removeReceipt } from "../store/productsSlice";
 
 const rows = [
-  {
-    id: "image",
-    align: "left",
-    disablePadding: true,
-    label: "",
-    sort: false,
-  },
+  // {
+  //   id: 'image',
+  //   align: 'left',
+  //   disablePadding: true,
+  //   label: '',
+  //   sort: false,
+  // },
   {
     id: "name",
-    align: "left",
+    // align: "left",
     disablePadding: false,
     label: "Name",
     sort: true,
   },
   {
-    id: "categories",
-    align: "left",
+    id: "salary",
+    // align: "left",
     disablePadding: false,
-    label: "Category",
+    label: "Salary",
     sort: true,
   },
   {
-    id: "priceTaxIncl",
-    align: "right",
+    id: "bonus",
+    // align: "right",
     disablePadding: false,
-    label: "Price",
+    label: "Bonus",
     sort: true,
   },
   {
-    id: "quantity",
-    align: "right",
+    id: "deductions",
+    // align: "right",
     disablePadding: false,
-    label: "Quantity",
-    sort: true,
-  },
-  {
-    id: "active",
-    align: "right",
-    disablePadding: false,
-    label: "Active",
+    label: "Deductions",
     sort: true,
   },
 ];
@@ -65,6 +58,15 @@ const rows = [
 const useStyles = makeStyles((theme) => ({
   actionsButtonWrapper: {
     background: theme.palette.background.paper,
+  },
+  button2: {
+    backgroundColor: "none",
+    "&:hover": {
+      backgroundColor: "#e53935",
+      color: "#e8e4e4",
+      transition: "0.3s",
+      borderColor: "#e53935",
+    },
   },
 }));
 
@@ -121,7 +123,7 @@ function ProductsTableHead(props) {
                 <MenuList>
                   <MenuItem
                     onClick={() => {
-                      dispatch(removeProducts(selectedProductIds));
+                      dispatch(removeReceipt(selectedProductIds));
                       props.onMenuItemClick();
                       closeSelectedProductsMenu();
                     }}

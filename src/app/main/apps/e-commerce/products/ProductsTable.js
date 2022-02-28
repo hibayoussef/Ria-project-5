@@ -15,7 +15,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { withRouter } from "react-router-dom";
 import FuseLoading from "@fuse/core/FuseLoading";
-import { getProducts, selectProducts } from "../store/productsSlice";
+import { getAllReceipts, selectProducts } from "../store/productsSlice";
 import ProductsTableHead from "./ProductsTableHead";
 
 function ProductsTable(props) {
@@ -36,7 +36,7 @@ function ProductsTable(props) {
   });
 
   useEffect(() => {
-    dispatch(getProducts()).then(() => setLoading(false));
+    dispatch(getAllReceipts()).then(() => setLoading(false));
   }, [dispatch]);
 
   useEffect(() => {
@@ -79,7 +79,8 @@ function ProductsTable(props) {
   }
 
   function handleClick(item) {
-    props.history.push(`/apps/e-commerce/products/${item.id}/${item.handle}`);
+    props.history.push(`/apps/e-commerce/orders/${item.id}`);
+    // props.history.push(`/apps/e-commerce/products/${item.id}/${item.handle}`);
   }
 
   function handleCheck(event, id) {
@@ -122,7 +123,7 @@ function ProductsTable(props) {
         className="flex flex-1 items-center justify-center h-full"
       >
         <Typography color="textSecondary" variant="h5">
-          There are no products!
+          There are no Salaries!
         </Typography>
       </motion.div>
     );
@@ -184,32 +185,11 @@ function ProductsTable(props) {
                     </TableCell>
 
                     <TableCell
-                      className="w-52 px-4 md:px-0"
-                      component="th"
-                      scope="row"
-                      padding="none"
-                    >
-                      {n.images.length > 0 && n.featuredImageId ? (
-                        <img
-                          className="w-full block rounded"
-                          src={_.find(n.images, { id: n.featuredImageId }).url}
-                          alt={n.name}
-                        />
-                      ) : (
-                        <img
-                          className="w-full block rounded"
-                          src="assets/images/ecommerce/product-image-placeholder.png"
-                          alt={n.name}
-                        />
-                      )}
-                    </TableCell>
-
-                    <TableCell
                       className="p-4 md:p-16"
                       component="th"
                       scope="row"
                     >
-                      {n.name}
+                      {n.user.name}
                     </TableCell>
 
                     <TableCell
@@ -217,48 +197,30 @@ function ProductsTable(props) {
                       component="th"
                       scope="row"
                     >
-                      {n.categories.join(", ")}
+                      <span>£</span>
+                      {n.salary.amount}
                     </TableCell>
 
                     <TableCell
                       className="p-4 md:p-16"
                       component="th"
                       scope="row"
-                      align="right"
+                      align="left"
                     >
-                      <span>$</span>
-                      {n.priceTaxIncl}
+                      <span>£</span>
+                      {n.salary.bonus}
                     </TableCell>
-
-                    <TableCell
-                      className="p-4 md:p-16"
-                      component="th"
-                      scope="row"
-                      align="right"
-                    >
-                      {n.quantity}
-                      <i
-                        className={clsx(
-                          "inline-block w-8 h-8 rounded mx-8",
-                          n.quantity <= 5 && "bg-red",
-                          n.quantity > 5 && n.quantity <= 25 && "bg-orange",
-                          n.quantity > 25 && "bg-green"
-                        )}
-                      />
-                    </TableCell>
-
-                    <TableCell
-                      className="p-4 md:p-16"
-                      component="th"
-                      scope="row"
-                      align="right"
-                    >
-                      {n.active ? (
-                        <Icon className="text-green text-20">check_circle</Icon>
-                      ) : (
-                        <Icon className="text-red text-20">remove_circle</Icon>
-                      )}
-                    </TableCell>
+                    {n.deductions.map((deduction) => (
+                      <TableCell
+                        // className="p-4 md:p-10"
+                        component="th"
+                        scope="row"
+                        align="left"
+                      >
+                        <span>£</span>
+                        {deduction.amount}
+                      </TableCell>
+                    ))}
                   </TableRow>
                 );
               })}

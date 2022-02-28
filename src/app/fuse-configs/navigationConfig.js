@@ -3,6 +3,7 @@ import i18next from "i18next";
 import { createSelector } from "@reduxjs/toolkit";
 import DocumentationNavigation from "../main/documentation/DocumentationNavigation";
 import RecentActorsIcon from "@material-ui/icons/RecentActors";
+import ReceiptIcon from "@material-ui/icons/Receipt";
 
 import ar from "./navigation-i18n/ar";
 import en from "./navigation-i18n/en";
@@ -62,6 +63,14 @@ const tempNavigation = [
         icon: "account_box",
         url: "/apps/users/all",
       },
+      {
+        id: "profile",
+        title: "Profile",
+        type: "item",
+        icon: "person",
+        url: "/pages/profile",
+      },
+
       // {
       //   auth: authRoles.super_admin,
       //   id: "users",
@@ -71,6 +80,59 @@ const tempNavigation = [
       //   icon: "account_box",
       //   url: "/apps/users/all",
       // },
+      {
+        id: "e-commerce",
+        title: "Salary",
+        translate: "Salary",
+        type: "collapse",
+        icon: "receipts",
+        url: "/apps/e-commerce",
+        auth: authRoles.super_admin,
+        children: [
+          {
+            id: "e-commerce-products",
+            title: "Products",
+            type: "item",
+            url: "/apps/e-commerce/products",
+            exact: true,
+          },
+          {
+            id: "e-commerce-product-detail",
+            title: "Product Detail",
+            type: "item",
+            url: "/apps/e-commerce/products/1/a-walk-amongst-friends-canvas-print",
+            exact: true,
+          },
+          {
+            id: "e-commerce-order-detail",
+            title: "Order Detail",
+            type: "item",
+            url: "/apps/e-commerce/orders/1",
+            exact: true,
+          },
+          {
+            id: "e-commerce-new-product",
+            title: "New Product",
+            type: "item",
+            url: "/apps/e-commerce/products/new",
+            exact: true,
+          },
+          {
+            id: "e-commerce-orders",
+            title: "Orders",
+            type: "item",
+            url: "/apps/e-commerce/orders",
+            exact: true,
+          },
+          {
+            id: "e-commerce-order-detail",
+            title: "Order Detail",
+            type: "item",
+            url: "/apps/e-commerce/orders/1",
+            exact: true,
+          },
+        ],
+      },
       {
         id: "mail",
         title: "Mail",

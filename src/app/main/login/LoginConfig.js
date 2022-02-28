@@ -24,6 +24,7 @@ const LoginConfig = {
     },
   },
   auth: authRoles.onlyGuest,
+  // auth: authRoles.user,
   routes: [
     {
       path: "/login",

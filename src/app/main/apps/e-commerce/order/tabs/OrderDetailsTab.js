@@ -6,7 +6,7 @@ import Icon from "@material-ui/core/Icon";
 import Tooltip from "@material-ui/core/Tooltip";
 import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-// import GoogleMap from 'google-map-react';
+import GoogleMap from "google-map-react";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import OrdersStatus from "../OrdersStatus";
@@ -29,7 +29,7 @@ function OrderDetailsTab() {
         <div className="pb-16 flex items-center">
           <Icon color="action">account_circle</Icon>
           <Typography className="h2 mx-12 font-medium" color="textSecondary">
-            Customer
+            User
           </Typography>
         </div>
 
@@ -47,146 +47,32 @@ function OrderDetailsTab() {
                   <th>
                     <Typography className="font-semibold">Phone</Typography>
                   </th>
-                  <th>
-                    <Typography className="font-semibold">Company</Typography>
-                  </th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
                   <td>
                     <div className="flex items-center">
-                      <Avatar src={order.customer.avatar} />
+                      {/* <Avatar src={order.user.avatar} /> */}
                       <Typography className="truncate mx-8">
-                        {`${order.customer.firstName} ${order.customer.lastName}`}
+                        {/* {`${order.customer.firstName} ${order.customer.lastName}`} */}
                       </Typography>
                     </div>
                   </td>
                   <td>
                     <Typography className="truncate">
-                      {order.customer.email}
+                      {/* {order.customer.email} */}
                     </Typography>
                   </td>
                   <td>
                     <Typography className="truncate">
-                      {order.customer.phone}
+                      {/* {order.customer.phone} */}
                     </Typography>
-                  </td>
-                  <td>
-                    <span className="truncate">{order.customer.company}</span>
                   </td>
                 </tr>
               </tbody>
             </table>
           </div>
-
-          <Accordion
-            className="border-0 shadow-0 overflow-hidden"
-            expanded={map === "shipping"}
-            onChange={() => setMap(map !== "shipping" ? "shipping" : false)}
-          >
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              classes={{ root: "border border-solid rounded-16 mb-16" }}
-            >
-              <Typography className="font-semibold">
-                Shipping Address
-              </Typography>
-            </AccordionSummary>
-            <AccordionDetails className="flex flex-col md:flex-row -mx-8">
-              <Typography className="w-full md:max-w-256 mb-16 md:mb-0 mx-8 text-16">
-                {order.customer.shippingAddress.address}
-              </Typography>
-              <div className="w-full h-320 rounded-16 overflow-hidden mx-8">
-                {/* <GoogleMap
-                  bootstrapURLKeys={{
-                    key: process.env.REACT_APP_MAP_KEY,
-                  }}
-                  defaultZoom={15}
-                  defaultCenter={[
-                    order.customer.shippingAddress.lat,
-                    order.customer.shippingAddress.lng,
-                  ]}
-                >
-                  <Marker
-                    text={order.customer.shippingAddress.address}
-                    lat={order.customer.shippingAddress.lat}
-                    lng={order.customer.shippingAddress.lng}
-                  />
-                </GoogleMap> */}
-              </div>
-            </AccordionDetails>
-          </Accordion>
-
-          <Accordion
-            className="shadow-0 border-0 overflow-hidden"
-            expanded={map === "invoice"}
-            onChange={() => setMap(map !== "invoice" ? "invoice" : false)}
-          >
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              classes={{ root: "border border-solid rounded-16 mb-16" }}
-            >
-              <Typography className="font-semibold">Invoice Address</Typography>
-            </AccordionSummary>
-            <AccordionDetails className="flex flex-col md:flex-row -mx-8">
-              <Typography className="w-full md:max-w-256 mb-16 md:mb-0 mx-8 text-16">
-                {order.customer.invoiceAddress.address}
-              </Typography>
-              <div className="w-full h-320 rounded-16 overflow-hidden mx-8">
-                <GoogleMap
-                  bootstrapURLKeys={{
-                    key: process.env.REACT_APP_MAP_KEY,
-                  }}
-                  defaultZoom={15}
-                  defaultCenter={[
-                    order.customer.invoiceAddress.lat,
-                    order.customer.invoiceAddress.lng,
-                  ]}
-                >
-                  <Marker
-                    text={order.customer.invoiceAddress.address}
-                    lat={order.customer.invoiceAddress.lat}
-                    lng={order.customer.invoiceAddress.lng}
-                  />
-                </GoogleMap>
-              </div>
-            </AccordionDetails>
-          </Accordion>
-        </div>
-      </div>
-
-      <div className="pb-48">
-        <div className="pb-16 flex items-center">
-          <Icon color="action">access_time</Icon>
-          <Typography className="h2 mx-12 font-medium" color="textSecondary">
-            Order Status
-          </Typography>
-        </div>
-
-        <div className="table-responsive">
-          <table className="simple">
-            <thead>
-              <tr>
-                <th>
-                  <Typography className="font-semibold">Status</Typography>
-                </th>
-                <th>
-                  <Typography className="font-semibold">Updated On</Typography>
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {order.status.map((status) => (
-                <tr key={status.id}>
-                  <td>
-                    <OrdersStatus name={status.name} />
-                  </td>
-                  <td>{status.date}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
         </div>
       </div>
 
@@ -194,7 +80,7 @@ function OrderDetailsTab() {
         <div className="pb-16 flex items-center">
           <Icon color="action">attach_money</Icon>
           <Typography className="h2 mx-12 font-medium" color="textSecondary">
-            Payment
+            Salary
           </Typography>
         </div>
 
@@ -203,38 +89,40 @@ function OrderDetailsTab() {
             <thead>
               <tr>
                 <th>
-                  <Typography className="font-semibold">
-                    TransactionID
-                  </Typography>
-                </th>
-                <th>
-                  <Typography className="font-semibold">
-                    Payment Method
-                  </Typography>
-                </th>
-                <th>
                   <Typography className="font-semibold">Amount</Typography>
                 </th>
+
                 <th>
-                  <Typography className="font-semibold">Date</Typography>
+                  <Typography className="font-semibold">
+                    Work Start Date
+                  </Typography>
+                </th>
+
+                <th>
+                  <Typography className="font-semibold">
+                    Work End Date
+                  </Typography>
+                </th>
+                <th>
+                  <Typography className="font-semibold">Bonus</Typography>
                 </th>
               </tr>
             </thead>
             <tbody>
               <tr>
                 <td>
-                  <span className="truncate">
-                    {order.payment.transactionId}
-                  </span>
+                  <span>£</span>
+                  <span className="truncate">{order.salary.amount}</span>
                 </td>
                 <td>
-                  <span className="truncate">{order.payment.method}</span>
+                  <span className="truncate">{order.salary.workStartDate}</span>
                 </td>
                 <td>
-                  <span className="truncate">{order.payment.amount}</span>
+                  <span className="truncate">{order.salary.workEndDate}</span>
                 </td>
                 <td>
-                  <span className="truncate">{order.payment.date}</span>
+                  <span>£</span>
+                  <span className="truncate">{order.salary.bonus}</span>
                 </td>
               </tr>
             </tbody>
@@ -244,9 +132,9 @@ function OrderDetailsTab() {
 
       <div className="pb-48">
         <div className="pb-16 flex items-center">
-          <Icon color="action">local_shipping</Icon>
+          <Icon color="action">moneyOff</Icon>
           <Typography className="h2 mx-12 font-medium" color="textSecondary">
-            Shipping
+            Deductions
           </Typography>
         </div>
 
@@ -255,41 +143,28 @@ function OrderDetailsTab() {
             <thead>
               <tr>
                 <th>
-                  <Typography className="font-semibold">
-                    Tracking Code
-                  </Typography>
+                  <Typography className="font-semibold">Amount</Typography>
                 </th>
                 <th>
-                  <Typography className="font-semibold">Carrier</Typography>
+                  <Typography className="font-semibold">Type</Typography>
                 </th>
                 <th>
-                  <Typography className="font-semibold">Weight</Typography>
-                </th>
-                <th>
-                  <Typography className="font-semibold">Fee</Typography>
-                </th>
-                <th>
-                  <Typography className="font-semibold">Date</Typography>
+                  <Typography className="font-semibold">Reason</Typography>
                 </th>
               </tr>
             </thead>
             <tbody>
-              {order.shippingDetails.map((shipping) => (
-                <tr key={shipping.date}>
+              {order.deductions.map((deduction) => (
+                <tr key={deduction.id}>
                   <td>
-                    <span className="truncate">{shipping.tracking}</span>
+                    <span>£</span>
+                    <span className="truncate">{deduction.amount}</span>
                   </td>
                   <td>
-                    <span className="truncate">{shipping.carrier}</span>
+                    <span className="truncate">{deduction.type}</span>
                   </td>
                   <td>
-                    <span className="truncate">{shipping.weight}</span>
-                  </td>
-                  <td>
-                    <span className="truncate">{shipping.fee}</span>
-                  </td>
-                  <td>
-                    <span className="truncate">{shipping.date}</span>
+                    <span className="truncate">{deduction.reason}</span>
                   </td>
                 </tr>
               ))}

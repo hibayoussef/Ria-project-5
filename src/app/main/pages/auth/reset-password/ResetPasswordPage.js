@@ -12,6 +12,7 @@ import clsx from "clsx";
 import { Link } from "react-router-dom";
 import * as yup from "yup";
 import _ from "@lodash";
+import { submitResetPassword } from "app/auth/store/resetPasswordSlice";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -49,8 +50,11 @@ function ResetPasswordPage() {
 
   const { isValid, dirtyFields, errors } = formState;
 
-  function onSubmit() {
-    reset(defaultValues);
+  function onSubmit(model) {
+    // reset(defaultValues);
+    console.log("submit ", model);
+
+    dispatch(submitResetPassword(model));
   }
 
   return (
@@ -70,7 +74,7 @@ function ResetPasswordPage() {
               <img
                 className="w-128"
                 width="90rem"
-                src="assets/images/logos/person-with-lock.png"
+                src="assets/images/logos/brick.png"
                 alt="logo"
               />
 

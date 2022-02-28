@@ -1,21 +1,21 @@
-import FusePageCarded from '@fuse/core/FusePageCarded';
-import Button from '@material-ui/core/Button';
-import Icon from '@material-ui/core/Icon';
-import { useTheme } from '@material-ui/core/styles';
-import Tab from '@material-ui/core/Tab';
-import Tabs from '@material-ui/core/Tabs';
-import Typography from '@material-ui/core/Typography';
-import withReducer from 'app/store/withReducer';
-import { motion } from 'framer-motion';
-import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Link, useParams } from 'react-router-dom';
-import { useDeepCompareEffect } from '@fuse/hooks';
-import reducer from '../store';
-import { resetOrder, getOrder } from '../store/orderSlice';
-import InvoiceTab from './tabs/InvoiceTab';
-import OrderDetailsTab from './tabs/OrderDetailsTab';
-import ProductsTab from './tabs/ProductsTab';
+import FusePageCarded from "@fuse/core/FusePageCarded";
+import Button from "@material-ui/core/Button";
+import Icon from "@material-ui/core/Icon";
+import { useTheme } from "@material-ui/core/styles";
+import Tab from "@material-ui/core/Tab";
+import Tabs from "@material-ui/core/Tabs";
+import Typography from "@material-ui/core/Typography";
+import withReducer from "app/store/withReducer";
+import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useParams } from "react-router-dom";
+import { useDeepCompareEffect } from "@fuse/hooks";
+import reducer from "../store";
+import { resetOrder, getReceipt } from "../store/orderSlice";
+import InvoiceTab from "./tabs/InvoiceTab";
+import OrderDetailsTab from "./tabs/OrderDetailsTab";
+import ProductsTab from "./tabs/ProductsTab";
 
 function Order(props) {
   const dispatch = useDispatch();
@@ -23,23 +23,20 @@ function Order(props) {
   const theme = useTheme();
 
   const routeParams = useParams();
+  console.log("router Params: ", routeParams.orderId);
   const [tabValue, setTabValue] = useState(0);
   const [noOrder, setNoOrder] = useState(false);
 
   useDeepCompareEffect(() => {
-    dispatch(getOrder(routeParams)).then((action) => {
-      if (!action.payload) {
-        setNoOrder(true);
-      }
-    });
-  }, [dispatch, routeParams]);
+    dispatch(getReceipt(routeParams.orderId));
+  }, [dispatch, routeParams.orderId]);
 
-  useEffect(() => {
-    return () => {
-      dispatch(resetOrder());
-      setNoOrder(false);
-    };
-  }, [dispatch]);
+  // useEffect(() => {
+  //   return () => {
+  //     dispatch(resetOrder());
+  //     setNoOrder(false);
+  //   };
+  // }, [dispatch]);
 
   function handleChangeTab(event, value) {
     setTabValue(value);
@@ -53,7 +50,7 @@ function Order(props) {
         className="flex flex-col flex-1 items-center justify-center h-full"
       >
         <Typography color="textSecondary" variant="h5">
-          There is no such order!
+          There is no such salary details!
         </Typography>
         <Button
           className="mt-24"
@@ -62,7 +59,7 @@ function Order(props) {
           to="/apps/e-commerce/orders"
           color="inherit"
         >
-          Go to Orders Page
+          Go to Salaries Page
         </Button>
       </motion.div>
     );
@@ -71,8 +68,8 @@ function Order(props) {
   return (
     <FusePageCarded
       classes={{
-        content: 'flex',
-        header: 'min-h-72 h-72 sm:h-136 sm:min-h-136',
+        content: "flex",
+        header: "min-h-72 h-72 sm:h-136 sm:min-h-136",
       }}
       header={
         order && (
@@ -86,13 +83,13 @@ function Order(props) {
                   className="flex items-center sm:mb-12"
                   component={Link}
                   role="button"
-                  to="/apps/e-commerce/orders"
+                  to="/apps/e-commerce/products"
                   color="inherit"
                 >
                   <Icon className="text-20">
-                    {theme.direction === 'ltr' ? 'arrow_back' : 'arrow_forward'}
+                    {theme.direction === "ltr" ? "arrow_back" : "arrow_forward"}
                   </Icon>
-                  <span className="mx-4 font-medium">Orders</span>
+                  <span className="mx-4 font-medium">Salaries</span>
                 </Typography>
               </motion.div>
 
@@ -102,10 +99,10 @@ function Order(props) {
                   animate={{ x: 0, opacity: 1, transition: { delay: 0.3 } }}
                 >
                   <Typography className="text-16 sm:text-20 truncate font-semibold">
-                    {`Order ${order.reference}`}
+                    {`Receipt ${order.id}`}
                   </Typography>
                   <Typography variant="caption" className="font-medium">
-                    {`From ${order.customer.firstName} ${order.customer.lastName}`}
+                    {/* {`From ${order.user.firstName} ${order.user.lastName}`} */}
                   </Typography>
                 </motion.div>
               </div>
@@ -121,19 +118,19 @@ function Order(props) {
           textColor="primary"
           variant="scrollable"
           scrollButtons="auto"
-          classes={{ root: 'w-full h-64' }}
+          classes={{ root: "w-full h-64" }}
         >
-          <Tab className="h-64" label="Order Details" />
-          <Tab className="h-64" label="Products" />
-          <Tab className="h-64" label="Invoice" />
+          <Tab className="h-64" label="Salary Details" />
+          {/* <Tab className="h-64" label="Products" />
+          <Tab className="h-64" label="Invoice" /> */}
         </Tabs>
       }
       content={
         order && (
           <div className="p-16 sm:p-24 max-w-2xl w-full">
             {tabValue === 0 && <OrderDetailsTab />}
-            {tabValue === 1 && <ProductsTab />}
-            {tabValue === 2 && <InvoiceTab order={order} />}
+            {/* {tabValue === 1 && <ProductsTab />}
+            {tabValue === 2 && <InvoiceTab order={order} />} */}
           </div>
         )
       }
@@ -142,4 +139,4 @@ function Order(props) {
   );
 }
 
-export default withReducer('eCommerceApp', reducer)(Order);
+export default withReducer("eCommerceApp", reducer)(Order);

@@ -26,7 +26,7 @@ function ProductsHeader(props) {
           animate={{ scale: 1, transition: { delay: 0.2 } }}
           className="text-24 md:text-32"
         >
-          shopping_basket
+          receipts
         </Icon>
         <Typography
           component={motion.span}
@@ -35,7 +35,7 @@ function ProductsHeader(props) {
           delay={300}
           className="hidden sm:flex text-16 md:text-24 mx-12 font-semibold"
         >
-          Products
+          Receipts
         </Typography>
       </div>
 
