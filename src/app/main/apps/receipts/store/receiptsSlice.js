@@ -5,16 +5,6 @@ import {
 } from "@reduxjs/toolkit";
 import axios from "axios";
 
-export const getProducts = createAsyncThunk(
-  "eCommerceApp/products/getProducts",
-  async () => {
-    const response = await axios.get("/api/e-commerce-app/products");
-    const data = await response.data;
-
-    return data;
-  }
-);
-
 export const getAllReceipts = createAsyncThunk(
   "eCommerceApp/products/getAllReceipts",
   async () => {
@@ -36,22 +26,22 @@ export const removeProducts = createAsyncThunk(
 );
 
 export const removeReceipt = createAsyncThunk(
-  "contactsApp/contacts/removeReceipts",
-  async (receiptId, { dispatch, getState }) => {
+  "eCommerceApp/products/removeReceipts",
+  async (receiptId) => {
     await axios.post(`/financial/receipts/${receiptId}`);
     console.log("deleted");
     return contactId;
   }
 );
 
-const productsAdapter = createEntityAdapter({});
+const receiptsAdapter = createEntityAdapter({});
 
 export const { selectAll: selectProducts, selectById: selectProductById } =
-  productsAdapter.getSelectors((state) => state.eCommerceApp.products);
+  receiptsAdapter.getSelectors((state) => state.eCommerceApp.receipts);
 
-const productsSlice = createSlice({
-  name: "eCommerceApp/products",
-  initialState: productsAdapter.getInitialState({
+const receiptsSlice = createSlice({
+  name: "eCommerceApp/receipts",
+  initialState: receiptsAdapter.getInitialState({
     searchText: "",
   }),
   reducers: {
@@ -63,24 +53,18 @@ const productsSlice = createSlice({
     },
   },
   extraReducers: {
-    [getProducts.fulfilled]: productsAdapter.setAll,
-    [getAllReceipts.fulfilled]: productsAdapter.setAll,
-    // [getAllReceipts.fulfilled]: (state, action) => {
-    //   const data = action.payload;
-    //   productsAdapter.setAll(state, data);
-    //   state.searchText = "";
-    //   console.log("innnnnn: ", data);
-    // },
-    [removeProducts.fulfilled]: (state, action) =>
-      productsAdapter.removeMany(state, action.payload),
+    [getAllReceipts.fulfilled]: receiptsAdapter.setAll,
+
+    // [removeProducts.fulfilled]: (state, action) =>
+    // receiptsAdapter.removeMany(state, action.payload),
     [removeReceipt.fulfilled]: (state, action) =>
-      productsAdapter.removeMany(state, action.payload),
+      receiptsAdapter.removeMany(state, action.payload),
     // productsAdapter.removeOne(state, action.payload),
 
     // contactsAdapter.removeOne(state, action.payload);
   },
 });
 
-export const { setProductsSearchText } = productsSlice.actions;
+export const { setProductsSearchText } = receiptsSlice.actions;
 
-export default productsSlice.reducer;
+export default receiptsSlice.reducer;

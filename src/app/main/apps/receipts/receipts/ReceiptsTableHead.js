@@ -15,7 +15,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 import clsx from "clsx";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { removeReceipt } from "../store/productsSlice";
+import { removeReceipt } from "../store/receiptsSlice";
 
 const rows = [
   // {
@@ -26,29 +26,36 @@ const rows = [
   //   sort: false,
   // },
   {
+    id: "id",
+    align: "left",
+    disablePadding: false,
+    label: "ID",
+    sort: true,
+  },
+  {
     id: "name",
-    // align: "left",
+    align: "left",
     disablePadding: false,
     label: "Name",
     sort: true,
   },
   {
     id: "salary",
-    // align: "left",
-    disablePadding: false,
+    align: "left",
+    disablePadding: true,
     label: "Salary",
     sort: true,
   },
   {
     id: "bonus",
-    // align: "right",
+    align: "left",
     disablePadding: false,
     label: "Bonus",
     sort: true,
   },
   {
     id: "deductions",
-    // align: "right",
+    align: "center",
     disablePadding: false,
     label: "Deductions",
     sort: true,
@@ -70,7 +77,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function ProductsTableHead(props) {
+function ReceiptsTableHead(props) {
   const classes = useStyles(props);
   const { selectedProductIds } = props;
   const numSelected = selectedProductIds.length;
@@ -175,4 +182,4 @@ function ProductsTableHead(props) {
   );
 }
 
-export default ProductsTableHead;
+export default ReceiptsTableHead;

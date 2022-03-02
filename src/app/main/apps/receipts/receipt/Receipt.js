@@ -7,19 +7,17 @@ import Tabs from "@material-ui/core/Tabs";
 import Typography from "@material-ui/core/Typography";
 import withReducer from "app/store/withReducer";
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import { useDeepCompareEffect } from "@fuse/hooks";
 import reducer from "../store";
-import { resetOrder, getReceipt } from "../store/orderSlice";
-import InvoiceTab from "./tabs/InvoiceTab";
-import OrderDetailsTab from "./tabs/OrderDetailsTab";
-import ProductsTab from "./tabs/ProductsTab";
+import { getReceipt } from "../store/receiptSlice";
+import ReceiptDetailsTab from "./tabs/ReceiptDetailsTab";
 
-function Order(props) {
+function Receipt(props) {
   const dispatch = useDispatch();
-  const order = useSelector(({ eCommerceApp }) => eCommerceApp.order);
+  const order = useSelector(({ eCommerceApp }) => eCommerceApp.receipt);
   const theme = useTheme();
 
   const routeParams = useParams();
@@ -83,7 +81,7 @@ function Order(props) {
                   className="flex items-center sm:mb-12"
                   component={Link}
                   role="button"
-                  to="/apps/e-commerce/products"
+                  to="/apps/receipts/receipts"
                   color="inherit"
                 >
                   <Icon className="text-20">
@@ -128,7 +126,7 @@ function Order(props) {
       content={
         order && (
           <div className="p-16 sm:p-24 max-w-2xl w-full">
-            {tabValue === 0 && <OrderDetailsTab />}
+            {tabValue === 0 && <ReceiptDetailsTab />}
             {/* {tabValue === 1 && <ProductsTab />}
             {tabValue === 2 && <InvoiceTab order={order} />} */}
           </div>
@@ -139,4 +137,4 @@ function Order(props) {
   );
 }
 
-export default withReducer("eCommerceApp", reducer)(Order);
+export default withReducer("eCommerceApp", reducer)(Receipt);

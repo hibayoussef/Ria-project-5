@@ -1,15 +1,9 @@
-import Accordion from "@material-ui/core/Accordion";
-import AccordionDetails from "@material-ui/core/AccordionDetails";
-import AccordionSummary from "@material-ui/core/AccordionSummary";
 import Avatar from "@material-ui/core/Avatar";
 import Icon from "@material-ui/core/Icon";
 import Tooltip from "@material-ui/core/Tooltip";
 import Typography from "@material-ui/core/Typography";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import GoogleMap from "google-map-react";
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import OrdersStatus from "../OrdersStatus";
 
 function Marker(props) {
   return (
@@ -19,8 +13,8 @@ function Marker(props) {
   );
 }
 
-function OrderDetailsTab() {
-  const order = useSelector(({ eCommerceApp }) => eCommerceApp.order);
+function ReceiptDetailsTab() {
+  const order = useSelector(({ eCommerceApp }) => eCommerceApp.receipt);
   const [map, setMap] = useState("shipping");
 
   return (
@@ -54,19 +48,24 @@ function OrderDetailsTab() {
                   <td>
                     <div className="flex items-center">
                       {/* <Avatar src={order.user.avatar} /> */}
+                      <Avatar src="assets/images/avatars/Lily.jpg" />
+
                       <Typography className="truncate mx-8">
                         {/* {`${order.customer.firstName} ${order.customer.lastName}`} */}
+                        Samara Kamal
                       </Typography>
                     </div>
                   </td>
                   <td>
                     <Typography className="truncate">
                       {/* {order.customer.email} */}
+                      samara@gmail.com
                     </Typography>
                   </td>
                   <td>
                     <Typography className="truncate">
                       {/* {order.customer.phone} */}
+                      0947483381
                     </Typography>
                   </td>
                 </tr>
@@ -176,4 +175,4 @@ function OrderDetailsTab() {
   );
 }
 
-export default OrderDetailsTab;
+export default ReceiptDetailsTab;

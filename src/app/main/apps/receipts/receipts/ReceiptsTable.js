@@ -15,22 +15,22 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { withRouter } from "react-router-dom";
 import FuseLoading from "@fuse/core/FuseLoading";
-import { getAllReceipts, selectProducts } from "../store/productsSlice";
-import ProductsTableHead from "./ProductsTableHead";
+import { getAllReceipts, selectProducts } from "../store/receiptsSlice";
+import ReceiptsTableHead from "./ReceiptsTableHead";
 
-function ProductsTable(props) {
+function ReceiptsTable(props) {
   const dispatch = useDispatch();
-  const products = useSelector(selectProducts);
+  const receipts = useSelector(selectProducts);
   const searchText = useSelector(
-    ({ eCommerceApp }) => eCommerceApp.products.searchText
+    ({ eCommerceApp }) => eCommerceApp.receipts.searchText
   );
 
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState([]);
-  const [data, setData] = useState(products);
+  const [data, setData] = useState(receipts);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [order, setOrder] = useState({
+  const [receipt, setReceipt] = useState({
     direction: "asc",
     id: null,
   });
@@ -42,25 +42,25 @@ function ProductsTable(props) {
   useEffect(() => {
     if (searchText.length !== 0) {
       setData(
-        _.filter(products, (item) =>
+        _.filter(receipts, (item) =>
           item.name.toLowerCase().includes(searchText.toLowerCase())
         )
       );
       setPage(0);
     } else {
-      setData(products);
+      setData(receipts);
     }
-  }, [products, searchText]);
+  }, [receipts, searchText]);
 
   function handleRequestSort(event, property) {
     const id = property;
     let direction = "desc";
 
-    if (order.id === property && order.direction === "desc") {
+    if (receipt.id === property && receipt.direction === "desc") {
       direction = "asc";
     }
 
-    setOrder({
+    setReceipt({
       direction,
       id,
     });
@@ -123,7 +123,7 @@ function ProductsTable(props) {
         className="flex flex-1 items-center justify-center h-full"
       >
         <Typography color="textSecondary" variant="h5">
-          There are no Salaries!
+          There are no Receipts!
         </Typography>
       </motion.div>
     );
@@ -133,9 +133,9 @@ function ProductsTable(props) {
     <div className="w-full flex flex-col">
       <FuseScrollbars className="flex-grow overflow-x-auto">
         <Table stickyHeader className="min-w-xl" aria-labelledby="tableTitle">
-          <ProductsTableHead
+          <ReceiptsTableHead
             selectedProductIds={selected}
-            order={order}
+            order={receipt}
             onSelectAllClick={handleSelectAllClick}
             onRequestSort={handleRequestSort}
             rowCount={data.length}
@@ -147,17 +147,17 @@ function ProductsTable(props) {
               data,
               [
                 (o) => {
-                  switch (order.id) {
+                  switch (receipt.id) {
                     case "categories": {
                       return o.categories[0];
                     }
                     default: {
-                      return o[order.id];
+                      return o[receipt.id];
                     }
                   }
                 },
               ],
-              [order.direction]
+              [receipt.direction]
             )
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((n) => {
@@ -189,6 +189,14 @@ function ProductsTable(props) {
                       component="th"
                       scope="row"
                     >
+                      {n.id}
+                    </TableCell>
+
+                    <TableCell
+                      className="p-4 md:p-16"
+                      component="th"
+                      scope="row"
+                    >
                       {n.user.name}
                     </TableCell>
 
@@ -212,10 +220,10 @@ function ProductsTable(props) {
                     </TableCell>
                     {n.deductions.map((deduction) => (
                       <TableCell
-                        // className="p-4 md:p-10"
+                        className="p-4  md:p-16"
                         component="th"
                         scope="row"
-                        align="left"
+                        align="center"
                       >
                         <span>£</span>
                         {deduction.amount}
@@ -247,4 +255,4 @@ function ProductsTable(props) {
   );
 }
 
-export default withRouter(ProductsTable);
+export default withRouter(ReceiptsTable);

@@ -8,12 +8,12 @@ import { motion } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { selectMainTheme } from "app/store/fuse/settingsSlice";
-import { setProductsSearchText } from "../store/productsSlice";
+import { setProductsSearchText } from "../store/receiptsSlice";
 
-function ProductsHeader(props) {
+function ReceiptsHeader(props) {
   const dispatch = useDispatch();
   const searchText = useSelector(
-    ({ eCommerceApp }) => eCommerceApp.products.searchText
+    ({ eCommerceApp }) => eCommerceApp.receipts.searchText
   );
   const mainTheme = useSelector(selectMainTheme);
 
@@ -82,4 +82,4 @@ function ProductsHeader(props) {
   );
 }
 
-export default ProductsHeader;
+export default ReceiptsHeader;
