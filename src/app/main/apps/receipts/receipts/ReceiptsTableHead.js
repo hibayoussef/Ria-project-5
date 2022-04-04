@@ -15,7 +15,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 import clsx from "clsx";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { removeReceipt } from "../store/receiptsSlice";
+import { removeReceipts } from "../store/receiptsSlice";
 
 const rows = [
   // {
@@ -130,7 +130,7 @@ function ReceiptsTableHead(props) {
                 <MenuList>
                   <MenuItem
                     onClick={() => {
-                      dispatch(removeReceipt(selectedProductIds));
+                      dispatch(removeReceipts(selectedProductIds));
                       props.onMenuItemClick();
                       closeSelectedProductsMenu();
                     }}

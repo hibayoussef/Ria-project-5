@@ -34,7 +34,7 @@ const routes = [
   {
     path: "/",
     exact: true,
-    component: () => <Redirect to="/apps/dashboards/analytics" />,
+    component: () => <Redirect to="/apps/receipts/receipts" />,
   },
   {
     path: "/loading",

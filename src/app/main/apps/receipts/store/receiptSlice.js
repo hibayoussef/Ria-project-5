@@ -11,10 +11,37 @@ export const getReceipt = createAsyncThunk(
     const data = response.data.data;
     console.log("reddddd: ", data);
     // return data === undefined ? null : data;
-    return data;
+    return data === undefined ? null : data;
   }
 );
 
+export const removeDeduction = createAsyncThunk(
+  "Receipts/removeDeduction",
+  async (params, { dispatch, getState }) => {
+    console.log("receipt Id: ", params.receiptId);
+    console.log("deduction Id: ", params.id);
+    const response = await axios.delete(
+      `/financial/receipts/${params.receiptId}/deductions/${params.id}`
+    );
+
+    console.log("response: ", response);
+    console.log("response.data: ", response.data.data.message);
+    return response.data.data.message;
+  }
+);
+
+export const removeSalary = createAsyncThunk(
+  "Receipts/removeSalary",
+  async (params, { dispatch, getState }) => {
+    console.log("receipt Id: ", params.receiptId);
+    console.log("salary Id: ", params.id);
+    const response = await axios.delete(
+      `/financial/receipts/${params.receiptId}/salaries/${params.id}`
+    );
+    console.log("response delete: ", response.data.data.message);
+    return response.data.data.message;
+  }
+);
 // export const saveOrder = createAsyncThunk(
 //   "eCommerceApp/order/saveOrder",
 //   async (order) => {
@@ -28,12 +55,14 @@ export const getReceipt = createAsyncThunk(
 const receiptSlice = createSlice({
   name: "eCommerceApp/receipt",
   initialState: null,
-  reducers: {
-    // resetOrder: () => null,
-  },
+  reducers: {},
   extraReducers: {
     [getReceipt.fulfilled]: (state, action) => action.payload,
+    [removeDeduction.fulfilled]: (state, action) => null,
+    [removeSalary.fulfilled]: (state, action) => null,
     // [saveOrder.fulfilled]: (state, action) => action.payload,
+    // [removeDeduction.fulfilled]: (state, action) =>
+    //   removeOne(state, action.payload),
   },
 });
 

@@ -9,7 +9,7 @@ const AnalyticsDashboardAppConfig = {
   },
   routes: [
     {
-      auth: authRoles.super_admin,
+      auth: authRoles.user,
       path: "/apps/dashboards/analytics",
       component: lazy(() => import("./AnalyticsDashboardApp")),
     },

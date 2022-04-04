@@ -104,7 +104,7 @@ function UsersList(props) {
               // src={row.original.avatar}
               className="mx-8"
               alt={row.original.name}
-              src={row.original.avatar}
+              src={row.original?.avatar?.url}
               style={{ height: "7rem", width: "7rem" }}
             />
           );

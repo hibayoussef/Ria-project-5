@@ -94,7 +94,7 @@ class JwtService extends FuseUtils.EventEmitter {
               role: res.roles[0], // res.roles[0] || "staff ", /// ##note you must handle the roles in the whole system and replace them with yours,
               data: {
                 displayName: `${res.firstName} ${res.lastName}`,
-                photoURL: "assets/images/avatars/Abbott.jpg",
+                photoURL: `${res.avatar?.url}`,
                 email: res.email,
               },
             };
@@ -167,7 +167,7 @@ class JwtService extends FuseUtils.EventEmitter {
               role: res.roles[0],
               data: {
                 displayName: `${res.firstName} ${res.lastName}`,
-                photoURL: "assets/images/avatars/Abbott.jpg",
+                photoURL: `${res.avatar?.url}`,
                 email: res.email,
               },
             };

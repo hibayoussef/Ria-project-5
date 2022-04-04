@@ -4,18 +4,71 @@ import Tooltip from "@material-ui/core/Tooltip";
 import Typography from "@material-ui/core/Typography";
 import { useState } from "react";
 import { useSelector } from "react-redux";
-
-function Marker(props) {
-  return (
-    <Tooltip title={props.text} placement="top">
-      <Icon className="text-red">place</Icon>
-    </Tooltip>
-  );
-}
+import IconButton from "@material-ui/core/IconButton";
+import { removeDeduction, removeSalary } from "../../store/receiptSlice";
+import { useDispatch } from "react-redux";
+import { Link, useHistory } from "react-router-dom";
+import { getAllReceipts } from "../../store/receiptsSlice";
+import { getReceipt } from "../../store/receiptSlice";
+import { useSnackbar } from "notistack";
+import Slide from "@material-ui/core/Slide";
 
 function ReceiptDetailsTab() {
   const order = useSelector(({ eCommerceApp }) => eCommerceApp.receipt);
+  const dispatch = useDispatch();
   const [map, setMap] = useState("shipping");
+  const history = useHistory();
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+
+  const params = {
+    receiptId: "",
+    id: "",
+  };
+
+  const deductionRemoveHandleClick = () => {
+    enqueueSnackbar(
+      "deduction was deleted successfully.!",
+      { variant: "success" },
+      {
+        anchorOrigin: {
+          vertical: "top",
+          horizontal: "right",
+        },
+      },
+      { TransitionComponent: Slide }
+    );
+  };
+
+  const salaryRemoveHandleClick = () => {
+    enqueueSnackbar(
+      "salary was deleted successfully.!",
+      { variant: "success" },
+      {
+        anchorOrigin: {
+          vertical: "top",
+          horizontal: "right",
+        },
+      },
+      { TransitionComponent: Slide }
+    );
+  };
+  function handleRemoveDeduction(orderID, deductionID) {
+    const params = { receiptId: orderID, id: deductionID };
+    dispatch(removeDeduction(params)).then(() => {
+      history.push("/apps/receipts/receipts");
+      dispatch(getReceipt());
+      dispatch(getAllReceipts());
+    });
+  }
+
+  function handleRemoveSalary(orderID, salaryId) {
+    const params = { receiptId: orderID, id: salaryId };
+    dispatch(removeSalary(params)).then(() => {
+      history.push("/apps/receipts/receipts");
+      dispatch(getReceipt());
+      dispatch(getAllReceipts());
+    });
+  }
 
   return (
     <div>
@@ -47,25 +100,22 @@ function ReceiptDetailsTab() {
                 <tr>
                   <td>
                     <div className="flex items-center">
-                      {/* <Avatar src={order.user.avatar} /> */}
-                      <Avatar src="assets/images/avatars/Lily.jpg" />
+                      <Avatar src={order.user?.avatar?.url} />
+                      {/* <Avatar src="assets/images/avatars/Lily.jpg" /> */}
 
                       <Typography className="truncate mx-8">
-                        {/* {`${order.customer.firstName} ${order.customer.lastName}`} */}
-                        Samara Kamal
+                        {order.user.name}
                       </Typography>
                     </div>
                   </td>
                   <td>
                     <Typography className="truncate">
-                      {/* {order.customer.email} */}
-                      samara@gmail.com
+                      {order.user.email}
                     </Typography>
                   </td>
                   <td>
                     <Typography className="truncate">
-                      {/* {order.customer.phone} */}
-                      0947483381
+                      {order.user.phoneNumber}
                     </Typography>
                   </td>
                 </tr>
@@ -123,6 +173,22 @@ function ReceiptDetailsTab() {
                   <span>£</span>
                   <span className="truncate">{order.salary.bonus}</span>
                 </td>
+                <td>
+                  <IconButton
+                    onClick={(ev) => {
+                      ev.stopPropagation();
+                      handleRemoveSalary(order.id, order.salary.id);
+                      salaryRemoveHandleClick(ev);
+                    }}
+                    style={{
+                      color: "red",
+                      border: "none",
+                      marginLeft: "5rem",
+                    }}
+                  >
+                    <Icon>delete</Icon>
+                  </IconButton>
+                </td>
               </tr>
             </tbody>
           </table>
@@ -164,6 +230,18 @@ function ReceiptDetailsTab() {
                   </td>
                   <td>
                     <span className="truncate">{deduction.reason}</span>
+                  </td>
+                  <td>
+                    <IconButton
+                      onClick={(ev) => {
+                        ev.stopPropagation();
+                        handleRemoveDeduction(order.id, deduction.id);
+                        deductionRemoveHandleClick(ev);
+                      }}
+                      style={{ color: "red", border: "none" }}
+                    >
+                      <Icon>delete</Icon>
+                    </IconButton>
                   </td>
                 </tr>
               ))}

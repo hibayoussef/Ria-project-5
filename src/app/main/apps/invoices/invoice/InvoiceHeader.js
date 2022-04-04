@@ -7,9 +7,9 @@ import { useFormContext } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
 import _ from "@lodash";
-import { saveProduct, removeProduct } from "../store/productSlice";
+import { saveProduct, removeProduct } from "../store/invoiceSlice";
 
-function ProductHeader(props) {
+function InvoiceHeader(props) {
   const dispatch = useDispatch();
   const methods = useFormContext();
   const { formState, watch, getValues } = methods;
@@ -114,4 +114,4 @@ function ProductHeader(props) {
   );
 }
 
-export default ProductHeader;
+export default InvoiceHeader;

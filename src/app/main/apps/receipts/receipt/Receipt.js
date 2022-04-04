@@ -17,7 +17,7 @@ import ReceiptDetailsTab from "./tabs/ReceiptDetailsTab";
 
 function Receipt(props) {
   const dispatch = useDispatch();
-  const order = useSelector(({ eCommerceApp }) => eCommerceApp.receipt);
+  const receipt = useSelector(({ eCommerceApp }) => eCommerceApp.receipt);
   const theme = useTheme();
 
   const routeParams = useParams();
@@ -54,7 +54,7 @@ function Receipt(props) {
           className="mt-24"
           component={Link}
           variant="outlined"
-          to="/apps/e-commerce/orders"
+          to="/apps/receipts/receipts"
           color="inherit"
         >
           Go to Receipts Page
@@ -70,7 +70,7 @@ function Receipt(props) {
         header: "min-h-72 h-72 sm:h-136 sm:min-h-136",
       }}
       header={
-        order && (
+        receipt && (
           <div className="flex flex-1 w-full items-center justify-between">
             <div className="flex flex-1 flex-col items-center sm:items-start">
               <motion.div
@@ -97,7 +97,7 @@ function Receipt(props) {
                   animate={{ x: 0, opacity: 1, transition: { delay: 0.3 } }}
                 >
                   <Typography className="text-16 sm:text-20 truncate font-semibold">
-                    {`Receipt ${order.id}`}
+                    {`Receipt ${receipt.id}`}
                   </Typography>
                   <Typography variant="caption" className="font-medium">
                     {/* {`From ${order.user.firstName} ${order.user.lastName}`} */}
@@ -124,7 +124,7 @@ function Receipt(props) {
         </Tabs>
       }
       content={
-        order && (
+        receipt && (
           <div className="p-16 sm:p-24 max-w-2xl w-full">
             {tabValue === 0 && <ReceiptDetailsTab />}
             {/* {tabValue === 1 && <ProductsTab />}

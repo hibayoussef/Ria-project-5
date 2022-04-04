@@ -1,46 +1,46 @@
-import FuseScrollbars from '@fuse/core/FuseScrollbars';
-import FuseUtils from '@fuse/utils';
-import AppBar from '@material-ui/core/AppBar';
-import Avatar from '@material-ui/core/Avatar';
-import Icon from '@material-ui/core/Icon';
-import IconButton from '@material-ui/core/IconButton';
-import Input from '@material-ui/core/Input';
-import List from '@material-ui/core/List';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import Paper from '@material-ui/core/Paper';
-import { useTheme } from '@material-ui/core/styles';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
-import { motion } from 'framer-motion';
-import { useMemo, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import ContactListItem from './ContactListItem';
-import StatusIcon from './StatusIcon';
-import { getChat } from './store/chatSlice';
-import { selectContacts } from './store/contactsSlice';
-import { openUserSidebar } from './store/sidebarsSlice';
-import { updateUserData } from './store/userSlice';
+import FuseScrollbars from "@fuse/core/FuseScrollbars";
+import FuseUtils from "@fuse/utils";
+import AppBar from "@material-ui/core/AppBar";
+import Avatar from "@material-ui/core/Avatar";
+import Icon from "@material-ui/core/Icon";
+import IconButton from "@material-ui/core/IconButton";
+import Input from "@material-ui/core/Input";
+import List from "@material-ui/core/List";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
+import Paper from "@material-ui/core/Paper";
+import { useTheme } from "@material-ui/core/styles";
+import Toolbar from "@material-ui/core/Toolbar";
+import Typography from "@material-ui/core/Typography";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
+import { motion } from "framer-motion";
+import { useMemo, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import ContactListItem from "./ContactListItem";
+import StatusIcon from "./StatusIcon";
+import { getChat } from "./store/chatSlice";
+import { selectContacts } from "./store/contactsSlice";
+import { openUserSidebar } from "./store/sidebarsSlice";
+import { updateUserData } from "./store/userSlice";
 
 const statusArr = [
   {
-    title: 'Online',
-    value: 'online',
+    title: "Online",
+    value: "online",
   },
   {
-    title: 'Away',
-    value: 'away',
+    title: "Away",
+    value: "away",
   },
   {
-    title: 'Do not disturb',
-    value: 'do-not-disturb',
+    title: "Do not disturb",
+    value: "do-not-disturb",
   },
   {
-    title: 'Offline',
-    value: 'offline',
+    title: "Offline",
+    value: "offline",
   },
 ];
 
@@ -49,9 +49,9 @@ function ChatsSidebar(props) {
   const contacts = useSelector(selectContacts);
   const user = useSelector(({ chatApp }) => chatApp.user);
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
-  const [searchText, setSearchText] = useState('');
+  const [searchText, setSearchText] = useState("");
   const [statusMenuEl, setStatusMenuEl] = useState(null);
   const [moreMenuEl, setMoreMenuEl] = useState(null);
 
@@ -104,11 +104,11 @@ function ChatsSidebar(props) {
               tabIndex={0}
             >
               <Avatar src={user.avatar} alt={user.name} className="w-40 h-40">
-                {!user.avatar || user.avatar === '' ? user.name[0] : ''}
+                {!user.avatar || user.avatar === "" ? user.name[0] : ""}
               </Avatar>
               <div
                 className="absolute right-0 bottom-0 -m-4 z-10 cursor-pointer"
-                aria-owns={statusMenuEl ? 'switch-menu' : null}
+                aria-owns={statusMenuEl ? "switch-menu" : null}
                 aria-haspopup="true"
                 onClick={handleStatusMenuClick}
                 onKeyDown={handleStatusMenuClick}
@@ -141,7 +141,7 @@ function ChatsSidebar(props) {
 
           <div>
             <IconButton
-              aria-owns={moreMenuEl ? 'chats-more-menu' : null}
+              aria-owns={moreMenuEl ? "chats-more-menu" : null}
               aria-haspopup="true"
               onClick={handleMoreMenuClick}
             >
@@ -171,7 +171,7 @@ function ChatsSidebar(props) {
                   fullWidth
                   value={searchText}
                   inputProps={{
-                    'aria-label': 'Search',
+                    "aria-label": "Search",
                   }}
                   onChange={handleSearchText}
                 />
@@ -196,11 +196,19 @@ function ChatsSidebar(props) {
               contacts.length > 0 && user && user.chatList
                 ? user.chatList.map((_chat) => ({
                     ..._chat,
-                    ...contacts.find((_contact) => _contact.id === _chat.contactId),
+                    ...contacts.find(
+                      (_contact) => _contact.id === _chat.contactId
+                    ),
                   }))
                 : [];
-            const filteredContacts = getFilteredArray([...contacts], searchText);
-            const filteredChatList = getFilteredArray([...chatListContacts], searchText);
+            const filteredContacts = getFilteredArray(
+              [...contacts],
+              searchText
+            );
+            const filteredChatList = getFilteredArray(
+              [...chatListContacts],
+              searchText
+            );
 
             const container = {
               show: {
@@ -224,7 +232,10 @@ function ChatsSidebar(props) {
               >
                 {filteredChatList.length > 0 && (
                   <motion.div variants={item}>
-                    <Typography className="font-medium text-20 px-16 py-24" color="secondary">
+                    <Typography
+                      className="font-medium text-20 px-16 py-24"
+                      color="secondary"
+                    >
                       Chats
                     </Typography>
                   </motion.div>
@@ -234,14 +245,19 @@ function ChatsSidebar(props) {
                   <motion.div variants={item} key={contact.id}>
                     <ContactListItem
                       contact={contact}
-                      onContactClick={(contactId) => dispatch(getChat({ contactId, isMobile }))}
+                      onContactClick={(contactId) =>
+                        dispatch(getChat({ contactId, isMobile }))
+                      }
                     />
                   </motion.div>
                 ))}
 
                 {filteredContacts.length > 0 && (
                   <motion.div variants={item}>
-                    <Typography className="font-medium text-20 px-16 py-24" color="secondary">
+                    <Typography
+                      className="font-medium text-20 px-16 py-24"
+                      color="secondary"
+                    >
                       Contacts
                     </Typography>
                   </motion.div>
@@ -251,7 +267,9 @@ function ChatsSidebar(props) {
                   <motion.div variants={item} key={contact.id}>
                     <ContactListItem
                       contact={contact}
-                      onContactClick={(contactId) => dispatch(getChat({ contactId, isMobile }))}
+                      onContactClick={(contactId) =>
+                        dispatch(getChat({ contactId, isMobile }))
+                      }
                     />
                   </motion.div>
                 ))}

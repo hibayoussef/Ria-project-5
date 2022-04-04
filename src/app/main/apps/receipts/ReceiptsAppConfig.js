@@ -5,9 +5,27 @@ const ReceiptsAppConfig = {
   settings: {
     layout: {},
   },
+  /**
+   * if you have /users/pictures and /users/pictures/profile
+   * if router hits /users/pictures/* and ' /users/pictures' comes before it will always render it
+   *
+   * any sub paths must be presented before root path, I mean '/users/pictures/profile'
+   *
+   * so the right order would be:
+   * [
+   *
+   *  '/users/pictures/profile',
+   *  '/users/pictures'
+   * ]
+   *
+   */
   routes: [
     {
-      path: "/apps/e-commerce/products",
+      path: "/apps/e-commerce/products/new",
+      component: lazy(() => import("./product/Product")),
+    },
+    {
+      path: "/apps/receipts/receipts",
       component: lazy(() => import("./receipts/Receipts")),
     },
     {
@@ -16,8 +34,8 @@ const ReceiptsAppConfig = {
     },
 
     {
-      path: "/apps/e-commerce",
-      component: () => <Redirect to="/apps/e-commerce/products" />,
+      path: "/apps/receipts",
+      component: () => <Redirect to="/apps/receipts/receipts" />,
     },
   ],
 };

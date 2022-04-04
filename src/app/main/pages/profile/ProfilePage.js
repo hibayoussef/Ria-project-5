@@ -13,6 +13,8 @@ import AboutTab from "./tabs/AboutTab";
 import PhotosVideosTab from "./tabs/PhotosVideosTab";
 import TimelineTab from "./tabs/TimelineTab";
 import IconButton from "@material-ui/core/IconButton";
+import React, { createRef } from "react";
+import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   avatar: {
@@ -37,10 +39,32 @@ const useStyles = makeStyles((theme) => ({
 function ProfilePage() {
   const classes = useStyles();
   const [selectedTab, setSelectedTab] = useState(0);
+  // ttttttttttttttttttttttttttttttttt
+  const [selectedFile, setSelectedFile] = useState(null);
 
+  const handleSubmit = async (event) => {
+    console.log("selectedFile: ", selectedFile);
+    const formData = new FormData();
+    formData.append("file", selectedFile);
+    // formData.append("selectedFile", selectedFile);
+
+    return axios.post("/app-files", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+  };
+
+  // ttttttttttttttttttttttttttttttttt
+
+  const handleFileSelect = (event) => {
+    console.log("event: ", event);
+    setSelectedFile(event.target.files[0]);
+  };
   function handleTabChange(event, value) {
     setSelectedTab(value);
   }
+
   return (
     <FusePageSimple
       classes={{
@@ -59,21 +83,15 @@ function ProfilePage() {
               initial={{ scale: 0 }}
               animate={{ scale: 1, transition: { delay: 0.1 } }}
             >
-              {/* <input
-                type="file"
-                // onChange={handleChange}
-                id="upload"
-                accept="image/*"
-              /> */}
-              {/* <label htmlFor="upload"> */}
               <IconButton
                 color="primary"
-                aria-label="upload picture"
                 component="span"
+                onClick={handleSubmit}
               >
                 <Avatar
+                  type="submit"
                   className={clsx(classes.avatar, "-mt-64  w-128 h-128")}
-                  // src={file}
+                  src={selectedFile}
                 />
               </IconButton>
               {/* </label> */}

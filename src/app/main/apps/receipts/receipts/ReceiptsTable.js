@@ -21,6 +21,7 @@ import ReceiptsTableHead from "./ReceiptsTableHead";
 function ReceiptsTable(props) {
   const dispatch = useDispatch();
   const receipts = useSelector(selectProducts);
+  console.log("role role role: ", receipts);
   const searchText = useSelector(
     ({ eCommerceApp }) => eCommerceApp.receipts.searchText
   );
@@ -28,6 +29,7 @@ function ReceiptsTable(props) {
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState([]);
   const [data, setData] = useState(receipts);
+
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [receipt, setReceipt] = useState({
@@ -148,8 +150,9 @@ function ReceiptsTable(props) {
               [
                 (o) => {
                   switch (receipt.id) {
-                    case "categories": {
-                      return o.categories[0];
+                    case "salary": {
+                      console.log("salary: ", o);
+                      return o.salary[0];
                     }
                     default: {
                       return o[receipt.id];
@@ -164,12 +167,12 @@ function ReceiptsTable(props) {
                 const isSelected = selected.indexOf(n.id) !== -1;
                 return (
                   <TableRow
+                    key={n.id}
                     className="h-72 cursor-pointer"
                     hover
                     role="checkbox"
                     aria-checked={isSelected}
                     tabIndex={-1}
-                    key={n.id}
                     selected={isSelected}
                     onClick={(event) => handleClick(n)}
                   >
@@ -218,17 +221,20 @@ function ReceiptsTable(props) {
                       <span>£</span>
                       {n.salary.bonus}
                     </TableCell>
-                    {n.deductions.map((deduction) => (
-                      <TableCell
-                        className="p-4  md:p-16"
-                        component="th"
-                        scope="row"
-                        align="center"
-                      >
-                        <span>£</span>
-                        {deduction.amount}
-                      </TableCell>
-                    ))}
+                    <TableCell
+                      // key={deduction.id}
+                      className="p-4  md:p-16"
+                      component="th"
+                      scope="row"
+                      align="center"
+                    >
+                      {n.deductions &&
+                        n.deductions
+                          .map(
+                            (singleDeduction) => "£" + singleDeduction.amount
+                          )
+                          .join(", ")}
+                    </TableCell>
                   </TableRow>
                 );
               })}

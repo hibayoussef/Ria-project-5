@@ -73,6 +73,7 @@ function ReceiptsHeader(props) {
           className="whitespace-nowrap"
           variant="contained"
           color="secondary"
+          // onClick={() => alert("hi hi hi")}
         >
           <span className="hidden sm:flex">Add New Receipt</span>
           <span className="flex sm:hidden">New</span>

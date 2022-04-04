@@ -25,12 +25,25 @@ export const removeProducts = createAsyncThunk(
   }
 );
 
+export const removeReceipts = createAsyncThunk(
+  "eCommerceApp/products/removeReceipts",
+  async (params, { dispatch, getState }) => {
+    console.log("receipt Id: ", params.receiptId);
+    console.log("salary Id: ", params.id);
+    const response = await axios.delete(`/financial/receipts/${id}`);
+    dispatch(getAllReceipts());
+    console.log("response delete: ", response.data);
+    return response.data.data;
+  }
+);
+
 export const removeReceipt = createAsyncThunk(
   "eCommerceApp/products/removeReceipts",
   async (receiptId) => {
-    await axios.post(`/financial/receipts/${receiptId}`);
+    await axios.delete(`/financial/receipts/${receiptId}`);
     console.log("deleted");
-    return contactId;
+    dispatch(getAllReceipts());
+    return receiptId;
   }
 );
 
@@ -55,12 +68,9 @@ const receiptsSlice = createSlice({
   extraReducers: {
     [getAllReceipts.fulfilled]: receiptsAdapter.setAll,
 
-    // [removeProducts.fulfilled]: (state, action) =>
-    // receiptsAdapter.removeMany(state, action.payload),
-    [removeReceipt.fulfilled]: (state, action) =>
-      receiptsAdapter.removeMany(state, action.payload),
-    // productsAdapter.removeOne(state, action.payload),
+    [removeReceipts.fulfilled]: (state, action) => null,
 
+    // productsAdapter.removeOne(state, action.payload),
     // contactsAdapter.removeOne(state, action.payload);
   },
 });
