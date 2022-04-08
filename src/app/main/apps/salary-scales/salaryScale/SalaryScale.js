@@ -16,7 +16,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import {
   resetProduct,
-  newSalaryScale,
+  newProduct,
   getSalaryScale,
 } from "../store/salaryScaleSlice";
 import reducer from "../store";
@@ -33,13 +33,15 @@ import ShippingTab from "./tabs/ShippingTab";
 const schema = yup.object().shape({
   name: yup
     .string()
-    .required("You must enter a product name")
-    .min(5, "The product name must be at least 5 characters"),
+    .required("You must enter a Salary Scale name")
+    .min(5, "The Salary name must be at least 5 characters"),
 });
 
 function SalaryScale(props) {
   const dispatch = useDispatch();
-  const product = useSelector(({ eCommerceApp }) => eCommerceApp.product);
+  const salaryScale = useSelector(
+    ({ salaryScalesApp }) => salaryScalesApp.salaryScale
+  );
 
   const routeParams = useParams();
   const [tabValue, setTabValue] = useState(0);
@@ -54,13 +56,13 @@ function SalaryScale(props) {
 
   useDeepCompareEffect(() => {
     function updateProductState() {
-      const { productId } = routeParams;
+      const { salaryScaleId } = routeParams;
 
-      if (productId === "new") {
+      if (salaryScaleId === "new") {
         /**
          * Create New Product data
          */
-        dispatch(newSalaryScale());
+        dispatch(newProduct());
       } else {
         /**
          * Get Product data
@@ -80,14 +82,14 @@ function SalaryScale(props) {
   }, [dispatch, routeParams]);
 
   useEffect(() => {
-    if (!product) {
+    if (!salaryScale) {
       return;
     }
     /**
      * Reset the form on product state changes
      */
-    reset(product);
-  }, [product, reset]);
+    reset(salaryScale);
+  }, [salaryScale, reset]);
 
   useEffect(() => {
     return () => {
@@ -117,16 +119,16 @@ function SalaryScale(props) {
         className="flex flex-col flex-1 items-center justify-center h-full"
       >
         <Typography color="textSecondary" variant="h5">
-          There is no such product!
+          There is no such Salary Scale!
         </Typography>
         <Button
           className="mt-24"
           component={Link}
           variant="outlined"
-          to="/apps/e-commerce/products"
+          to="/apps/salary-scales-section/salary-scales"
           color="inherit"
         >
-          Go to Products Page
+          Go to Salary Scales Page
         </Button>
       </motion.div>
     );
@@ -137,9 +139,9 @@ function SalaryScale(props) {
    */
   if (
     _.isEmpty(form) ||
-    (product &&
-      routeParams.productId !== product.id &&
-      routeParams.productId !== "new")
+    (salaryScale &&
+      routeParams.salaryScaleId !== salaryScale.id &&
+      routeParams.salaryScaleId !== "new")
   ) {
     return <FuseLoading />;
   }
@@ -162,33 +164,13 @@ function SalaryScale(props) {
             scrollButtons="auto"
             classes={{ root: "w-full h-64" }}
           >
-            <Tab className="h-64" label="Basic Info" />
-            <Tab className="h-64" label="Product Images" />
-            <Tab className="h-64" label="Pricing" />
-            <Tab className="h-64" label="Inventory" />
-            <Tab className="h-64" label="Shipping" />
+            <Tab className="h-64" label="Salary Scales Details" />
           </Tabs>
         }
         content={
           <div className="p-16 sm:p-24 max-w-2xl">
             <div className={tabValue !== 0 ? "hidden" : ""}>
               <BasicInfoTab />
-            </div>
-
-            <div className={tabValue !== 1 ? "hidden" : ""}>
-              <ProductImagesTab />
-            </div>
-
-            <div className={tabValue !== 2 ? "hidden" : ""}>
-              <PricingTab />
-            </div>
-
-            <div className={tabValue !== 3 ? "hidden" : ""}>
-              <InventoryTab />
-            </div>
-
-            <div className={tabValue !== 4 ? "hidden" : ""}>
-              <ShippingTab />
             </div>
           </div>
         }
@@ -198,4 +180,4 @@ function SalaryScale(props) {
   );
 }
 
-export default withReducer("salaryScaleApp", reducer)(SalaryScale);
+export default withReducer("salaryScalesApp", reducer)(SalaryScale);

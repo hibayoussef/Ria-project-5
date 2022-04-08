@@ -3,21 +3,19 @@ import axios from "axios";
 import FuseUtils from "@fuse/utils";
 
 export const getSalaryScale = createAsyncThunk(
-  "salaryScaleApp/salaryScale/getSalaryScale",
-  async (params) => {
-    const response = await axios.get(`/salary-scales/${params}`);
-    const data = await response.data.data;
-
-    console.log("response for salary scale: ", response);
-    console.log("data for salary scale: ", data);
+  "salaryScalesApp/salaryScale/getSalaryScale",
+  async (id) => {
+    const response = await axios.get(`/salary-scales/${id}`);
+    const data = await response.data;
+    console.log("salary Scale data: ", data);
     return data === undefined ? null : data;
   }
 );
 
 export const removeProduct = createAsyncThunk(
-  "eCommerceApp/product/removeProduct",
+  "salaryScalesApp/product/removeProduct",
   async (val, { dispatch, getState }) => {
-    const { id } = getState().eCommerceApp.product;
+    const { id } = getState().salaryScalesApp.salaryScale;
     await axios.post("/api/e-commerce-app/remove-product", { id });
 
     return id;
@@ -25,9 +23,9 @@ export const removeProduct = createAsyncThunk(
 );
 
 export const saveProduct = createAsyncThunk(
-  "eCommerceApp/product/saveProduct",
+  "salaryScalesApp/product/saveProduct",
   async (productData, { dispatch, getState }) => {
-    const { product } = getState().eCommerceApp;
+    const { product } = getState().salaryScalesApp;
 
     const response = await axios.post("/api/e-commerce-app/product/save", {
       ...product,
@@ -44,7 +42,7 @@ const salaryScaleSlice = createSlice({
   initialState: null,
   reducers: {
     resetProduct: () => null,
-    newSalaryScale: {
+    newProduct: {
       reducer: (state, action) => action.payload,
       prepare: (event) => ({
         payload: {
@@ -78,6 +76,6 @@ const salaryScaleSlice = createSlice({
   },
 });
 
-export const { newSalaryScale, resetProduct } = salaryScaleSlice.actions;
+export const { newProduct, resetProduct } = salaryScaleSlice.actions;
 
 export default salaryScaleSlice.reducer;

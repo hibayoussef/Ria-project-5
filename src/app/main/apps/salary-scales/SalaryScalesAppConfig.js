@@ -7,17 +7,19 @@ const SalaryScalesAppConfig = {
   },
   routes: [
     {
-      path: "/apps/e-commerce/products/:productId/:productHandle?",
-      component: lazy(() => import("./salary-scale/SalaryScale")),
+      path: "/apps/salary-scales-section/salary-scales/:salaryScaleId",
+      component: lazy(() => import("./salaryScale/SalaryScale")),
     },
     {
-      path: "/apps/e-commerce/products",
-      component: lazy(() => import("./salary-scales/SalaryScales")),
+      path: "/apps/salary-scales-section/salary-scales",
+      component: lazy(() => import("./salaryScales/SalaryScales")),
     },
 
     {
-      path: "/apps/e-commerce",
-      component: () => <Redirect to="/apps/e-commerce/products" />,
+      path: "/apps/salary-scale-section",
+      component: () => (
+        <Redirect to="/apps/salary-scales-section/salary-scales" />
+      ),
     },
   ],
 };

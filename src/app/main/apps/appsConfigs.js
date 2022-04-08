@@ -13,8 +13,8 @@ import ScrumboardAppConfig from "./scrumboard/ScrumboardAppConfig";
 import TodoAppConfig from "./todo/TodoAppConfig";
 import UsersAppConfig from "./users/UsersAppConfig";
 import JobsAppConfig from "./jobs/JobsAppConfig";
-// import SalaryScalesAppConfig from "./salary-scales/SalaryScalesAppConfig";
-import InvoicesAppConfig from "./invoices/InvoicesAppConfig";
+import SalaryScalesAppConfig from "./salary-scales/SalaryScalesAppConfig";
+// import InvoicesAppConfig from "./invoices/InvoicesAppConfig";
 
 const appsConfigs = [
   AnalyticsDashboardAppConfig,
@@ -33,8 +33,8 @@ const appsConfigs = [
   AcademyAppConfig,
   NotesAppConfig,
   JobsAppConfig,
-  // SalaryScalesAppConfig,
-  InvoicesAppConfig,
+  SalaryScalesAppConfig,
+  // InvoicesAppConfig,
 ];
 
 export default appsConfigs;

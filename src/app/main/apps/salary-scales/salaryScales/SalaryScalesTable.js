@@ -11,7 +11,6 @@ import Typography from "@material-ui/core/Typography";
 import clsx from "clsx";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
-
 import { useDispatch, useSelector } from "react-redux";
 import { withRouter } from "react-router-dom";
 import FuseLoading from "@fuse/core/FuseLoading";
@@ -20,17 +19,18 @@ import {
   selectSalaryScales,
 } from "../store/salaryScalesSlice";
 import SalaryScalesTableHead from "./SalaryScalesTableHead";
+import Moment from "react-moment";
 
 function SalaryScalesTable(props) {
   const dispatch = useDispatch();
-  const products = useSelector(selectSalaryScales);
+  const salaryScales = useSelector(selectSalaryScales);
   const searchText = useSelector(
     ({ salaryScalesApp }) => salaryScalesApp.salaryScales.searchText
   );
 
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState([]);
-  const [data, setData] = useState(products);
+  const [data, setData] = useState(salaryScales);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [order, setOrder] = useState({
@@ -38,22 +38,24 @@ function SalaryScalesTable(props) {
     id: null,
   });
 
+  console.log("order: ", order);
+
   useEffect(() => {
-    dispatch(getProducts()).then(() => setLoading(false));
+    dispatch(getSalaryScales()).then(() => setLoading(false));
   }, [dispatch]);
 
   useEffect(() => {
     if (searchText.length !== 0) {
       setData(
-        _.filter(products, (item) =>
-          item.name.toLowerCase().includes(searchText.toLowerCase())
+        _.filter(salaryScales, (item) =>
+          item.id.toLowerCase().includes(searchText.toLowerCase())
         )
       );
       setPage(0);
     } else {
-      setData(products);
+      setData(salaryScales);
     }
-  }, [products, searchText]);
+  }, [salaryScales, searchText]);
 
   function handleRequestSort(event, property) {
     const id = property;
@@ -82,7 +84,7 @@ function SalaryScalesTable(props) {
   }
 
   function handleClick(item) {
-    props.history.push(`/apps/e-commerce/products/${item.id}/${item.handle}`);
+    props.history.push(`/apps/salary-scales-section/salary-scales/${item.id}`);
   }
 
   function handleCheck(event, id) {
@@ -125,7 +127,7 @@ function SalaryScalesTable(props) {
         className="flex flex-1 items-center justify-center h-full"
       >
         <Typography color="textSecondary" variant="h5">
-          There are no products!
+          There are no Salary Scales!
         </Typography>
       </motion.div>
     );
@@ -136,7 +138,7 @@ function SalaryScalesTable(props) {
       <FuseScrollbars className="flex-grow overflow-x-auto">
         <Table stickyHeader className="min-w-xl" aria-labelledby="tableTitle">
           <SalaryScalesTableHead
-            selectedProductIds={selected}
+            selectedSalaryScaleIds={selected}
             order={order}
             onSelectAllClick={handleSelectAllClick}
             onRequestSort={handleRequestSort}
@@ -187,76 +189,29 @@ function SalaryScalesTable(props) {
                     </TableCell>
 
                     <TableCell
-                      className="w-52 px-4 md:px-0"
+                      className="p-4 md:p-16"
                       component="th"
                       scope="row"
-                      padding="none"
                     >
-                      {n.images.length > 0 && n.featuredImageId ? (
-                        <img
-                          className="w-full block rounded"
-                          src={_.find(n.images, { id: n.featuredImageId }).url}
-                          alt={n.name}
-                        />
-                      ) : (
-                        <img
-                          className="w-full block rounded"
-                          src="assets/images/ecommerce/product-image-placeholder.png"
-                          alt={n.name}
-                        />
-                      )}
+                      {n.id}
                     </TableCell>
 
                     <TableCell
                       className="p-4 md:p-16"
                       component="th"
                       scope="row"
+                      align="center"
                     >
-                      {n.name}
-                    </TableCell>
-
-                    <TableCell
-                      className="p-4 md:p-16 truncate"
-                      component="th"
-                      scope="row"
-                    >
-                      {n.categories.join(", ")}
+                      <Moment>{n.createdAt}</Moment>
                     </TableCell>
 
                     <TableCell
                       className="p-4 md:p-16"
                       component="th"
                       scope="row"
-                      align="right"
+                      align="center"
                     >
-                      <span>$</span>
-                      {n.priceTaxIncl}
-                    </TableCell>
-
-                    <TableCell
-                      className="p-4 md:p-16"
-                      component="th"
-                      scope="row"
-                      align="right"
-                    >
-                      {n.quantity}
-                      <i
-                        className={clsx(
-                          "inline-block w-8 h-8 rounded mx-8",
-                          n.quantity <= 5 && "bg-red",
-                          n.quantity > 5 && n.quantity <= 25 && "bg-orange",
-                          n.quantity > 25 && "bg-green"
-                        )}
-                      />
-                    </TableCell>
-
-                    <TableCell
-                      className="p-4 md:p-16"
-                      component="th"
-                      scope="row"
-                      align="right"
-                    >
-                      {n.active ? (
+                      {n.isActive ? (
                         <Icon className="text-green text-20">check_circle</Icon>
                       ) : (
                         <Icon className="text-red text-20">remove_circle</Icon>

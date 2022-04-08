@@ -19,43 +19,23 @@ import { removeProducts } from "../store/salaryScalesSlice";
 
 const rows = [
   {
-    id: "image",
-    align: "left",
-    disablePadding: true,
-    label: "",
-    sort: false,
-  },
-  {
-    id: "name",
+    id: "id",
     align: "left",
     disablePadding: false,
-    label: "Name",
+    label: "ID",
     sort: true,
   },
+
   {
-    id: "categories",
-    align: "left",
+    id: "createdAt",
+    align: "center",
     disablePadding: false,
-    label: "Category",
+    label: "Date created",
     sort: true,
   },
   {
-    id: "priceTaxIncl",
-    align: "right",
-    disablePadding: false,
-    label: "Price",
-    sort: true,
-  },
-  {
-    id: "quantity",
-    align: "right",
-    disablePadding: false,
-    label: "Quantity",
-    sort: true,
-  },
-  {
-    id: "active",
-    align: "right",
+    id: "isActive",
+    align: "center",
     disablePadding: false,
     label: "Active",
     sort: true,
@@ -70,8 +50,8 @@ const useStyles = makeStyles((theme) => ({
 
 function SalaryScalesTableHead(props) {
   const classes = useStyles(props);
-  const { selectedProductIds } = props;
-  const numSelected = selectedProductIds.length;
+  const { selectedSalaryScaleIds } = props;
+  const numSelected = selectedSalaryScaleIds.length;
 
   const [selectedProductsMenu, setSelectedProductsMenu] = useState(null);
 
@@ -121,7 +101,7 @@ function SalaryScalesTableHead(props) {
                 <MenuList>
                   <MenuItem
                     onClick={() => {
-                      dispatch(removeProducts(selectedProductIds));
+                      dispatch(removeProducts(selectedSalaryScaleIds));
                       props.onMenuItemClick();
                       closeSelectedProductsMenu();
                     }}

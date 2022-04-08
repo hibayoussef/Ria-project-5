@@ -26,7 +26,7 @@ function SalaryScalesHeader(props) {
           animate={{ scale: 1, transition: { delay: 0.2 } }}
           className="text-24 md:text-32"
         >
-          shopping_basket
+          receipt
         </Icon>
         <Typography
           component={motion.span}
@@ -69,12 +69,12 @@ function SalaryScalesHeader(props) {
       >
         <Button
           component={Link}
-          to="/apps/e-commerce/products/new"
+          to="/apps/salary-scales-section/salary-scales/new"
           className="whitespace-nowrap"
           variant="contained"
           color="secondary"
         >
-          <span className="hidden sm:flex">Create New Salary Scale</span>
+          <span className="hidden sm:flex">Add New Product</span>
           <span className="flex sm:hidden">New</span>
         </Button>
       </motion.div>

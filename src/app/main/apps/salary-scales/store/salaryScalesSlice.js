@@ -9,7 +9,6 @@ export const getSalaryScales = createAsyncThunk(
   "salaryScalesApp/salaryScales/getSalaryScales",
   async () => {
     const response = await axios.get("/salary-scales");
-    console.log("salary scales response: ", response);
     const data = await response.data.data;
     console.log("salary scales data: ", data);
     return data;
@@ -17,7 +16,7 @@ export const getSalaryScales = createAsyncThunk(
 );
 
 export const removeProducts = createAsyncThunk(
-  "eCommerceApp/products/removeProducts",
+  "salaryScalesApp/products/removeProducts",
   async (productIds, { dispatch, getState }) => {
     await axios.post("/api/e-commerce-app/remove-products", { productIds });
 
@@ -30,7 +29,9 @@ const salaryScalesAdapter = createEntityAdapter({});
 export const {
   selectAll: selectSalaryScales,
   selectById: selectSalaryScaleById,
-} = salaryScalesAdapter.getSelectors((state) => state.eCommerceApp.products);
+} = salaryScalesAdapter.getSelectors(
+  (state) => state.salaryScalesApp.salaryScales
+);
 
 const salaryScalesSlice = createSlice({
   name: "salaryScalesApp/salaryScales",
