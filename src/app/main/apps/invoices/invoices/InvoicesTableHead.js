@@ -26,38 +26,32 @@ const rows = [
     sort: false,
   },
   {
-    id: "name",
+    id: "id",
     align: "left",
     disablePadding: false,
-    label: "Name",
+    label: "ID",
     sort: true,
   },
   {
-    id: "categories",
+    id: "submittedBy.name",
     align: "left",
     disablePadding: false,
-    label: "Category",
+    label: "Organizer Name",
+    sort: true,
+  },
+
+  {
+    id: "issueDate",
+    align: "center",
+    disablePadding: false,
+    label: "Invoice Date",
     sort: true,
   },
   {
-    id: "priceTaxIncl",
-    align: "right",
+    id: "grossAmount",
+    align: "center",
     disablePadding: false,
-    label: "Price",
-    sort: true,
-  },
-  {
-    id: "quantity",
-    align: "right",
-    disablePadding: false,
-    label: "Quantity",
-    sort: true,
-  },
-  {
-    id: "active",
-    align: "right",
-    disablePadding: false,
-    label: "Active",
+    label: "Total Price",
     sort: true,
   },
 ];
@@ -70,23 +64,27 @@ const useStyles = makeStyles((theme) => ({
 
 function InvoicesTableHead(props) {
   const classes = useStyles(props);
-  const { selectedProductIds } = props;
-  const numSelected = selectedProductIds.length;
+  const { selectedInvoiceIds } = props;
+  const numSelected = selectedInvoiceIds.length;
 
-  const [selectedProductsMenu, setSelectedProductsMenu] = useState(null);
+  console.log("numSelected: ", numSelected);
+  console.log("selectedInvoiceIds:", selectedInvoiceIds);
 
+  const [selectedInvoicesMenu, setSelectedInvoicesMenu] = useState(null);
+
+  console.log("selectedInvoicesMenu:", selectedInvoicesMenu);
   const dispatch = useDispatch();
 
   const createSortHandler = (property) => (event) => {
     props.onRequestSort(event, property);
   };
 
-  function openSelectedProductsMenu(event) {
-    setSelectedProductsMenu(event.currentTarget);
+  function openSelectedInvoicesMenu(event) {
+    setSelectedInvoicesMenu(event.currentTarget);
   }
 
-  function closeSelectedProductsMenu() {
-    setSelectedProductsMenu(null);
+  function closeSelectedInvoicesMenu() {
+    setSelectedInvoicesMenu(null);
   }
 
   return (
@@ -106,24 +104,24 @@ function InvoicesTableHead(props) {
               )}
             >
               <IconButton
-                aria-owns={selectedProductsMenu ? "selectedProductsMenu" : null}
+                aria-owns={selectedInvoicesMenu ? "selectedInvoicesMenu" : null}
                 aria-haspopup="true"
-                onClick={openSelectedProductsMenu}
+                onClick={openSelectedInvoicesMenu}
               >
                 <Icon>more_horiz</Icon>
               </IconButton>
               <Menu
-                id="selectedProductsMenu"
-                anchorEl={selectedProductsMenu}
-                open={Boolean(selectedProductsMenu)}
-                onClose={closeSelectedProductsMenu}
+                id="selectedInvoicesMenu"
+                anchorEl={selectedInvoicesMenu}
+                open={Boolean(selectedInvoicesMenu)}
+                onClose={closeSelectedInvoicesMenu}
               >
                 <MenuList>
                   <MenuItem
                     onClick={() => {
-                      dispatch(removeProducts(selectedProductIds));
+                      dispatch(removeProducts(selectedInvoiceIds));
                       props.onMenuItemClick();
-                      closeSelectedProductsMenu();
+                      closeSelectedInvoicesMenu();
                     }}
                   >
                     <ListItemIcon className="min-w-40">

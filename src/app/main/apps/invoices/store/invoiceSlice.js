@@ -1,78 +1,111 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
-import FuseUtils from '@fuse/utils';
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
+import FuseUtils from "@fuse/utils";
 
-export const getProduct = createAsyncThunk('eCommerceApp/product/getProduct', async (params) => {
-  const response = await axios.get('/api/e-commerce-app/product', { params });
-  const data = await response.data;
+// export const getInvoice = createAsyncThunk(
+//   "invoicesApp/invoice/getInvoice",
+//   async (params) => {
+//     const response = await axios.get("/invoices/cruds", { params });
+//     const data = await response.data.data;
 
-  return data === undefined ? null : data;
-});
+//     return data === undefined ? null : data;
+//   }
+// );
+
+export const getInvoice = async (params) => {
+  const response = await axios.get(`/invoices/cruds/${params.invoiceId}`);
+  console.log("id: ", params.invoiceId);
+  return response.data.data;
+};
 
 export const removeProduct = createAsyncThunk(
-  'eCommerceApp/product/removeProduct',
+  "eCommerceApp/product/removeProduct",
   async (val, { dispatch, getState }) => {
     const { id } = getState().eCommerceApp.product;
-    await axios.post('/api/e-commerce-app/remove-product', { id });
+    await axios.post("/api/e-commerce-app/remove-product", { id });
 
     return id;
   }
 );
 
-export const saveProduct = createAsyncThunk(
-  'eCommerceApp/product/saveProduct',
-  async (productData, { dispatch, getState }) => {
-    const { product } = getState().eCommerceApp;
+// export const saveInvoice = createAsyncThunk(
+//   "invoicesApp/invoice/saveInvoice",
+//   async (invoiceData, { dispatch, getState }) => {
+//     const { invoice } = getState().invoicesApp;
 
-    const response = await axios.post('/api/e-commerce-app/product/save', {
-      ...product,
-      ...productData,
+//     const response = await axios.post("/invoices/cruds", {
+//       ...invoice,
+//       ...invoiceData,
+//     });
+//     const data = await response.data;
+
+//     return data;
+//   }
+// );
+// export const saveInvoice = createAsyncThunk(
+//   "invoicesApp/invoice/saveInvoice",
+// async (
+//   invoice,
+//   netAmount,
+//   taxNumber,
+//   grossAmount,
+//   issueDate,
+//   dueDate,
+//     { dispatch, getState }
+//   ) => {
+//     const fd = new FormData();
+//     fd.append("invoice", invoice);
+//     fd.append("data", JSON.stringify({ title, price, description, category }));
+//   }
+// );
+
+export const saveInvoice = createAsyncThunk(
+  "invoicesApp/invoice/saveInvoice",
+  async (invoice, netAmount, taxNumber, grossAmount, issueDate, dueDate) => {
+    console.log(invoice, netAmount, taxNumber, grossAmount, issueDate, dueDate);
+    const fd = new FormData();
+    fd.append("invoice", invoice);
+    fd.append("data", {
+      netAmount,
+      taxNumber,
+      grossAmount,
+      issueDate,
+      dueDate,
     });
-    const data = await response.data;
-
-    return data;
+    await axios.post("/invoices/cruds", fd, {
+      headers: {
+        "Content-type": "multipart/form-data",
+      },
+    });
   }
 );
 
-const productSlice = createSlice({
-  name: 'eCommerceApp/product',
+const invoiceSlice = createSlice({
+  name: "invoicesApp/invoice",
   initialState: null,
   reducers: {
-    resetProduct: () => null,
-    newProduct: {
+    resetInvoice: () => null,
+    newInvoice: {
       reducer: (state, action) => action.payload,
       prepare: (event) => ({
         payload: {
-          id: FuseUtils.generateGUID(),
-          name: '',
-          handle: '',
-          description: '',
-          categories: [],
-          tags: [],
-          images: [],
-          priceTaxExcl: 0,
-          priceTaxIncl: 0,
-          taxRate: 0,
-          comparedPrice: 0,
-          quantity: 0,
-          sku: '',
-          width: '',
-          height: '',
-          depth: '',
-          weight: '',
-          extraShippingFee: 0,
-          active: true,
+          invoice: "",
+          netAmount: 0,
+          taxNumber: 0,
+          grossAmount: 0,
+          dueDate: "",
+          issueDate: "",
         },
       }),
     },
   },
   extraReducers: {
-    [getProduct.fulfilled]: (state, action) => action.payload,
-    [saveProduct.fulfilled]: (state, action) => action.payload,
+    // [getInvoice.fulfilled]: (state, action) => action.payload,
+    [saveInvoice.fulfilled]: (state, action) => action.payload,
     [removeProduct.fulfilled]: (state, action) => null,
   },
 });
 
-export const { newProduct, resetProduct } = productSlice.actions;
+export const { newInvoice, resetInvoice } = invoiceSlice.actions;
 
-export default productSlice.reducer;
+export default invoiceSlice.reducer;

@@ -15,17 +15,14 @@ import { useForm, FormProvider } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import {
-  resetProduct,
-  newProduct,
+  resetSalaryScale,
+  newSalaryScale,
   getSalaryScale,
 } from "../store/salaryScaleSlice";
 import reducer from "../store";
 import SalaryScaleHeader from "./SalaryScaleHeader";
 import BasicInfoTab from "./tabs/BasicInfoTab";
-import InventoryTab from "./tabs/InventoryTab";
-import PricingTab from "./tabs/PricingTab";
-import ProductImagesTab from "./tabs/ProductImagesTab";
-import ShippingTab from "./tabs/ShippingTab";
+import ShippingTab from "../salaryScale/tabs/ShippingTab";
 
 /**
  * Form Validation Schema
@@ -38,6 +35,7 @@ const schema = yup.object().shape({
 });
 
 function SalaryScale(props) {
+  console.log("props: ", props);
   const dispatch = useDispatch();
   const salaryScale = useSelector(
     ({ salaryScalesApp }) => salaryScalesApp.salaryScale
@@ -62,7 +60,7 @@ function SalaryScale(props) {
         /**
          * Create New Product data
          */
-        dispatch(newProduct());
+        dispatch(newSalaryScale());
       } else {
         /**
          * Get Product data
@@ -96,7 +94,7 @@ function SalaryScale(props) {
       /**
        * Reset Product on component unload
        */
-      dispatch(resetProduct());
+      dispatch(resetSalaryScale());
       setNoProduct(false);
     };
   }, [dispatch]);
@@ -170,7 +168,7 @@ function SalaryScale(props) {
         content={
           <div className="p-16 sm:p-24 max-w-2xl">
             <div className={tabValue !== 0 ? "hidden" : ""}>
-              <BasicInfoTab />
+              <ShippingTab />
             </div>
           </div>
         }

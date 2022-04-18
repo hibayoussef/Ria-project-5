@@ -14,7 +14,7 @@ import TodoAppConfig from "./todo/TodoAppConfig";
 import UsersAppConfig from "./users/UsersAppConfig";
 import JobsAppConfig from "./jobs/JobsAppConfig";
 import SalaryScalesAppConfig from "./salary-scales/SalaryScalesAppConfig";
-// import InvoicesAppConfig from "./invoices/InvoicesAppConfig";
+import InvoicesAppConfig from "./invoices/InvoicesAppConfig";
 
 const appsConfigs = [
   AnalyticsDashboardAppConfig,
@@ -34,7 +34,7 @@ const appsConfigs = [
   NotesAppConfig,
   JobsAppConfig,
   SalaryScalesAppConfig,
-  // InvoicesAppConfig,
+  InvoicesAppConfig,
 ];
 
 export default appsConfigs;

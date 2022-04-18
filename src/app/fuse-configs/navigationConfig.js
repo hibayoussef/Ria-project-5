@@ -160,37 +160,38 @@ const tempNavigation = [
         ],
       },
 
-      // {
-      //   id: "invoice",
-      //   title: "Invoice",
-      //   translate: "Invoice",
-      //   type: "collapse",
-      //   icon: "receipt",
-      //   url: "/apps/e-commerce",
-      //   children: [
-      //     {
-      //       id: "invoices",
-      //       title: "Invoices",
-      //       type: "item",
-      //       url: "/apps/e-commerce/products",
-      //       exact: true,
-      //     },
-      //     {
-      //       id: "invoice-detail",
-      //       title: "Invoice Detail",
-      //       type: "item",
-      //       url: "/apps/e-commerce/products/1/a-walk-amongst-friends-canvas-print",
-      //       exact: true,
-      //     },
-      //     {
-      //       id: "new-invoice",
-      //       title: "New Invoice",
-      //       type: "item",
-      //       url: "/apps/e-commerce/products/new",
-      //       exact: true,
-      //     },
-      //   ],
-      // },
+      {
+        id: "invoice",
+        title: "Invoice",
+        translate: "Invoice",
+        type: "collapse",
+        icon: "receipt",
+        url: "/apps/invoices-section",
+        auth: authRoles.super_admin,
+        children: [
+          {
+            id: "invoices",
+            title: "Invoices",
+            type: "item",
+            url: "/apps/invoices-section/invoices",
+            exact: true,
+          },
+          {
+            id: "invoice-detail",
+            title: "Invoice Detail",
+            type: "item",
+            url: "/apps/invoices-section/invoices/1",
+            exact: true,
+          },
+          {
+            id: "new-invoice",
+            title: "New Invoice",
+            type: "item",
+            url: "/apps/invoices-section/invoices/new",
+            exact: true,
+          },
+        ],
+      },
 
       // **************************
 

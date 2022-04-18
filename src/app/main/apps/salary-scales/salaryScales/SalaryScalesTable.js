@@ -20,6 +20,9 @@ import {
 } from "../store/salaryScalesSlice";
 import SalaryScalesTableHead from "./SalaryScalesTableHead";
 import Moment from "react-moment";
+import IconButton from "@material-ui/core/IconButton";
+import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
+import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 
 function SalaryScalesTable(props) {
   const dispatch = useDispatch();
@@ -38,6 +41,7 @@ function SalaryScalesTable(props) {
     id: null,
   });
 
+  const [open, setOpen] = useState(false);
   console.log("order: ", order);
 
   useEffect(() => {
@@ -48,7 +52,7 @@ function SalaryScalesTable(props) {
     if (searchText.length !== 0) {
       setData(
         _.filter(salaryScales, (item) =>
-          item.id.toLowerCase().includes(searchText.toLowerCase())
+          item.isActive.toLowerCase().includes(searchText.toLowerCase())
         )
       );
       setPage(0);
@@ -136,7 +140,7 @@ function SalaryScalesTable(props) {
   return (
     <div className="w-full flex flex-col">
       <FuseScrollbars className="flex-grow overflow-x-auto">
-        <Table stickyHeader className="min-w-xl" aria-labelledby="tableTitle">
+        <Table stickyHeader className="min-w-xl" aria-label="collapsible table">
           <SalaryScalesTableHead
             selectedSalaryScaleIds={selected}
             order={order}
@@ -192,6 +196,7 @@ function SalaryScalesTable(props) {
                       className="p-4 md:p-16"
                       component="th"
                       scope="row"
+                      align="left"
                     >
                       {n.id}
                     </TableCell>

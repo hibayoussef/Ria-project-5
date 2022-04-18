@@ -8,13 +8,14 @@ import { motion } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { selectMainTheme } from "app/store/fuse/settingsSlice";
-import { setProductsSearchText } from "../store/invoicesSlice";
+import { setInvoicesSearchText } from "../store/invoicesSlice";
 
 function InvoicesHeader(props) {
   const dispatch = useDispatch();
   const searchText = useSelector(
     ({ invoicesApp }) => invoicesApp.invoices.searchText
   );
+  console.log("search text useSeletor: ", searchText);
   const mainTheme = useSelector(selectMainTheme);
 
   return (
@@ -58,7 +59,7 @@ function InvoicesHeader(props) {
               inputProps={{
                 "aria-label": "Search",
               }}
-              onChange={(ev) => dispatch(setProductsSearchText(ev))}
+              onChange={(ev) => dispatch(setInvoicesSearchText(ev))}
             />
           </Paper>
         </ThemeProvider>
@@ -69,7 +70,7 @@ function InvoicesHeader(props) {
       >
         <Button
           component={Link}
-          to="/apps/e-commerce/products/new"
+          to="/apps/invoices-section/invoices/new"
           className="whitespace-nowrap"
           variant="contained"
           color="secondary"

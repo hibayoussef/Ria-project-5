@@ -16,6 +16,9 @@ import clsx from "clsx";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { removeProducts } from "../store/salaryScalesSlice";
+import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
+import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
+import Collapse from "@material-ui/core/Collapse";
 
 const rows = [
   {
@@ -54,6 +57,7 @@ function SalaryScalesTableHead(props) {
   const numSelected = selectedSalaryScaleIds.length;
 
   const [selectedProductsMenu, setSelectedProductsMenu] = useState(null);
+  const [open, setOpen] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -116,6 +120,7 @@ function SalaryScalesTableHead(props) {
             </div>
           )}
         </TableCell>
+
         {rows.map((row) => {
           return (
             <TableCell

@@ -7,7 +7,11 @@ import { useFormContext } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
 import _ from "@lodash";
-import { saveProduct, removeProduct } from "../store/salaryScaleSlice";
+import {
+  saveProduct,
+  removeProduct,
+  addSalaryScale,
+} from "../store/salaryScaleSlice";
 
 function SalaryScaleHeader(props) {
   const dispatch = useDispatch();
@@ -21,7 +25,7 @@ function SalaryScaleHeader(props) {
   const history = useHistory();
 
   function handleSaveProduct() {
-    dispatch(saveProduct(getValues()));
+    dispatch(addSalaryScale(getValues()));
   }
 
   function handleRemoveProduct() {
@@ -48,7 +52,7 @@ function SalaryScaleHeader(props) {
               {theme.direction === "ltr" ? "arrow_back" : "arrow_forward"}
             </Icon>
             <span className="hidden sm:flex mx-4 font-medium">
-              Salary Scale
+              Salary Scales
             </span>
           </Typography>
         </motion.div>
@@ -87,7 +91,7 @@ function SalaryScaleHeader(props) {
           className="whitespace-nowrap mx-4"
           variant="contained"
           color="secondary"
-          disabled={_.isEmpty(dirtyFields) || !isValid}
+          // disabled={_.isEmpty(dirtyFields) || !isValid}
           onClick={handleSaveProduct}
         >
           Save

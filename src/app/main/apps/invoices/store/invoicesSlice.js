@@ -5,11 +5,12 @@ import {
 } from "@reduxjs/toolkit";
 import axios from "axios";
 
-export const getProducts = createAsyncThunk(
-  "eCommerceApp/products/getProducts",
+export const getInvoices = createAsyncThunk(
+  "invoicesApp/products/getInvoices",
   async () => {
-    const response = await axios.get("/api/e-commerce-app/products");
-    const data = await response.data;
+    const response = await axios.get("/invoices/cruds");
+    const data = await response.data.data;
+    console.log("invoices from backend:", data);
 
     return data;
   }
@@ -24,18 +25,18 @@ export const removeProducts = createAsyncThunk(
   }
 );
 
-const productsAdapter = createEntityAdapter({});
+const invoicesAdapter = createEntityAdapter({});
 
-export const { selectAll: selectProducts, selectById: selectProductById } =
-  productsAdapter.getSelectors((state) => state.eCommerceApp.products);
+export const { selectAll: selectInvoices, selectById: selectInvoiceById } =
+  invoicesAdapter.getSelectors((state) => state.invoicesApp.invoices);
 
-const productsSlice = createSlice({
-  name: "eCommerceApp/products",
-  initialState: productsAdapter.getInitialState({
+const invoicesSlice = createSlice({
+  name: "invoicesApp/invoices",
+  initialState: invoicesAdapter.getInitialState({
     searchText: "",
   }),
   reducers: {
-    setProductsSearchText: {
+    setInvoicesSearchText: {
       reducer: (state, action) => {
         state.searchText = action.payload;
       },
@@ -43,12 +44,12 @@ const productsSlice = createSlice({
     },
   },
   extraReducers: {
-    [getProducts.fulfilled]: productsAdapter.setAll,
+    [getInvoices.fulfilled]: invoicesAdapter.setAll,
     [removeProducts.fulfilled]: (state, action) =>
-      productsAdapter.removeMany(state, action.payload),
+      invoicesAdapter.removeMany(state, action.payload),
   },
 });
 
-export const { setProductsSearchText } = productsSlice.actions;
+export const { setInvoicesSearchText } = invoicesSlice.actions;
 
-export default productsSlice.reducer;
+export default invoicesSlice.reducer;

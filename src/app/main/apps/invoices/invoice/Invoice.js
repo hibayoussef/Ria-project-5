@@ -14,12 +14,9 @@ import _ from "@lodash";
 import { useForm, FormProvider } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { resetProduct, newProduct, getProduct } from "../store/invoiceSlice";
+import { resetInvoice, newInvoice } from "../store/invoiceSlice";
 import reducer from "../store";
 import InvoiceHeader from "./InvoiceHeader";
-import BasicInfoTab from "./tabs/BasicInfoTab";
-import InventoryTab from "./tabs/InventoryTab";
-import PricingTab from "./tabs/PricingTab";
 import ProductImagesTab from "./tabs/ProductImagesTab";
 import ShippingTab from "./tabs/ShippingTab";
 
@@ -35,11 +32,11 @@ const schema = yup.object().shape({
 
 function Invoice(props) {
   const dispatch = useDispatch();
-  const product = useSelector(({ invoicesApp }) => invoicesApp.invoice);
+  // const invoice = useSelector(({ invoicesApp }) => invoicesApp.invoice);
 
   const routeParams = useParams();
   const [tabValue, setTabValue] = useState(0);
-  const [noProduct, setNoProduct] = useState(false);
+  const [noInvoice, setNoInvoice] = useState(false);
   const methods = useForm({
     mode: "onChange",
     defaultValues: {},
@@ -49,49 +46,51 @@ function Invoice(props) {
   const form = watch();
 
   useDeepCompareEffect(() => {
-    function updateProductState() {
-      const { productId } = routeParams;
+    function updateInvoiceState() {
+      const { invoiceId } = routeParams;
 
-      if (productId === "new") {
+      console.log("invoice id: ", invoiceId);
+      console.log("route params: ", routeParams);
+      if (invoiceId === "new") {
         /**
          * Create New Product data
          */
-        dispatch(newProduct());
+        dispatch(newInvoice());
       } else {
         /**
          * Get Product data
          */
-        dispatch(getProduct(routeParams)).then((action) => {
-          /**
-           * If the requested product is not exist show message
-           */
-          if (!action.payload) {
-            setNoProduct(true);
-          }
-        });
+        // dispatch(getProduct(routeParams)).then((action) => {
+        /**
+         * If the requested product is not exist show message
+         */
+        // if (!action.payload) {
+        //   setNoInvoice(true);
+        // }
+        // });
       }
     }
 
-    updateProductState();
+    updateInvoiceState();
   }, [dispatch, routeParams]);
 
-  useEffect(() => {
-    if (!product) {
-      return;
-    }
-    /**
-     * Reset the form on product state changes
-     */
-    reset(product);
-  }, [product, reset]);
+  // useEffect(() => {
+  //   if (!invoice) {
+  //     return;
+  //   }
+  /**
+   * Reset the form on product state changes
+   */
+  //   reset(invoice);
+  // }, [invoice, reset]);
 
   useEffect(() => {
     return () => {
       /**
        * Reset Product on component unload
        */
-      dispatch(resetProduct());
-      setNoProduct(false);
+      dispatch(resetInvoice());
+      setNoInvoice(false);
     };
   }, [dispatch]);
 
@@ -105,7 +104,7 @@ function Invoice(props) {
   /**
    * Show Message if the requested products is not exists
    */
-  if (noProduct) {
+  if (noInvoice) {
     return (
       <motion.div
         initial={{ opacity: 0 }}
@@ -113,16 +112,16 @@ function Invoice(props) {
         className="flex flex-col flex-1 items-center justify-center h-full"
       >
         <Typography color="textSecondary" variant="h5">
-          There is no such product!
+          There is no such Invoice!
         </Typography>
         <Button
           className="mt-24"
           component={Link}
           variant="outlined"
-          to="/apps/e-commerce/products"
+          to="/apps/invoices-section/invoices"
           color="inherit"
         >
-          Go to Products Page
+          Go to Invoices Page
         </Button>
       </motion.div>
     );
@@ -131,14 +130,14 @@ function Invoice(props) {
   /**
    * Wait while product data is loading and form is setted
    */
-  if (
-    _.isEmpty(form) ||
-    (product &&
-      routeParams.productId !== product.id &&
-      routeParams.productId !== "new")
-  ) {
-    return <FuseLoading />;
-  }
+  // if (
+  //   _.isEmpty(form) ||
+  //   (invoice &&
+  //     routeParams.invoiceId !== invoice.id &&
+  //     routeParams.invoiceId !== "new")
+  // ) {
+  //   return <FuseLoading />;
+  // }
 
   return (
     <FormProvider {...methods}>
@@ -158,33 +157,18 @@ function Invoice(props) {
             scrollButtons="auto"
             classes={{ root: "w-full h-64" }}
           >
-            <Tab className="h-64" label="Basic Info" />
-            <Tab className="h-64" label="Product Images" />
-            <Tab className="h-64" label="Pricing" />
-            <Tab className="h-64" label="Inventory" />
-            <Tab className="h-64" label="Shipping" />
+            <Tab className="h-64" label="Invoice information" />
+            <Tab className="h-64" label="Invoice file" />
           </Tabs>
         }
         content={
           <div className="p-16 sm:p-24 max-w-2xl">
             <div className={tabValue !== 0 ? "hidden" : ""}>
-              <BasicInfoTab />
+              <ShippingTab />
             </div>
 
             <div className={tabValue !== 1 ? "hidden" : ""}>
               <ProductImagesTab />
-            </div>
-
-            <div className={tabValue !== 2 ? "hidden" : ""}>
-              <PricingTab />
-            </div>
-
-            <div className={tabValue !== 3 ? "hidden" : ""}>
-              <InventoryTab />
-            </div>
-
-            <div className={tabValue !== 4 ? "hidden" : ""}>
-              <ShippingTab />
             </div>
           </div>
         }

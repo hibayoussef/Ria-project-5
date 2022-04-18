@@ -8,13 +8,13 @@ import { motion } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { selectMainTheme } from "app/store/fuse/settingsSlice";
-import { setProductsSearchText } from "../store/salaryScalesSlice";
 
-function SalaryScalesHeader(props) {
+function InvoiceHeader(props) {
   const dispatch = useDispatch();
   const searchText = useSelector(
-    ({ salaryScalesApp }) => salaryScalesApp.salaryScales.searchText
+    ({ invoicesApp }) => invoicesApp.invoices.searchText
   );
+  console.log("search text useSeletor: ", searchText);
   const mainTheme = useSelector(selectMainTheme);
 
   return (
@@ -35,7 +35,7 @@ function SalaryScalesHeader(props) {
           delay={300}
           className="hidden sm:flex text-16 md:text-24 mx-12 font-semibold"
         >
-          Salary Scales
+          Invoice Details
         </Typography>
       </div>
 
@@ -58,7 +58,7 @@ function SalaryScalesHeader(props) {
               inputProps={{
                 "aria-label": "Search",
               }}
-              onChange={(ev) => dispatch(setProductsSearchText(ev))}
+              //   onChange={(ev) => dispatch(setInvoicesSearchText(ev))}
             />
           </Paper>
         </ThemeProvider>
@@ -69,12 +69,12 @@ function SalaryScalesHeader(props) {
       >
         <Button
           component={Link}
-          to="/apps/salary-scales-section/salary-scales/new"
+          to="/apps/invoices-section/invoices/new"
           className="whitespace-nowrap"
           variant="contained"
           color="secondary"
         >
-          <span className="hidden sm:flex">Add New Salary Scale</span>
+          <span className="hidden sm:flex">Add New Invoice</span>
           <span className="flex sm:hidden">New</span>
         </Button>
       </motion.div>
@@ -82,4 +82,4 @@ function SalaryScalesHeader(props) {
   );
 }
 
-export default SalaryScalesHeader;
+export default InvoiceHeader;

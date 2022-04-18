@@ -14,19 +14,20 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { withRouter } from "react-router-dom";
 import FuseLoading from "@fuse/core/FuseLoading";
-import { getProducts, selectProducts } from "../store/invoicesSlice";
+import { getInvoices, selectInvoices } from "../store/invoicesSlice";
 import InvoicesTableHead from "./InvoicesTableHead";
+import moment from "moment";
 
 function InvoicesTable(props) {
   const dispatch = useDispatch();
-  const products = useSelector(selectProducts);
+  const invoices = useSelector(selectInvoices);
   const searchText = useSelector(
     ({ invoicesApp }) => invoicesApp.invoices.searchText
   );
 
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState([]);
-  const [data, setData] = useState(products);
+  const [data, setData] = useState(invoices);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [order, setOrder] = useState({
@@ -35,21 +36,19 @@ function InvoicesTable(props) {
   });
 
   useEffect(() => {
-    dispatch(getProducts()).then(() => setLoading(false));
+    dispatch(getInvoices()).then(() => setLoading(false));
   }, [dispatch]);
 
   useEffect(() => {
     if (searchText.length !== 0) {
       setData(
-        _.filter(products, (item) =>
-          item.name.toLowerCase().includes(searchText.toLowerCase())
-        )
+        _.filter(invoices, (item) => item.issueDate.includes(searchText))
       );
       setPage(0);
     } else {
-      setData(products);
+      setData(invoices);
     }
-  }, [products, searchText]);
+  }, [invoices, searchText]);
 
   function handleRequestSort(event, property) {
     const id = property;
@@ -78,7 +77,7 @@ function InvoicesTable(props) {
   }
 
   function handleClick(item) {
-    props.history.push(`/apps/e-commerce/products/${item.id}/${item.handle}`);
+    props.history.push(`/apps/invoices-section/invoices/${item.id}`);
   }
 
   function handleCheck(event, id) {
@@ -121,7 +120,7 @@ function InvoicesTable(props) {
         className="flex flex-1 items-center justify-center h-full"
       >
         <Typography color="textSecondary" variant="h5">
-          There are no products!
+          There are no Invoices!
         </Typography>
       </motion.div>
     );
@@ -132,7 +131,7 @@ function InvoicesTable(props) {
       <FuseScrollbars className="flex-grow overflow-x-auto">
         <Table stickyHeader className="min-w-xl" aria-labelledby="tableTitle">
           <InvoicesTableHead
-            selectedProductIds={selected}
+            selectedInvoiceIds={selected}
             order={order}
             onSelectAllClick={handleSelectAllClick}
             onRequestSort={handleRequestSort}
@@ -146,8 +145,8 @@ function InvoicesTable(props) {
               [
                 (o) => {
                   switch (order.id) {
-                    case "categories": {
-                      return o.categories[0];
+                    case "grossAmount": {
+                      return o.grossAmount[0];
                     }
                     default: {
                       return o[order.id];
@@ -188,27 +187,18 @@ function InvoicesTable(props) {
                       scope="row"
                       padding="none"
                     >
-                      {n.images.length > 0 && n.featuredImageId ? (
-                        <img
-                          className="w-full block rounded"
-                          src={_.find(n.images, { id: n.featuredImageId }).url}
-                          alt={n.name}
-                        />
-                      ) : (
-                        <img
-                          className="w-full block rounded"
-                          src="assets/images/ecommerce/product-image-placeholder.png"
-                          alt={n.name}
-                        />
-                      )}
+                      <img
+                        className="w-full block rounded"
+                        src="assets/images/ecommerce/invoice.png"
+                        alt="jjj"
+                      />
                     </TableCell>
-
                     <TableCell
                       className="p-4 md:p-16"
                       component="th"
                       scope="row"
                     >
-                      {n.name}
+                      {n.id}
                     </TableCell>
 
                     <TableCell
@@ -216,37 +206,30 @@ function InvoicesTable(props) {
                       component="th"
                       scope="row"
                     >
-                      {n.categories.join(", ")}
+                      {n.submittedBy.name}
                     </TableCell>
 
                     <TableCell
                       className="p-4 md:p-16"
                       component="th"
                       scope="row"
-                      align="right"
+                      align="center"
+                    >
+                      {moment(moment.utc(n.issueDate).toDate())
+                        .local()
+                        .format("YYYY-MM-DD HH:mm:ss")}
+                    </TableCell>
+                    <TableCell
+                      className="p-4 md:p-16"
+                      component="th"
+                      scope="row"
+                      align="center"
                     >
                       <span>$</span>
-                      {n.priceTaxIncl}
+                      {n.grossAmount}
                     </TableCell>
 
-                    <TableCell
-                      className="p-4 md:p-16"
-                      component="th"
-                      scope="row"
-                      align="right"
-                    >
-                      {n.quantity}
-                      <i
-                        className={clsx(
-                          "inline-block w-8 h-8 rounded mx-8",
-                          n.quantity <= 5 && "bg-red",
-                          n.quantity > 5 && n.quantity <= 25 && "bg-orange",
-                          n.quantity > 25 && "bg-green"
-                        )}
-                      />
-                    </TableCell>
-
-                    <TableCell
+                    {/* <TableCell
                       className="p-4 md:p-16"
                       component="th"
                       scope="row"
@@ -257,7 +240,7 @@ function InvoicesTable(props) {
                       ) : (
                         <Icon className="text-red text-20">remove_circle</Icon>
                       )}
-                    </TableCell>
+                    </TableCell> */}
                   </TableRow>
                 );
               })}

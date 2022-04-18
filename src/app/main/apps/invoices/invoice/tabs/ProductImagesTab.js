@@ -1,39 +1,39 @@
-import { orange } from '@material-ui/core/colors';
-import Icon from '@material-ui/core/Icon';
-import { makeStyles } from '@material-ui/core/styles';
-import clsx from 'clsx';
-import FuseUtils from '@fuse/utils';
-import { Controller, useFormContext } from 'react-hook-form';
+import { orange } from "@material-ui/core/colors";
+import Icon from "@material-ui/core/Icon";
+import { makeStyles } from "@material-ui/core/styles";
+import clsx from "clsx";
+import FuseUtils from "@fuse/utils";
+import { Controller, useFormContext } from "react-hook-form";
 
 const useStyles = makeStyles((theme) => ({
   productImageFeaturedStar: {
-    position: 'absolute',
+    position: "absolute",
     top: 0,
     right: 0,
     color: orange[400],
     opacity: 0,
   },
   productImageUpload: {
-    transitionProperty: 'box-shadow',
+    transitionProperty: "box-shadow",
     transitionDuration: theme.transitions.duration.short,
     transitionTimingFunction: theme.transitions.easing.easeInOut,
   },
   productImageItem: {
-    transitionProperty: 'box-shadow',
+    transitionProperty: "box-shadow",
     transitionDuration: theme.transitions.duration.short,
     transitionTimingFunction: theme.transitions.easing.easeInOut,
-    '&:hover': {
-      '& $productImageFeaturedStar': {
+    "&:hover": {
+      "& $productImageFeaturedStar": {
         opacity: 0.8,
       },
     },
-    '&.featured': {
-      pointerEvents: 'none',
+    "&.featured": {
+      pointerEvents: "none",
       boxShadow: theme.shadows[3],
-      '& $productImageFeaturedStar': {
+      "& $productImageFeaturedStar": {
         opacity: 1,
       },
-      '&:hover $productImageFeaturedStar': {
+      "&:hover $productImageFeaturedStar": {
         opacity: 1,
       },
     },
@@ -45,7 +45,7 @@ function ProductImagesTab(props) {
   const methods = useFormContext();
   const { control, watch, setValue } = methods;
 
-  const images = watch('images');
+  const images = watch("images");
 
   return (
     <div>
@@ -58,11 +58,11 @@ function ProductImagesTab(props) {
               htmlFor="button-file"
               className={clsx(
                 classes.productImageUpload,
-                'flex items-center justify-center relative w-128 h-128 rounded-16 mx-12 mb-24 overflow-hidden cursor-pointer shadow hover:shadow-lg'
+                "flex items-center justify-center relative w-128 h-128 rounded-16 mx-12 mb-24 overflow-hidden cursor-pointer shadow hover:shadow-lg"
               )}
             >
               <input
-                accept="image/*"
+                accept="application/pdf"
                 className="hidden"
                 id="button-file"
                 type="file"
@@ -70,6 +70,7 @@ function ProductImagesTab(props) {
                   function readFileAsync() {
                     return new Promise((resolve, reject) => {
                       const file = e.target.files[0];
+                      console.log("file: ", file);
                       if (!file) {
                         return;
                       }
@@ -78,8 +79,10 @@ function ProductImagesTab(props) {
                       reader.onload = () => {
                         resolve({
                           id: FuseUtils.generateGUID(),
-                          url: `data:${file.type};base64,${btoa(reader.result)}`,
-                          type: 'image',
+                          url: `data:${file.type};base64,${btoa(
+                            reader.result
+                          )}`,
+                          type: "file",
                         });
                       };
 
@@ -100,31 +103,30 @@ function ProductImagesTab(props) {
             </label>
           )}
         />
-        <Controller
-          name="featuredImageId"
-          control={control}
-          defaultValue=""
-          render={({ field: { onChange, value } }) =>
-            images.map((media) => (
-              <div
-                onClick={() => onChange(media.id)}
-                onKeyDown={() => onChange(media.id)}
-                role="button"
-                tabIndex={0}
-                className={clsx(
-                  classes.productImageItem,
-                  'flex items-center justify-center relative w-128 h-128 rounded-16 mx-12 mb-24 overflow-hidden cursor-pointer outline-none shadow hover:shadow-lg',
-                  media.id === value && 'featured'
-                )}
-                key={media.id}
-              >
-                <Icon className={classes.productImageFeaturedStar}>star</Icon>
-                <img className="max-w-none w-auto h-full" src={media.url} alt="product" />
-              </div>
-            ))
-          }
-        />
       </div>
+      {/* <Controller
+        name="featuredImageId"
+        control={control}
+        defaultValue=""
+        render={({ field: { onChange, value } }) =>
+          images.map((media) => (
+            <div
+              onClick={() => onChange(media.id)}
+              onKeyDown={() => onChange(media.id)}
+              role="button"
+              tabIndex={0}
+              className={clsx(
+                classes.productImageItem,
+                "flex items-center justify-center relative w-128 h-128 rounded-16 mx-12 mb-24 overflow-hidden cursor-pointer outline-none shadow hover:shadow-lg",
+                media.id === value && "featured"
+              )}
+              key={media.id}
+            >
+              {media.url}
+            </div>
+          ))
+        }
+      /> */}
     </div>
   );
 }

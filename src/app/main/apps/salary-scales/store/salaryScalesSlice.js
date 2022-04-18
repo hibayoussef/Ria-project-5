@@ -15,6 +15,11 @@ export const getSalaryScales = createAsyncThunk(
   }
 );
 
+export const getJobs = async () => {
+  const response = await axios.get("/jobs");
+  return response.data.data;
+};
+
 export const removeProducts = createAsyncThunk(
   "salaryScalesApp/products/removeProducts",
   async (productIds, { dispatch, getState }) => {
