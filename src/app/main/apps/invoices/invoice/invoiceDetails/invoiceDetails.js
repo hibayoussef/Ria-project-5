@@ -8,6 +8,10 @@ import TextField from "@material-ui/core/TextField";
 import Divider from "@material-ui/core/Divider";
 import moment from "moment";
 import { useTheme } from "@material-ui/core/styles";
+import Input from "@material-ui/core/Input";
+import InputLabel from "@material-ui/core/InputLabel";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import TodayIcon from "@material-ui/icons/Today";
 
 const InvoiceDetails = () => {
   const theme = useTheme();
@@ -63,6 +67,29 @@ const InvoiceDetails = () => {
                 justifyContent="flex-start"
                 alignItems="center"
               >
+                <h3>Invoice ID</h3>
+              </Grid>
+              <Grid item xs={9} sm={9}>
+                <TextField
+                  className="mt-8 mb-16"
+                  id="outlined-size-normal"
+                  value={invoice.id}
+                  variant="outlined"
+                  fullWidth
+                />
+              </Grid>
+            </Grid>
+
+            <Grid container item direction={breakpoint ? "row" : "column"}>
+              <Grid
+                container
+                item
+                xs={3}
+                sm={3}
+                direction="row"
+                justifyContent="flex-start"
+                alignItems="center"
+              >
                 <h3>Issue Date</h3>
               </Grid>
               <Grid item xs={9} sm={9}>
@@ -73,6 +100,13 @@ const InvoiceDetails = () => {
                     .local()
                     .format("YYYY-MM-DD HH:mm:ss")}
                   variant="outlined"
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="start">
+                        <TodayIcon />
+                      </InputAdornment>
+                    ),
+                  }}
                   fullWidth
                 />
               </Grid>
@@ -98,6 +132,13 @@ const InvoiceDetails = () => {
                     .local()
                     .format("YYYY-MM-DD HH:mm:ss")}
                   variant="outlined"
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="start">
+                        <TodayIcon />
+                      </InputAdornment>
+                    ),
+                  }}
                   fullWidth
                 />
               </Grid>
