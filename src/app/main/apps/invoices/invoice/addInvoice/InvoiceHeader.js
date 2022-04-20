@@ -7,21 +7,16 @@ import { useFormContext } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
 import _ from "@lodash";
-import { saveInvoice, removeProduct } from "../store/invoiceSlice";
+import { addInvoice, removeProduct } from "../../store/invoiceSlice";
 
 function InvoiceHeader(props) {
   const dispatch = useDispatch();
   const methods = useFormContext();
-  const { formState, watch, getValues } = methods;
-  const { isValid, dirtyFields } = formState;
-  const featuredImageId = watch("featuredImageId");
-  const images = watch("images");
-  const name = watch("name");
   const theme = useTheme();
   const history = useHistory();
 
   function handleSaveInvoice() {
-    dispatch(saveInvoice(getValues()));
+    dispatch(addInvoice(getValues()));
   }
 
   function handleRemoveProduct() {
@@ -78,30 +73,6 @@ function InvoiceHeader(props) {
           </div>
         </div>
       </div>
-      <motion.div
-        className="flex"
-        initial={{ opacity: 0, x: 20 }}
-        animate={{ opacity: 1, x: 0, transition: { delay: 0.3 } }}
-      >
-        <Button
-          className="whitespace-nowrap mx-4"
-          variant="contained"
-          color="secondary"
-          onClick={handleRemoveProduct}
-          startIcon={<Icon className="hidden sm:flex">delete</Icon>}
-        >
-          Remove
-        </Button>
-        <Button
-          className="whitespace-nowrap mx-4"
-          variant="contained"
-          color="secondary"
-          // disabled={_.isEmpty(dirtyFields) || !isValid}
-          onClick={handleSaveInvoice}
-        >
-          Save
-        </Button>
-      </motion.div>
     </div>
   );
 }

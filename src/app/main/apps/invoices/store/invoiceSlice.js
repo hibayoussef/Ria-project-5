@@ -1,22 +1,28 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import FuseUtils from "@fuse/utils";
-
-// export const getInvoice = createAsyncThunk(
-//   "invoicesApp/invoice/getInvoice",
-//   async (params) => {
-//     const response = await axios.get("/invoices/cruds", { params });
-//     const data = await response.data.data;
-
-//     return data === undefined ? null : data;
-//   }
-// );
+import { getInvoices } from "./invoicesSlice";
 
 export const getInvoice = async (params) => {
   const response = await axios.get(`/invoices/cruds/${params.invoiceId}`);
   console.log("id: ", params.invoiceId);
   return response.data.data;
 };
+
+export const addInvoice = createAsyncThunk(
+  "invoicesApp/invoice/addInvoice",
+  async (invoice, { dispatch, getState }) => {
+    console.log("backend-1-invoice: ", invoice);
+    const response = await axios.post("/invoices/cruds", invoice);
+    console.log("response: ", response);
+
+    const data = await response.data.data;
+    console.log("Hi I am Here in add new invoice: ", data);
+    dispatch(getInvoices());
+
+    return data;
+  }
+);
 
 export const removeProduct = createAsyncThunk(
   "eCommerceApp/product/removeProduct",
@@ -100,6 +106,7 @@ const invoiceSlice = createSlice({
     },
   },
   extraReducers: {
+    [addInvoice.fulfilled]: (state, action) => action.payload,
     // [getInvoice.fulfilled]: (state, action) => action.payload,
     [saveInvoice.fulfilled]: (state, action) => action.payload,
     [removeProduct.fulfilled]: (state, action) => null,

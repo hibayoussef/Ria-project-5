@@ -165,7 +165,7 @@ const tempNavigation = [
         title: "Invoice",
         translate: "Invoice",
         type: "collapse",
-        icon: "receipt",
+        icon: "description",
         url: "/apps/invoices-section",
         auth: authRoles.super_admin,
         children: [

@@ -1,15 +1,10 @@
-import { useDispatch, useSelector } from "react-redux";
 import { getInvoice } from "../../store/invoiceSlice";
 import { useEffect, useState } from "react";
-import { useDeepCompareEffect } from "@fuse/hooks";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
-import Divider from "@material-ui/core/Divider";
 import moment from "moment";
 import { useTheme } from "@material-ui/core/styles";
-import Input from "@material-ui/core/Input";
-import InputLabel from "@material-ui/core/InputLabel";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import TodayIcon from "@material-ui/icons/Today";
 
@@ -17,8 +12,6 @@ const InvoiceDetails = () => {
   const theme = useTheme();
   const breakpoint = theme.breakpoints.down("sm");
   const routeParams = useParams();
-  // const invoice = useSelector(({ invoicesApp }) => invoicesApp.invoice);
-  // console.log("invoice details: ", invoice);
   const [invoice, setInvoice] = useState([]);
 
   useEffect(() => {
@@ -31,7 +24,7 @@ const InvoiceDetails = () => {
 
   return (
     <>
-      <Grid container>
+      <Grid container direction={breakpoint ? "row" : "column"}>
         <Grid item xs={7} sm={7} style={{ backgroundColor: "red" }}>
           jjjj
         </Grid>

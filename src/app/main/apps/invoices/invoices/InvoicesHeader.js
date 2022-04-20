@@ -27,7 +27,7 @@ function InvoicesHeader(props) {
           animate={{ scale: 1, transition: { delay: 0.2 } }}
           className="text-24 md:text-32"
         >
-          receipt
+          description
         </Icon>
         <Typography
           component={motion.span}
@@ -70,7 +70,7 @@ function InvoicesHeader(props) {
       >
         <Button
           component={Link}
-          to="/apps/invoices-section/invoices/new"
+          to="/apps/invoices-section/invoices/new-invoice"
           className="whitespace-nowrap"
           variant="contained"
           color="secondary"

@@ -7,9 +7,14 @@ const InvoicesAppConfig = {
   },
   routes: [
     {
+      path: "/apps/invoices-section/invoices/new-invoice",
+      component: lazy(() => import("./invoice/addInvoice/Invoice")),
+    },
+    {
       path: "/apps/invoices-section/invoices/:invoiceId",
       component: lazy(() => import("./invoice/invoiceDetails/details")),
     },
+
     {
       path: "/apps/invoices-section/invoices",
       component: lazy(() => import("./invoices/Invoices")),
