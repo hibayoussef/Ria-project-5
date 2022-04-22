@@ -19,6 +19,7 @@
         "@react-md/expansion-panel": "^5.1.2",
         "@react-md/form": "^5.1.2",
         "@react-pdf-viewer/core": "^3.2.0",
+        "@react-pdf/renderer": "^2.1.1",
         "@reduxjs/toolkit": "1.6.1",
         "apexcharts": "3.27.3",
         "auth0-lock": "11.30.4",

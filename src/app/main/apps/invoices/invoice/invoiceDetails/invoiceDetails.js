@@ -7,12 +7,31 @@ import moment from "moment";
 import { useTheme } from "@material-ui/core/styles";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import TodayIcon from "@material-ui/icons/Today";
+import { makeStyles } from "@material-ui/core/styles";
+import { PDFViewer } from "@react-pdf/renderer";
 
+const useStyles = makeStyles((theme) => ({
+  root: {
+    "& > *": {
+      margin: theme.spacing(1),
+    },
+  },
+  input: {
+    display: "none",
+  },
+  button: {
+    margin: theme.spacing(1),
+    // padding: theme.spacing(4),
+  },
+}));
 const InvoiceDetails = () => {
+  const classes = useStyles();
   const theme = useTheme();
   const breakpoint = theme.breakpoints.down("sm");
   const routeParams = useParams();
   const [invoice, setInvoice] = useState([]);
+
+  // const defaultLayoutPluginInstance = defaultLayoutPlugin();
 
   useEffect(() => {
     getInvoice(routeParams).then((response) => {
@@ -20,23 +39,20 @@ const InvoiceDetails = () => {
     });
   }, []);
 
+  console.log("invoice url: ", invoice?.file?.url);
   console.log("invoice tara : ", invoice);
 
   return (
     <>
-      <Grid container direction={breakpoint ? "row" : "column"}>
-        <Grid item xs={7} sm={7} style={{ backgroundColor: "red" }}>
-          jjjj
+      <Grid container>
+        <Grid item xs={7} sm={7} style={{ height: "100vh", width: "100vh" }}>
+          <PDFViewer file={invoice?.file?.url}></PDFViewer>
         </Grid>
         <Grid item xs={5} sm={5} style={{ padding: "3rem" }}>
           <Grid item>
             <h1 style={{ fontWeight: "bold" }}>Invoice Details</h1>
           </Grid>
 
-          {/* <div className="flex -mx-4"> */}
-
-          {/* </div> */}
-          {/* submitted By */}
           <Grid item style={{ marginTop: "3rem", marginBottom: "2rem" }}>
             <Grid item style={{ marginBottom: 10 }}>
               <h3>From</h3>
@@ -48,7 +64,7 @@ const InvoiceDetails = () => {
               <h3>{invoice?.submittedBy?.email}</h3>
             </Grid>
           </Grid>
-          {/* end submitted by */}
+
           <Grid item>
             <Grid container item direction={breakpoint ? "row" : "column"}>
               <Grid

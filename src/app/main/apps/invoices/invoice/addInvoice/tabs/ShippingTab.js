@@ -13,11 +13,11 @@ import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import CloudUploadIcon from "@material-ui/icons/CloudUpload";
 import { addInvoice } from "../../../store/invoiceSlice";
-import Icon from "@material-ui/core/Icon";
 import { motion } from "framer-motion";
 import { useDispatch } from "react-redux";
 import "react-datepicker/dist/react-datepicker.css";
-import { alpha } from "@material-ui/core/styles";
+import Slide from "@material-ui/core/Slide";
+import { useSnackbar } from "notistack";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -44,6 +44,35 @@ function ShippingTab(props) {
   const [grossAmount, setGrossAmount] = useState("");
   const [file, setFile] = useState(null);
 
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+
+  const handleUploadPDFFileMessageClick = () => {
+    enqueueSnackbar(
+      "PDF file has been uploaded successfully",
+      { variant: "success" },
+      {
+        anchorOrigin: {
+          vertical: "top",
+          horizontal: "right",
+        },
+      },
+      { TransitionComponent: Slide }
+    );
+  };
+
+  const handleCreateInvoiceMessageClick = () => {
+    enqueueSnackbar(
+      "Invoice created successfully",
+      { variant: "success" },
+      {
+        anchorOrigin: {
+          vertical: "top",
+          horizontal: "right",
+        },
+      },
+      { TransitionComponent: Slide }
+    );
+  };
   const fileSelectedHandler = (event) => {
     console.log(event.target.files[0]);
     const file = event.target.files[0];
@@ -194,27 +223,54 @@ function ShippingTab(props) {
       </div>
 
       <motion.div
-        className="flex"
         initial={{ opacity: 0, x: 20 }}
         animate={{ opacity: 1, x: 0, transition: { delay: 0.3 } }}
       >
-        <Button
-          className="whitespace-nowrap mx-4"
-          variant="contained"
-          color="secondary"
-          // onClick={handleRemoveProduct}
+        <Grid
+          container
+          direction="row-reverse"
+          justifyContent="flex-start"
+          alignItems="flex-end"
+          style={{
+            paddingTop: "11rem",
+          }}
         >
-          Cancel
-        </Button>
-        <Button
-          className="whitespace-nowrap mx-4"
-          variant="contained"
-          color="secondary"
-          // disabled={_.isEmpty(dirtyFields) || !isValid}
-          onClick={uploadHandler}
-        >
-          Create
-        </Button>
+          <Grid item>
+            <Button
+              className="whitespace-nowrap mx-4"
+              variant="contained"
+              color="secondary"
+              style={{
+                padding: "1rem",
+                paddingLeft: "3rem",
+                paddingRight: "3rem",
+              }}
+              // onClick={handleRemoveProduct}
+            >
+              Cancel
+            </Button>
+          </Grid>
+          <Grid item>
+            <Button
+              className="whitespace-nowrap mx-4"
+              variant="contained"
+              color="secondary"
+              // disabled={_.isEmpty(dirtyFields) || !isValid}
+              style={{
+                padding: "1rem",
+                paddingLeft: "3rem",
+                paddingRight: "3rem",
+              }}
+              onClick={(ev) => {
+                uploadHandler();
+                ev.stopPropagation();
+                handleCreateInvoiceMessageClick(ev);
+              }}
+            >
+              Create
+            </Button>
+          </Grid>
+        </Grid>
       </motion.div>
     </>
   );
