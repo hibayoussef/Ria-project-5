@@ -5,10 +5,48 @@ import { Controller, useFormContext } from "react-hook-form";
 import { getJobs } from "../../store/salaryScalesSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { Autocomplete } from "@material-ui/lab";
+import { motion } from "framer-motion";
+import Button from "@material-ui/core/Button";
+import Grid from "@material-ui/core/Grid";
+import { makeStyles } from "@material-ui/core/styles";
+import Slide from "@material-ui/core/Slide";
+import { useSnackbar } from "notistack";
+import { addSalaryScale } from "../../store/salaryScaleSlice";
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    "& > *": {
+      margin: theme.spacing(1),
+    },
+  },
+  input: {
+    display: "none",
+  },
+  button: {
+    margin: theme.spacing(1),
+    // padding: theme.spacing(4),
+  },
+}));
 
 function ShippingTab(props) {
+  const dispatch = useDispatch();
   const methods = useFormContext();
   const { control } = methods;
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+
+  const handleCreateSalaryScaleMessageClick = () => {
+    enqueueSnackbar(
+      "Salary Scale has been created successfully",
+      { variant: "success" },
+      {
+        anchorOrigin: {
+          vertical: "top",
+          horizontal: "right",
+        },
+      },
+      { TransitionComponent: Slide }
+    );
+  };
 
   useEffect(() => {
     getJobs();
@@ -108,6 +146,55 @@ function ShippingTab(props) {
           )}
         />
       </div>
+      <motion.div
+        initial={{ opacity: 0, x: 20 }}
+        animate={{ opacity: 1, x: 0, transition: { delay: 0.3 } }}
+      >
+        <Grid
+          container
+          direction="row-reverse"
+          justifyContent="flex-start"
+          alignItems="flex-end"
+          style={{
+            paddingTop: "11rem",
+          }}
+        >
+          <Grid item>
+            <Button
+              className="whitespace-nowrap mx-4"
+              variant="contained"
+              color="secondary"
+              style={{
+                padding: "1rem",
+                paddingLeft: "3rem",
+                paddingRight: "3rem",
+              }}
+              // onClick={handleRemoveProduct}
+            >
+              Cancel
+            </Button>
+          </Grid>
+          <Grid item>
+            <Button
+              className="whitespace-nowrap mx-4"
+              variant="contained"
+              color="secondary"
+              style={{
+                padding: "1rem",
+                paddingLeft: "3rem",
+                paddingRight: "3rem",
+              }}
+              onClick={(ev) => {
+                dispatch(addSalaryScale());
+                ev.stopPropagation();
+                handleCreateSalaryScaleMessageClick(ev);
+              }}
+            >
+              Create
+            </Button>
+          </Grid>
+        </Grid>
+      </motion.div>
     </div>
   );
 }

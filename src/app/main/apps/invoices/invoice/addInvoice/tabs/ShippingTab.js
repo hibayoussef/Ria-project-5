@@ -7,7 +7,6 @@ import DateFnsUtils from "@date-io/date-fns";
 import {
   KeyboardDatePicker,
   MuiPickersUtilsProvider,
-  DatePicker,
 } from "@material-ui/pickers";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";

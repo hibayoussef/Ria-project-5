@@ -1,30 +1,50 @@
-const Picker = () => {
-  const [issueDate, setIssueDate] = useState(new Date("2014-08-18T21:11:54"));
+import React, { useState, useEffect } from "react";
+import "../all.css";
+import Axios from "axios";
 
-  const handleissueDateChange = (date) => {
-    setIssueDate(date);
+function SearchProduct() {
+  const [products, setProducts] = useState([]);
+
+  const fetchProducts = async () => {
+    const { data } = await Axios.get(
+      "http://localhost:8080/api/QueryProductById/1"
+    );
+
+    let parseData = JSON.parse(data.response);
+
+    setProducts(parseData);
   };
-  return (
-    <>
-      <MuiPickersUtilsProvider utils={DateFnsUtils}>
-        <div className="flex -mx-4">
-          <KeyboardDatePicker
-            inputVariant="outlined"
-            className="mt-8 mb-16 ml-6"
-            margin="normal"
-            id="date-picker-dialog"
-            label="Issue Date"
-            format="MM/dd/yyyy"
-            KeyboardButtonProps={{
-              "aria-label": "change date",
-            }}
-            value={issueDate}
-            onChange={handleissueDateChange}
-          />
-        </div>
-      </MuiPickersUtilsProvider>
-    </>
-  );
-};
 
-export default Picker;
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  return (
+    <div>
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Area</th>
+            <th>Owner Name</th>
+            <th>Cost</th>
+          </tr>
+        </thead>
+        <tbody>
+          {products?.map((product) => (
+            <tr key={product.id}>
+              <th>{product.id}</th>
+              <th>{product.name}</th>
+              <th>{product.area}</th>
+              <th>{product.ownerName}</th>
+              <th>{product.cost}</th>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+export default SearchProduct;

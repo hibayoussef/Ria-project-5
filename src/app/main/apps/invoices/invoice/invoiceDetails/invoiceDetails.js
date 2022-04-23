@@ -8,7 +8,11 @@ import { useTheme } from "@material-ui/core/styles";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import TodayIcon from "@material-ui/icons/Today";
 import { makeStyles } from "@material-ui/core/styles";
-import { PDFViewer } from "@react-pdf/renderer";
+import { Document, Page } from "react-pdf";
+import { pdfjs } from "react-pdf";
+import embed from "pdf-embed";
+
+pdfjs.GlobalWorkerOptions.workerSrc = `'//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -24,12 +28,20 @@ const useStyles = makeStyles((theme) => ({
     // padding: theme.spacing(4),
   },
 }));
+
 const InvoiceDetails = () => {
   const classes = useStyles();
   const theme = useTheme();
   const breakpoint = theme.breakpoints.down("sm");
   const routeParams = useParams();
   const [invoice, setInvoice] = useState([]);
+
+  const [numPages, setNumPages] = useState(null);
+  const [pageNumber, setPageNumber] = useState(1);
+
+  function onDocumentLoadSuccess({ numPages }) {
+    setNumPages(numPages);
+  }
 
   // const defaultLayoutPluginInstance = defaultLayoutPlugin();
 
@@ -45,8 +57,20 @@ const InvoiceDetails = () => {
   return (
     <>
       <Grid container>
-        <Grid item xs={7} sm={7} style={{ height: "100vh", width: "100vh" }}>
-          <PDFViewer file={invoice?.file?.url}></PDFViewer>
+        <Grid item xs={7} sm={7}>
+          {/* pdf viewer */}
+          <object
+            // data={invoice?.file?.url}
+            data="https://ite-ria.herokuapp.com/api/v1/public/invoices-files/invoice-1-e7a2a1ad-b6cf-4733-b80e-b158478b85fa.pdf"
+            type="application/pdf"
+            width="100%"
+            height="100%"
+          >
+            <p>
+              Alternative text - include a link{" "}
+              <a href={invoice?.file?.url}>to the PDF!</a>
+            </p>
+          </object>
         </Grid>
         <Grid item xs={5} sm={5} style={{ padding: "3rem" }}>
           <Grid item>
@@ -58,10 +82,10 @@ const InvoiceDetails = () => {
               <h3>From</h3>
             </Grid>
             <Grid item>
-              <h3>{invoice?.submittedBy?.name}</h3>
+              <h3>{invoice?.submittedBy?.name || ""}</h3>
             </Grid>
             <Grid item>
-              <h3>{invoice?.submittedBy?.email}</h3>
+              <h3>{invoice?.submittedBy?.email || ""}</h3>
             </Grid>
           </Grid>
 
@@ -82,7 +106,7 @@ const InvoiceDetails = () => {
                 <TextField
                   className="mt-8 mb-16"
                   id="outlined-size-normal"
-                  value={invoice.id}
+                  value={invoice.id || ""}
                   variant="outlined"
                   fullWidth
                 />
@@ -105,9 +129,11 @@ const InvoiceDetails = () => {
                 <TextField
                   className="mt-8 mb-16"
                   id="outlined-size-normal"
-                  value={moment(moment.utc(invoice.issueDate).toDate())
-                    .local()
-                    .format("YYYY-MM-DD HH:mm:ss")}
+                  value={
+                    moment(moment.utc(invoice.issueDate).toDate())
+                      .local()
+                      .format("YYYY-MM-DD HH:mm:ss") || ""
+                  }
                   variant="outlined"
                   InputProps={{
                     endAdornment: (
@@ -137,9 +163,11 @@ const InvoiceDetails = () => {
                 <TextField
                   className="mt-8 mb-16"
                   id="outlined-size-normal"
-                  value={moment(moment.utc(invoice.dueDate).toDate())
-                    .local()
-                    .format("YYYY-MM-DD HH:mm:ss")}
+                  value={
+                    moment(moment.utc(invoice.dueDate).toDate())
+                      .local()
+                      .format("YYYY-MM-DD HH:mm:ss") || ""
+                  }
                   variant="outlined"
                   InputProps={{
                     endAdornment: (
@@ -169,7 +197,7 @@ const InvoiceDetails = () => {
                 <TextField
                   className="mt-8 mb-16"
                   id="outlined-size-normal"
-                  value={invoice.netAmount}
+                  value={invoice.netAmount || ""}
                   variant="outlined"
                   fullWidth
                 />
@@ -192,7 +220,7 @@ const InvoiceDetails = () => {
                 <TextField
                   className="mt-8 mb-16"
                   id="outlined-size-normal"
-                  value={invoice.taxNumber}
+                  value={invoice.taxNumber || ""}
                   variant="outlined"
                   fullWidth
                 />
@@ -216,7 +244,7 @@ const InvoiceDetails = () => {
                   className="mt-8 mb-16"
                   // label="Size"
                   id="outlined-size-normal"
-                  value={invoice.grossAmount}
+                  value={invoice.grossAmount || ""}
                   variant="outlined"
                   fullWidth
                 />

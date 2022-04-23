@@ -38,7 +38,7 @@ function InvoiceHeader(props) {
           Invoice Details
         </Typography>
       </div>
-
+      {/* 
       <div className="flex flex-1 items-center justify-center px-12">
         <ThemeProvider theme={mainTheme}>
           <Paper
@@ -62,8 +62,8 @@ function InvoiceHeader(props) {
             />
           </Paper>
         </ThemeProvider>
-      </div>
-      <motion.div
+      </div> */}
+      {/* <motion.div
         initial={{ opacity: 0, x: 20 }}
         animate={{ opacity: 1, x: 0, transition: { delay: 0.2 } }}
       >
@@ -77,7 +77,7 @@ function InvoiceHeader(props) {
           <span className="hidden sm:flex">Add New Invoice</span>
           <span className="flex sm:hidden">New</span>
         </Button>
-      </motion.div>
+      </motion.div> */}
     </div>
   );
 }
