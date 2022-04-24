@@ -23,6 +23,7 @@ import Moment from "react-moment";
 import IconButton from "@material-ui/core/IconButton";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
+import moment from "moment";
 
 function SalaryScalesTable(props) {
   const dispatch = useDispatch();
@@ -30,6 +31,8 @@ function SalaryScalesTable(props) {
   const searchText = useSelector(
     ({ salaryScalesApp }) => salaryScalesApp.salaryScales.searchText
   );
+
+  console.log("search text: ", searchText);
 
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState([]);
@@ -51,9 +54,7 @@ function SalaryScalesTable(props) {
   useEffect(() => {
     if (searchText.length !== 0) {
       setData(
-        _.filter(salaryScales, (item) =>
-          item.isActive.toLowerCase().includes(searchText.toLowerCase())
-        )
+        _.filter(salaryScales, (item) => item.createdAt.includes(searchText))
       );
       setPage(0);
     } else {
@@ -207,7 +208,9 @@ function SalaryScalesTable(props) {
                       scope="row"
                       align="center"
                     >
-                      <Moment>{n.createdAt}</Moment>
+                      {moment(moment.utc(n.createdAt).toDate())
+                        .local()
+                        .format("YYYY-MM-DD HH:mm:ss") || ""}
                     </TableCell>
 
                     <TableCell

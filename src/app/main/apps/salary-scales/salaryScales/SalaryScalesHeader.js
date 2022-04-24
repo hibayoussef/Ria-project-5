@@ -8,7 +8,7 @@ import { motion } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { selectMainTheme } from "app/store/fuse/settingsSlice";
-import { setProductsSearchText } from "../store/salaryScalesSlice";
+import { setSalaryScalesSearchText } from "../store/salaryScalesSlice";
 
 function SalaryScalesHeader(props) {
   const dispatch = useDispatch();
@@ -58,7 +58,7 @@ function SalaryScalesHeader(props) {
               inputProps={{
                 "aria-label": "Search",
               }}
-              onChange={(ev) => dispatch(setProductsSearchText(ev))}
+              onChange={(ev) => dispatch(setSalaryScalesSearchText(ev))}
             />
           </Paper>
         </ThemeProvider>

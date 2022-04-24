@@ -134,7 +134,7 @@ const tempNavigation = [
         translate: "Salary Scales",
         type: "collapse",
         icon: "shopping_cart",
-        url: "/apps/salary-scales-section",
+        url: "/apps/salary-scale-section",
         children: [
           {
             id: "salary-scales-dispaly",

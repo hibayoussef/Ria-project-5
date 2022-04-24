@@ -8,7 +8,7 @@ const SalaryScalesAppConfig = {
   routes: [
     {
       path: "/apps/salary-scales-section/salary-scales/:salaryScaleId",
-      component: lazy(() => import("./salaryScale/SalaryScale")),
+      component: lazy(() => import("./salaryScaleDetails/SalaryScaleDetail")),
     },
     {
       path: "/apps/salary-scales-section/salary-scales",

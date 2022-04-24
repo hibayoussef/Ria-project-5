@@ -8,11 +8,7 @@ import { useTheme } from "@material-ui/core/styles";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import TodayIcon from "@material-ui/icons/Today";
 import { makeStyles } from "@material-ui/core/styles";
-import { Document, Page } from "react-pdf";
 import { pdfjs } from "react-pdf";
-import embed from "pdf-embed";
-
-pdfjs.GlobalWorkerOptions.workerSrc = `'//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -35,13 +31,6 @@ const InvoiceDetails = () => {
   const breakpoint = theme.breakpoints.down("sm");
   const routeParams = useParams();
   const [invoice, setInvoice] = useState([]);
-
-  const [numPages, setNumPages] = useState(null);
-  const [pageNumber, setPageNumber] = useState(1);
-
-  function onDocumentLoadSuccess({ numPages }) {
-    setNumPages(numPages);
-  }
 
   // const defaultLayoutPluginInstance = defaultLayoutPlugin();
 

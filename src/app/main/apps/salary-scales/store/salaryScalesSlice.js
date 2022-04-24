@@ -20,12 +20,27 @@ export const getJobs = async () => {
   return response.data.data;
 };
 
-export const removeProducts = createAsyncThunk(
-  "salaryScalesApp/products/removeProducts",
-  async (productIds, { dispatch, getState }) => {
-    await axios.post("/api/e-commerce-app/remove-products", { productIds });
+// export const removeSalaryScale = createAsyncThunk(
+//   "salaryScalesApp/salaryScales/removeSalaryScale",
+//   async (productIds, { dispatch, getState }) => {
+//     await axios.post("/api/e-commerce-app/remove-products", { productIds });
 
-    return productIds;
+//     return productIds;
+//   }
+// );
+
+export const removeSalaryScale = createAsyncThunk(
+  "salaryScalesApp/salaryScales/removeSalaryScale",
+  async (id, { dispatch }) => {
+    const response = await axios
+      .delete(`/salary-scales/${id}`)
+      .catch((error) => {
+        console.log("error response: ", error);
+      });
+    const data = await response.data.data;
+    console.log("delete salary scale: ", data);
+    dispatch(getSalaryScales());
+    return data;
   }
 );
 
@@ -44,7 +59,7 @@ const salaryScalesSlice = createSlice({
     searchText: "",
   }),
   reducers: {
-    setProductsSearchText: {
+    setSalaryScalesSearchText: {
       reducer: (state, action) => {
         state.searchText = action.payload;
       },
@@ -53,11 +68,11 @@ const salaryScalesSlice = createSlice({
   },
   extraReducers: {
     [getSalaryScales.fulfilled]: salaryScalesAdapter.setAll,
-    [removeProducts.fulfilled]: (state, action) =>
-      salaryScalesAdapter.removeMany(state, action.payload),
+    [removeSalaryScale.fulfilled]: (state, action) =>
+      salaryScalesAdapter.removeOne(state, action.payload),
   },
 });
 
-export const { setProductsSearchText } = salaryScalesSlice.actions;
+export const { setSalaryScalesSearchText } = salaryScalesSlice.actions;
 
 export default salaryScalesSlice.reducer;

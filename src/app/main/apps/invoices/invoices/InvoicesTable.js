@@ -190,7 +190,7 @@ function InvoicesTable(props) {
                       <img
                         className="w-full block rounded"
                         src="assets/images/ecommerce/invoice.png"
-                        alt="jjj"
+                        alt="invoice"
                       />
                     </TableCell>
                     <TableCell

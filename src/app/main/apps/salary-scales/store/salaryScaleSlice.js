@@ -3,15 +3,12 @@ import axios from "axios";
 import FuseUtils from "@fuse/utils";
 import { getSalaryScales } from "./salaryScalesSlice";
 
-export const getSalaryScale = createAsyncThunk(
-  "salaryScalesApp/salaryScale/getSalaryScale",
-  async (id) => {
-    const response = await axios.get("/salary-scales", { params });
-    const data = await response.data.data;
-    console.log("salary Scale data: ", data);
-    return data === undefined ? null : data;
-  }
-);
+export const getSalaryScale = async (params) => {
+  console.log("ppparams: ", params);
+  const response = await axios.get(`/salary-scales/${params.salaryScaleId}`);
+  console.log("id: ", params.salaryScaleId);
+  return response.data.data;
+};
 
 export const removeProduct = createAsyncThunk(
   "salaryScalesApp/product/removeProduct",
@@ -69,7 +66,6 @@ const salaryScaleSlice = createSlice({
     },
   },
   extraReducers: {
-    [getSalaryScale.fulfilled]: (state, action) => action.payload,
     [saveProduct.fulfilled]: (state, action) => action.payload,
     [removeProduct.fulfilled]: (state, action) => null,
     [addSalaryScale.fulfilled]: (state, action) => action.payload,

@@ -6,7 +6,7 @@ import {
 import axios from "axios";
 
 export const getInvoices = createAsyncThunk(
-  "invoicesApp/products/getInvoices",
+  "invoicesApp/invoices/getInvoices",
   async () => {
     const response = await axios.get("/invoices/cruds");
     const data = await response.data.data;
@@ -16,12 +16,18 @@ export const getInvoices = createAsyncThunk(
   }
 );
 
-export const removeProducts = createAsyncThunk(
-  "eCommerceApp/products/removeProducts",
-  async (productIds, { dispatch, getState }) => {
-    await axios.post("/api/e-commerce-app/remove-products", { productIds });
-
-    return productIds;
+export const removeInvoice = createAsyncThunk(
+  "invoicesApp/invoices/removeInvoice",
+  async (id, { dispatch }) => {
+    const response = await axios
+      .delete(`/invoices/cruds/${id}`)
+      .catch((error) => {
+        console.log("error response: ", error);
+      });
+    const data = await response.data.data;
+    console.log("delete invoices: ", data);
+    dispatch(getInvoices());
+    return data;
   }
 );
 
@@ -45,8 +51,8 @@ const invoicesSlice = createSlice({
   },
   extraReducers: {
     [getInvoices.fulfilled]: invoicesAdapter.setAll,
-    [removeProducts.fulfilled]: (state, action) =>
-      invoicesAdapter.removeMany(state, action.payload),
+    [removeInvoice.fulfilled]: (state, action) =>
+      invoicesAdapter.removeOne(state, action.payload),
   },
 });
 

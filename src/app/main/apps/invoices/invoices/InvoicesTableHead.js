@@ -15,7 +15,9 @@ import Tooltip from "@material-ui/core/Tooltip";
 import clsx from "clsx";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { removeProducts } from "../store/invoicesSlice";
+import { removeInvoice } from "../store/invoicesSlice";
+import { useSnackbar } from "notistack";
+import Slide from "@material-ui/core/Slide";
 
 const rows = [
   {
@@ -72,6 +74,7 @@ function InvoicesTableHead(props) {
 
   const [selectedInvoicesMenu, setSelectedInvoicesMenu] = useState(null);
 
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   console.log("selectedInvoicesMenu:", selectedInvoicesMenu);
   const dispatch = useDispatch();
 
@@ -86,6 +89,20 @@ function InvoicesTableHead(props) {
   function closeSelectedInvoicesMenu() {
     setSelectedInvoicesMenu(null);
   }
+
+  const deleteInvoiceHandleClick = () => {
+    enqueueSnackbar(
+      "Invoice Deleted successfully",
+      { variant: "error" },
+      {
+        anchorOrigin: {
+          vertical: "top",
+          horizontal: "right",
+        },
+      },
+      { TransitionComponent: Slide }
+    );
+  };
 
   return (
     <TableHead>
@@ -118,10 +135,11 @@ function InvoicesTableHead(props) {
               >
                 <MenuList>
                   <MenuItem
-                    onClick={() => {
-                      dispatch(removeProducts(selectedInvoiceIds));
+                    onClick={(ev) => {
+                      dispatch(removeInvoice(selectedInvoiceIds));
                       props.onMenuItemClick();
                       closeSelectedInvoicesMenu();
+                      deleteInvoiceHandleClick(ev);
                     }}
                   >
                     <ListItemIcon className="min-w-40">

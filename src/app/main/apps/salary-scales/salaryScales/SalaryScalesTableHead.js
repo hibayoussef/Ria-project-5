@@ -15,10 +15,9 @@ import Tooltip from "@material-ui/core/Tooltip";
 import clsx from "clsx";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { removeProducts } from "../store/salaryScalesSlice";
-import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
-import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
-import Collapse from "@material-ui/core/Collapse";
+import { removeSalaryScale } from "../store/salaryScalesSlice";
+import { useSnackbar } from "notistack";
+import Slide from "@material-ui/core/Slide";
 
 const rows = [
   {
@@ -60,7 +59,7 @@ function SalaryScalesTableHead(props) {
   const [open, setOpen] = useState(false);
 
   const dispatch = useDispatch();
-
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const createSortHandler = (property) => (event) => {
     props.onRequestSort(event, property);
   };
@@ -72,6 +71,20 @@ function SalaryScalesTableHead(props) {
   function closeSelectedProductsMenu() {
     setSelectedProductsMenu(null);
   }
+
+  const deleteSalaryScaleHandleClick = () => {
+    enqueueSnackbar(
+      "Salary Scale Deleted successfully",
+      { variant: "error" },
+      {
+        anchorOrigin: {
+          vertical: "top",
+          horizontal: "right",
+        },
+      },
+      { TransitionComponent: Slide }
+    );
+  };
 
   return (
     <TableHead>
@@ -104,10 +117,11 @@ function SalaryScalesTableHead(props) {
               >
                 <MenuList>
                   <MenuItem
-                    onClick={() => {
-                      dispatch(removeProducts(selectedSalaryScaleIds));
+                    onClick={(ev) => {
+                      dispatch(removeSalaryScale(selectedSalaryScaleIds));
                       props.onMenuItemClick();
                       closeSelectedProductsMenu();
+                      deleteSalaryScaleHandleClick(ev);
                     }}
                   >
                     <ListItemIcon className="min-w-40">
