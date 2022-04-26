@@ -34,36 +34,29 @@ const useStyles = makeStyles((theme) => ({
       minHeight: 240,
     },
   },
+  input: {
+    display: "none",
+  },
 }));
 
 function ProfilePage() {
   const classes = useStyles();
   const [selectedTab, setSelectedTab] = useState(0);
-  // ttttttttttttttttttttttttttttttttt
-  const [selectedFile, setSelectedFile] = useState(null);
+  const [file, setFile] = useState(null);
 
-  const handleSubmit = async (event) => {
-    console.log("selectedFile: ", selectedFile);
-    const formData = new FormData();
-    formData.append("file", selectedFile);
-    // formData.append("selectedFile", selectedFile);
-
-    return axios.post("/app-files", formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
-  };
-
-  // ttttttttttttttttttttttttttttttttt
-
-  const handleFileSelect = (event) => {
-    console.log("event: ", event);
-    setSelectedFile(event.target.files[0]);
-  };
   function handleTabChange(event, value) {
     setSelectedTab(value);
   }
+
+  const fileSelectedHandler = (event) => {
+    console.log(event.target.files[0]);
+    const file = event.target.files[0];
+
+    if (event.target && file) {
+      // formData.append("invoice", file);
+      setFile(file);
+    }
+  };
 
   return (
     <FusePageSimple
@@ -83,18 +76,22 @@ function ProfilePage() {
               initial={{ scale: 0 }}
               animate={{ scale: 1, transition: { delay: 0.1 } }}
             >
-              <IconButton
-                color="primary"
-                component="span"
-                onClick={handleSubmit}
-              >
-                <Avatar
-                  type="submit"
-                  className={clsx(classes.avatar, "-mt-64  w-128 h-128")}
-                  src={selectedFile}
-                />
-              </IconButton>
-              {/* </label> */}
+              <input
+                accept="image/*"
+                className={classes.input}
+                id="contained-button-file"
+                multiple
+                type="file"
+                onChange={fileSelectedHandler}
+              />
+              <label>
+                <IconButton>
+                  <Avatar
+                    src="../assets/ana.png"
+                    className={clsx(classes.avatar, "-mt-64  w-128 h-128")}
+                  />
+                </IconButton>
+              </label>
             </motion.div>
             <div className="flex flex-col md:flex-row flex-1 items-center justify-between p-8">
               <motion.div

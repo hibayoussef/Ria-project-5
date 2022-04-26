@@ -1,3 +1,4 @@
+import React from "react";
 import { getInvoice } from "../../store/invoiceSlice";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
@@ -9,6 +10,24 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import TodayIcon from "@material-ui/icons/Today";
 import { makeStyles } from "@material-ui/core/styles";
 import { pdfjs } from "react-pdf";
+import Button from "@material-ui/core/Button";
+import FuseScrollbars from "@fuse/core/FuseScrollbars";
+import clsx from "clsx";
+import ButtonGroup from "@material-ui/core/ButtonGroup";
+import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
+import ClickAwayListener from "@material-ui/core/ClickAwayListener";
+import Grow from "@material-ui/core/Grow";
+import Paper from "@material-ui/core/Paper";
+import Popper from "@material-ui/core/Popper";
+import MenuItem from "@material-ui/core/MenuItem";
+import MenuList from "@material-ui/core/MenuList";
+import RejectDialog from "./rejectDialog";
+
+const options = [
+  "Create a merge commit",
+  "Squash and merge",
+  "Rebase and merge",
+];
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -31,6 +50,9 @@ const InvoiceDetails = () => {
   const breakpoint = theme.breakpoints.down("sm");
   const routeParams = useParams();
   const [invoice, setInvoice] = useState([]);
+  const [open, setOpen] = React.useState(false);
+  const anchorRef = React.useRef(null);
+  const [selectedIndex, setSelectedIndex] = React.useState(1);
 
   // const defaultLayoutPluginInstance = defaultLayoutPlugin();
 
@@ -39,6 +61,27 @@ const InvoiceDetails = () => {
       setInvoice(response);
     });
   }, []);
+
+  const handleClick = () => {
+    console.info(`You clicked ${options[selectedIndex]}`);
+  };
+
+  const handleMenuItemClick = (event, index) => {
+    setSelectedIndex(index);
+    setOpen(false);
+  };
+
+  const handleToggle = () => {
+    setOpen((prevOpen) => !prevOpen);
+  };
+
+  const handleClose = (event) => {
+    if (anchorRef.current && anchorRef.current.contains(event.target)) {
+      return;
+    }
+
+    setOpen(false);
+  };
 
   console.log("invoice url: ", invoice?.file?.url);
   console.log("invoice tara : ", invoice);
@@ -50,17 +93,20 @@ const InvoiceDetails = () => {
           {/* pdf viewer */}
           <object
             // data={invoice?.file?.url}
-            data="https://ite-ria.herokuapp.com/api/v1/public/invoices-files/invoice-1-e7a2a1ad-b6cf-4733-b80e-b158478b85fa.pdf"
+            data="https://documentcloud.adobe.com/view-sdk-demo/PDFs/Bodea%20Brochure.pdf"
             type="application/pdf"
             width="100%"
             height="100%"
           >
             <p>
               Alternative text - include a link{" "}
-              <a href={invoice?.file?.url}>to the PDF!</a>
+              <a href="https://documentcloud.adobe.com/view-sdk-demo/PDFs/Bodea%20Brochure.pdf">
+                to the PDF!
+              </a>
             </p>
           </object>
         </Grid>
+
         <Grid item xs={5} sm={5} style={{ padding: "3rem" }}>
           <Grid item>
             <h1 style={{ fontWeight: "bold" }}>Invoice Details</h1>
@@ -237,6 +283,97 @@ const InvoiceDetails = () => {
                   variant="outlined"
                   fullWidth
                 />
+              </Grid>
+            </Grid>
+
+            <Grid
+              container
+              direction="row"
+              justifyContent="flex-end"
+              alignItems="center"
+            >
+              <Grid item style={{ paddingRight: "1rem" }}>
+                {/* <Button
+                  onClick={(ev) => {
+                    dispatch(rejectInvoice(invoice?.id));
+                    rejectInvoiceHandleClick(ev);
+                  }}
+                  variant="contained"
+                  style={{
+                    paddingLeft: "2.4rem",
+                    paddinRight: "2.4rem",
+                    paddingTop: "1.5rem",
+                    paddingBottom: "1.5rem",
+                    backgroundColor: "#dc3c24",
+                    color: "#FFFFFF",
+                    borderRadius: 4,
+                  }}
+                >
+                  Reject Invoice
+                </Button> */}
+                <RejectDialog id={invoice?.id} />
+              </Grid>
+
+              <Grid item>
+                <ButtonGroup
+                  variant="contained"
+                  color="primary"
+                  ref={anchorRef}
+                  aria-label="split button"
+                >
+                  <Button onClick={handleClick}>
+                    {options[selectedIndex]}
+                  </Button>
+                  <Button
+                    color="primary"
+                    size="small"
+                    aria-controls={open ? "split-button-menu" : undefined}
+                    aria-expanded={open ? "true" : undefined}
+                    aria-label="select merge strategy"
+                    aria-haspopup="menu"
+                    onClick={handleToggle}
+                  >
+                    <ArrowDropDownIcon />
+                  </Button>
+                </ButtonGroup>
+                <Popper
+                  open={open}
+                  anchorEl={anchorRef.current}
+                  role={undefined}
+                  transition
+                  disablePortal
+                >
+                  {({ TransitionProps, placement }) => (
+                    <Grow
+                      {...TransitionProps}
+                      style={{
+                        transformOrigin:
+                          placement === "bottom"
+                            ? "center top"
+                            : "center bottom",
+                      }}
+                    >
+                      <Paper>
+                        <ClickAwayListener onClickAway={handleClose}>
+                          <MenuList id="split-button-menu">
+                            {options.map((option, index) => (
+                              <MenuItem
+                                key={option}
+                                disabled={index === 2}
+                                selected={index === selectedIndex}
+                                onClick={(event) =>
+                                  handleMenuItemClick(event, index)
+                                }
+                              >
+                                {option}
+                              </MenuItem>
+                            ))}
+                          </MenuList>
+                        </ClickAwayListener>
+                      </Paper>
+                    </Grow>
+                  )}
+                </Popper>
               </Grid>
             </Grid>
           </Grid>

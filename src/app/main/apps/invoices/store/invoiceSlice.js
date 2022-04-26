@@ -24,6 +24,20 @@ export const addInvoice = createAsyncThunk(
   }
 );
 
+export const rejectInvoice = createAsyncThunk(
+  "invoicesApp/invoice/rejectInvoice",
+  async (id, { dispatch }) => {
+    const response = await axios
+      .post(`/invoices/flow/${id}/reject`)
+      .catch((error) => {
+        console.log("error response: ", error);
+      });
+    const data = await response.data.data;
+    console.log("reject invoices: ", data);
+    dispatch(getInvoices());
+    return data;
+  }
+);
 export const removeProduct = createAsyncThunk(
   "eCommerceApp/product/removeProduct",
   async (val, { dispatch, getState }) => {
@@ -110,6 +124,7 @@ const invoiceSlice = createSlice({
     // [getInvoice.fulfilled]: (state, action) => action.payload,
     [saveInvoice.fulfilled]: (state, action) => action.payload,
     [removeProduct.fulfilled]: (state, action) => null,
+    [rejectInvoice.fulfilled]: (state, action) => action.payload,
   },
 });
 
