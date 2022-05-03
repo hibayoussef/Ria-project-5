@@ -8,7 +8,6 @@ import TableCell from "@material-ui/core/TableCell";
 import TablePagination from "@material-ui/core/TablePagination";
 import TableRow from "@material-ui/core/TableRow";
 import Typography from "@material-ui/core/Typography";
-import clsx from "clsx";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -17,6 +16,13 @@ import FuseLoading from "@fuse/core/FuseLoading";
 import { getInvoices, selectInvoices } from "../store/invoicesSlice";
 import InvoicesTableHead from "./InvoicesTableHead";
 import moment from "moment";
+import FaceIcon from "@mui/icons-material/Face";
+import Chip from "@mui/material/Chip";
+import VerifiedUserIcon from "@material-ui/icons/VerifiedUser";
+import VisibilityIcon from "@material-ui/icons/Visibility";
+import CreditCardIcon from "@material-ui/icons/CreditCard";
+import CancelIcon from "@material-ui/icons/Cancel";
+import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 
 function InvoicesTable(props) {
   const dispatch = useDispatch();
@@ -107,6 +113,23 @@ function InvoicesTable(props) {
   function handleChangeRowsPerPage(event) {
     setRowsPerPage(event.target.value);
   }
+
+  const statusIcon = (status) => {
+    switch (status) {
+      case "approval_pending":
+        return <VerifiedUserIcon />;
+      case "review_pending":
+        return <VisibilityIcon />;
+      case "payment_pending":
+        return <CreditCardIcon />;
+      case "completed":
+        return <CheckCircleIcon />;
+      case "rejected":
+        return <CancelIcon />;
+      default:
+        return <CancelIcon />;
+    }
+  };
 
   if (loading) {
     return <FuseLoading />;
@@ -209,6 +232,17 @@ function InvoicesTable(props) {
                       {n.submittedBy.name}
                     </TableCell>
 
+                    <TableCell
+                      className="p-4 md:p-16 truncate"
+                      component="th"
+                      scope="row"
+                    >
+                      <Chip
+                        style={{ fontSize: "1.2rem" }}
+                        icon={statusIcon(n.status)}
+                        label={n.status}
+                      />
+                    </TableCell>
                     <TableCell
                       className="p-4 md:p-16"
                       component="th"

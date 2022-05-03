@@ -38,7 +38,14 @@ const rows = [
     id: "submittedBy.name",
     align: "left",
     disablePadding: false,
-    label: "Organizer Name",
+    label: "Submitted By",
+    sort: true,
+  },
+  {
+    id: "status",
+    align: "left",
+    disablePadding: false,
+    label: "Status",
     sort: true,
   },
 

@@ -5,29 +5,16 @@ import { useParams } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import moment from "moment";
-import { useTheme } from "@material-ui/core/styles";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import TodayIcon from "@material-ui/icons/Today";
 import { makeStyles } from "@material-ui/core/styles";
-import { pdfjs } from "react-pdf";
-import Button from "@material-ui/core/Button";
-import FuseScrollbars from "@fuse/core/FuseScrollbars";
-import clsx from "clsx";
-import ButtonGroup from "@material-ui/core/ButtonGroup";
-import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
-import ClickAwayListener from "@material-ui/core/ClickAwayListener";
-import Grow from "@material-ui/core/Grow";
-import Paper from "@material-ui/core/Paper";
-import Popper from "@material-ui/core/Popper";
-import MenuItem from "@material-ui/core/MenuItem";
-import MenuList from "@material-ui/core/MenuList";
 import RejectDialog from "./rejectDialog";
-
-const options = [
-  "Create a merge commit",
-  "Squash and merge",
-  "Rebase and merge",
-];
+import GroupButton from "./groupButttonReviewStatus";
+import GroupButttonReviewStatus from "./groupButttonReviewStatus";
+import GroupButttonApproveStatus from "./groupButtonApproveStatus";
+import GroupButttonPaymentStatus from "./groupButtonPaymentStatus";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
+import { useTheme } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -47,13 +34,12 @@ const useStyles = makeStyles((theme) => ({
 const InvoiceDetails = () => {
   const classes = useStyles();
   const theme = useTheme();
-  const breakpoint = theme.breakpoints.down("sm");
   const routeParams = useParams();
   const [invoice, setInvoice] = useState([]);
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef(null);
   const [selectedIndex, setSelectedIndex] = React.useState(1);
-
+  const breakpoint = useMediaQuery(theme.breakpoints.down("sm"));
   // const defaultLayoutPluginInstance = defaultLayoutPlugin();
 
   useEffect(() => {
@@ -86,6 +72,21 @@ const InvoiceDetails = () => {
   console.log("invoice url: ", invoice?.file?.url);
   console.log("invoice tara : ", invoice);
 
+  const statusGropButton = (status, id) => {
+    switch (status) {
+      case "review_pending":
+        return <GroupButttonReviewStatus id={id} />;
+      case "approval_pending":
+        return <GroupButttonApproveStatus id={id} />;
+      case "payment_pending":
+        return <GroupButttonPaymentStatus id={id} />;
+      case "rejected":
+        return <GroupButton id={id} />;
+      default:
+        return;
+    }
+  };
+
   return (
     <>
       <Grid container>
@@ -107,7 +108,7 @@ const InvoiceDetails = () => {
           </object>
         </Grid>
 
-        <Grid item xs={5} sm={5} style={{ padding: "3rem" }}>
+        <Grid item xs={5} sm={5} style={{ padding: "4rem" }}>
           <Grid item>
             <h1 style={{ fontWeight: "bold" }}>Invoice Details</h1>
           </Grid>
@@ -137,7 +138,7 @@ const InvoiceDetails = () => {
               >
                 <h3>Invoice ID</h3>
               </Grid>
-              <Grid item xs={9} sm={9}>
+              <Grid item xs={12} sm={12}>
                 <TextField
                   className="mt-8 mb-16"
                   id="outlined-size-normal"
@@ -160,7 +161,7 @@ const InvoiceDetails = () => {
               >
                 <h3>Issue Date</h3>
               </Grid>
-              <Grid item xs={9} sm={9}>
+              <Grid item xs={12} sm={12}>
                 <TextField
                   className="mt-8 mb-16"
                   id="outlined-size-normal"
@@ -194,7 +195,7 @@ const InvoiceDetails = () => {
               >
                 <h3>Due Date</h3>
               </Grid>
-              <Grid item xs={9} sm={9}>
+              <Grid item xs={12} sm={12}>
                 <TextField
                   className="mt-8 mb-16"
                   id="outlined-size-normal"
@@ -228,7 +229,7 @@ const InvoiceDetails = () => {
               >
                 <h3>Net Amount</h3>
               </Grid>
-              <Grid item xs={9} sm={9}>
+              <Grid item xs={12} sm={12}>
                 <TextField
                   className="mt-8 mb-16"
                   id="outlined-size-normal"
@@ -251,7 +252,7 @@ const InvoiceDetails = () => {
               >
                 <h3>Tax Number</h3>
               </Grid>
-              <Grid item xs={9} sm={9}>
+              <Grid item xs={12} sm={12}>
                 <TextField
                   className="mt-8 mb-16"
                   id="outlined-size-normal"
@@ -274,7 +275,7 @@ const InvoiceDetails = () => {
               >
                 <h3>Gross Amount</h3>
               </Grid>
-              <Grid item xs={9} sm={9}>
+              <Grid item xs={12} sm={12}>
                 <TextField
                   className="mt-8 mb-16"
                   // label="Size"
@@ -289,92 +290,11 @@ const InvoiceDetails = () => {
             <Grid
               container
               direction="row"
-              justifyContent="flex-end"
+              justifyContent="center"
               alignItems="center"
+              style={{ marginTop: "3rem" }}
             >
-              <Grid item style={{ paddingRight: "1rem" }}>
-                {/* <Button
-                  onClick={(ev) => {
-                    dispatch(rejectInvoice(invoice?.id));
-                    rejectInvoiceHandleClick(ev);
-                  }}
-                  variant="contained"
-                  style={{
-                    paddingLeft: "2.4rem",
-                    paddinRight: "2.4rem",
-                    paddingTop: "1.5rem",
-                    paddingBottom: "1.5rem",
-                    backgroundColor: "#dc3c24",
-                    color: "#FFFFFF",
-                    borderRadius: 4,
-                  }}
-                >
-                  Reject Invoice
-                </Button> */}
-                <RejectDialog id={invoice?.id} />
-              </Grid>
-
-              <Grid item>
-                <ButtonGroup
-                  variant="contained"
-                  color="primary"
-                  ref={anchorRef}
-                  aria-label="split button"
-                >
-                  <Button onClick={handleClick}>
-                    {options[selectedIndex]}
-                  </Button>
-                  <Button
-                    color="primary"
-                    size="small"
-                    aria-controls={open ? "split-button-menu" : undefined}
-                    aria-expanded={open ? "true" : undefined}
-                    aria-label="select merge strategy"
-                    aria-haspopup="menu"
-                    onClick={handleToggle}
-                  >
-                    <ArrowDropDownIcon />
-                  </Button>
-                </ButtonGroup>
-                <Popper
-                  open={open}
-                  anchorEl={anchorRef.current}
-                  role={undefined}
-                  transition
-                  disablePortal
-                >
-                  {({ TransitionProps, placement }) => (
-                    <Grow
-                      {...TransitionProps}
-                      style={{
-                        transformOrigin:
-                          placement === "bottom"
-                            ? "center top"
-                            : "center bottom",
-                      }}
-                    >
-                      <Paper>
-                        <ClickAwayListener onClickAway={handleClose}>
-                          <MenuList id="split-button-menu">
-                            {options.map((option, index) => (
-                              <MenuItem
-                                key={option}
-                                disabled={index === 2}
-                                selected={index === selectedIndex}
-                                onClick={(event) =>
-                                  handleMenuItemClick(event, index)
-                                }
-                              >
-                                {option}
-                              </MenuItem>
-                            ))}
-                          </MenuList>
-                        </ClickAwayListener>
-                      </Paper>
-                    </Grow>
-                  )}
-                </Popper>
-              </Grid>
+              <Grid item>{statusGropButton(invoice.status, invoice?.id)}</Grid>
             </Grid>
           </Grid>
         </Grid>

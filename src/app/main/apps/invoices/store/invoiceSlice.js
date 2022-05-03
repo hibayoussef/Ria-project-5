@@ -9,6 +9,12 @@ export const getInvoice = async (params) => {
   return response.data.data;
 };
 
+export const getUsers = async () => {
+  const response = await axios.get("/users/for-admin");
+  console.log("get Users response:  ", response);
+  return response.data.data;
+};
+
 export const addInvoice = createAsyncThunk(
   "invoicesApp/invoice/addInvoice",
   async (invoice, { dispatch, getState }) => {
@@ -34,10 +40,88 @@ export const rejectInvoice = createAsyncThunk(
       });
     const data = await response.data.data;
     console.log("reject invoices: ", data);
+    // dispatch(getInvoice(data.id));
+    dispatch(getInvoices());
+
+    return data;
+  }
+);
+
+export const confirmReview = createAsyncThunk(
+  "invoicesApp/invoice/confirmReview",
+  async (id, { dispatch }) => {
+    const response = await axios
+      .post(`/invoices/flow/${id}/review`)
+      .catch((error) => {
+        console.log("error response: ", error);
+      });
+    const data = await response.data.data;
+    console.log("review invoices: ", data);
+    // dispatch(getInvoice(data.id));
     dispatch(getInvoices());
     return data;
   }
 );
+
+export const markAsPaid = createAsyncThunk(
+  "invoicesApp/invoice/markAsPaid",
+  async (id, { dispatch }) => {
+    const response = await axios
+      .post(`/invoices/flow/${id}/mark-as-paid`)
+      .catch((error) => {
+        console.log("error response: ", error);
+      });
+    const data = await response.data.data;
+    console.log("mark as paid invoices: ", data.id);
+    // dispatch(getInvoice(data.id));
+    dispatch(getInvoices());
+    return data;
+  }
+);
+
+export const approveInvoice = createAsyncThunk(
+  "invoicesApp/invoice/confirmReview",
+  async (id, { dispatch }) => {
+    const response = await axios
+      .post(`/invoices/flow/${id}/approve`)
+      .catch((error) => {
+        console.log("error response: ", error);
+      });
+    const data = await response.data.data;
+    console.log("approve invoices: ", data.id);
+    // dispatch(getInvoice(data.id));
+    dispatch(getInvoices());
+    return data;
+  }
+);
+
+export const assignToUser = createAsyncThunk(
+  "invoicesApp/invoice/assignToUser",
+  async ({ invoiceId, userId, assignmentNote }, { dispatch }) => {
+    console.log("hi in new function");
+    console.log(
+      "invoiceId, userId, message",
+      invoiceId,
+      userId,
+      assignmentNote
+    );
+    const response = await axios
+      .post(`/invoices/flow/${invoiceId}/assign-to-user`, {
+        userId,
+        assignmentNote,
+      })
+      .catch((error) => {
+        console.log("error response: ", error);
+      });
+    const data = await response.data.data;
+    console.log("approve invoices: ", data);
+
+    // dispatch(getInvoice(data?.id));
+    dispatch(getInvoices());
+    return data;
+  }
+);
+
 export const removeProduct = createAsyncThunk(
   "eCommerceApp/product/removeProduct",
   async (val, { dispatch, getState }) => {
@@ -125,6 +209,10 @@ const invoiceSlice = createSlice({
     [saveInvoice.fulfilled]: (state, action) => action.payload,
     [removeProduct.fulfilled]: (state, action) => null,
     [rejectInvoice.fulfilled]: (state, action) => action.payload,
+    [confirmReview.fulfilled]: (state, action) => action.payload,
+    [approveInvoice.fulfilled]: (state, action) => action.payload,
+    [markAsPaid.fulfilled]: (state, action) => action.payload,
+    [assignToUser.fulfilled]: (state, action) => action.payload,
   },
 });
 

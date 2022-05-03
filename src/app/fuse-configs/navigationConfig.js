@@ -107,6 +107,34 @@ const tempNavigation = [
           },
         ],
       },
+      // userrrrrrrrrr
+      {
+        id: "Receipts",
+        title: "Receipts",
+        translate: "Receipts",
+        type: "collapse",
+        icon: "receipts",
+        url: "/apps/e-commerce-user",
+        auth: authRoles.onlyUser,
+        children: [
+          {
+            id: "e-commerce-products",
+            title: "Receipts",
+            type: "item",
+            url: "/apps/e-commerce-user/products-user",
+            exact: true,
+            auth: authRoles.onlyUser,
+          },
+          {
+            id: "e-commerce-product-detail",
+            title: "Receipt Details",
+            type: "item",
+            url: "/apps/e-commerce-user/orders-user/1",
+            exact: true,
+            auth: authRoles.onlyUser,
+          },
+        ],
+      },
 
       {
         id: "Jobs",
@@ -142,6 +170,7 @@ const tempNavigation = [
             type: "item",
             url: "/apps/salary-scales-section/salary-scales",
             exact: true,
+            auth: authRoles.super_admin,
           },
           {
             id: "salary-scales-detail",
@@ -149,6 +178,7 @@ const tempNavigation = [
             type: "item",
             url: "/apps/salary-scales-section/salary-scales/1",
             exact: true,
+            auth: authRoles.super_admin,
           },
           {
             id: "new-salary-scale",
@@ -156,6 +186,7 @@ const tempNavigation = [
             type: "item",
             url: "/apps/salary-scales-section/salary-scales/new",
             exact: true,
+            auth: authRoles.super_admin,
           },
         ],
       },
@@ -175,6 +206,7 @@ const tempNavigation = [
             type: "item",
             url: "/apps/invoices-section/invoices",
             exact: true,
+            auth: authRoles.super_admin,
           },
           {
             id: "invoice-detail",
@@ -182,6 +214,7 @@ const tempNavigation = [
             type: "item",
             url: "/apps/invoices-section/invoices/1",
             exact: true,
+            auth: authRoles.super_admin,
           },
           {
             id: "new-invoice",
@@ -189,39 +222,13 @@ const tempNavigation = [
             type: "item",
             url: "/apps/invoices-section/invoices/new",
             exact: true,
+            auth: authRoles.super_admin,
           },
         ],
       },
 
       // **************************
 
-      // {
-      //   id: "Receipts",
-      //   title: "Receipts",
-      //   translate: "Receipts",
-      //   type: "collapse",
-      //   icon: "receipts",
-      //   url: "/apps/e-commerce-user",
-      //   auth: authRoles.user,
-      //   children: [
-      //     {
-      //       id: "e-commerce-products",
-      //       title: "Receipts",
-      //       type: "item",
-      //       url: "/apps/e-commerce-user/products-user",
-      //       exact: true,
-      //       auth: authRoles.user,
-      //     },
-      //     {
-      //       id: "e-commerce-product-detail",
-      //       title: "Receipt Details",
-      //       type: "item",
-      //       url: "/apps/e-commerce-user/orders-user/1",
-      //       exact: true,
-      //       auth: authRoles.user,
-      //     },
-      //   ],
-      // },
       // {
       //   id: "mail",
       //   title: "Mail",

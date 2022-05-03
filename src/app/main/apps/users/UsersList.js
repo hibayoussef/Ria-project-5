@@ -18,6 +18,7 @@ import {
   selectUsers,
 } from "./store/usersSlice";
 import { useSnackbar } from "notistack";
+import AssignJobToUser from "./AssignJob";
 
 const useStyles = makeStyles({
   button1: {
@@ -141,7 +142,7 @@ function UsersList(props) {
         sortable: false,
         Cell: ({ row }) => (
           <div className="flex items-center">
-            <IconButton
+            {/* <IconButton
               onClick={(ev) => {
                 ev.stopPropagation();
                 // dispatch(approveUser(row.original.id));
@@ -149,11 +150,13 @@ function UsersList(props) {
                 // handleClick(ev);
                 // dispatch(toggleStarredContact(row.original.id));
               }}
-              className={classes.button1}
             >
-              <Icon>edit</Icon>
-            </IconButton>
-            <IconButton
+              <Icon>
+                <AssignJob />
+              </Icon>
+            </IconButton> */}
+            {/* <AssignJobToUser /> */}
+            {/* <IconButton
               onClick={(ev) => {
                 ev.stopPropagation();
                 // dispatch(rejectUser(row.original.id));
@@ -162,7 +165,7 @@ function UsersList(props) {
               className={classes.button2}
             >
               <Icon>delete</Icon>
-            </IconButton>
+            </IconButton> */}
           </div>
         ),
       },
@@ -205,11 +208,11 @@ function UsersList(props) {
       <UsersTable
         columns={columns}
         data={filteredData}
-        // onRowClick={(ev, row) => {
-        // if (row) {
-        // dispatch(openEditContactDialog(row.original));
-        // }
-        // }}
+        onRowClick={(ev, row) => {
+          if (row) {
+            dispatch(openEditContactDialog(row.original));
+          }
+        }}
       />
     </motion.div>
   );

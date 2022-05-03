@@ -88,7 +88,7 @@ function JobsHeader(props) {
           color="secondary"
           onClick={(ev) => dispatch(openNewJobDialog())}
         >
-          <span className="hidden sm:flex">Add New Product</span>
+          <span className="hidden sm:flex">Add New Job</span>
           <span className="flex sm:hidden">New</span>
         </Button>
       </motion.div>

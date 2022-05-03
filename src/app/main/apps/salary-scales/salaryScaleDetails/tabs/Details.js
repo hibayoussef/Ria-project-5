@@ -42,6 +42,7 @@ function Details(props) {
   useEffect(() => {
     getSalaryScale(routeParams).then((response) => {
       setSalaryScale(response);
+      console.log("*********: ", response);
     });
   }, []);
 
@@ -64,23 +65,6 @@ function Details(props) {
     <div>
       {salaryScale?.salaryScaleJobs?.map((sc) => (
         <div key={sc?.id}>
-          {/* <TextField
-            className="mt-8 mb-16"
-            id="outlined-size-normal"
-            value={sc?.job?.name || ""}
-            variant="outlined"
-            outline="none"
-            fullWidth
-            disableUnderline={false}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <WorkOutlineOutlinedIcon />
-                </InputAdornment>
-              ),
-            }}
-          /> */}
-
           <div>
             <Tooltip title={sc?.job?.description}>
               <Input
