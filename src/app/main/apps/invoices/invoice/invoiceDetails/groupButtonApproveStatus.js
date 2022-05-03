@@ -134,7 +134,7 @@ const GroupButttonApproveStatus = (id) => {
 
   return (
     <Fragment>
-      <ButtonGroup size="large">
+      <ButtonGroup size="medium">
         <Button
           onClick={(ev) => {
             handleClickConfirmDialogOpen();

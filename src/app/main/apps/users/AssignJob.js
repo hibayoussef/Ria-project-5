@@ -1,50 +1,76 @@
+import { Fragment, useState } from "react";
+import { ButtonGroup } from "@material-ui/core";
 import React from "react";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useTheme } from "@material-ui/core/styles";
 import { useSnackbar } from "notistack";
 import Slide from "@material-ui/core/Slide";
-// import { rejectInvoice } from "../../store/invoiceSlice";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import TextField from "@mui/material/TextField";
-import FlagIcon from "@mui/icons-material/Flag";
 import { makeStyles } from "@material-ui/core/styles";
+import Autocomplete from "@mui/material/Autocomplete";
+import { useEffect } from "react";
 import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
+import { getJobs, assignJobToUser } from "./store/usersSlice";
 
 const useStyles = makeStyles((theme) => ({
   paper: { padding: "3rem", maxWidth: "990px", minWidth: "300px" },
   textStyle: {
     paddingLeft: "2rem",
   },
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 120,
+  },
+  selectEmpty: {
+    marginTop: theme.spacing(2),
+  },
+  font: {
+    fontSize: "5rem",
+  },
 }));
 
 const AssignJobToUser = (id) => {
-  const classes = useStyles();
-  console.log("iddddd: ", id);
-  const [open, setOpen] = React.useState(false);
-  const [level, setLevel] = React.useState("");
+  const userId = id?.id;
+  const [assignJobToUserDialogOpen, setAssignJobToUserDialogOpen] =
+    useState(false);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const dispatch = useDispatch();
   const theme = useTheme();
-  const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
+  const AssignToUserFullScreen = useMediaQuery(theme.breakpoints.down("sm"));
+  const classes = useStyles();
+  const [jobs, setJobs] = useState([]);
+  const [jobId, setJobId] = useState(0);
+  const [level, setLevel] = useState("");
 
-  const handleClickOpen = () => {
-    setOpen(true);
+  useEffect(() => {
+    getJobs().then((response) => {
+      console.log("jobs response in approve: ", response);
+      setJobs(response);
+    });
+  }, []);
+  // confirm
+
+  console.log("users: ", jobs);
+
+  //   end assign to user
+  const handleClickAssignJobToUserDialogClose = () =>
+    setAssignJobToUserDialogOpen(false);
+  const handleClickAssignJobToUserDialogOpen = () => {
+    setAssignJobToUserDialogOpen(true);
   };
 
-  const handleClose = () => {
-    setOpen(false);
-  };
+  //end confirm
 
-  const rejectInvoiceHandleClick = () => {
+  const assignToUserToApproveInvoiceHandleClick = () => {
     enqueueSnackbar(
-      "Invoice rejected successfully",
-      { variant: "error" },
+      "A Job has been successfully assigned to the user",
+      { variant: "success" },
       {
         anchorOrigin: {
           vertical: "top",
@@ -54,89 +80,128 @@ const AssignJobToUser = (id) => {
       { TransitionComponent: Slide }
     );
   };
+
   return (
-    <div>
-      <Button
+    <Fragment>
+      <ButtonGroup>
+        <Button
+          onClick={(ev) => {
+            handleClickAssignJobToUserDialogOpen();
+          }}
+          variant="contained"
+          style={{
+            paddingLeft: "2.4rem",
+            paddinRight: "2.4rem",
+            paddingTop: "1.5rem",
+            paddingBottom: "1.5rem",
+            backgroundColor: "#d82c2c",
+            color: "#FFFFFF",
+            borderRadius: 4,
+          }}
+        >
+          {/* <IconButton
         onClick={(ev) => {
-          handleClickOpen();
+          handleClickassignJobToUserDialogOpen();
         }}
-        variant="contained"
-        style={{
-          paddingLeft: "2.4rem",
-          paddinRight: "2.4rem",
-          paddingTop: "1.5rem",
-          paddingBottom: "1.5rem",
-          backgroundColor: "#d82c2c",
-          color: "#FFFFFF",
-          borderRadius: 4,
-        }}
-      >
-        <MoreHorizIcon />
-      </Button>
+      > */}
+          <MoreHorizIcon />
+          {/* </IconButton> */}
+        </Button>
+      </ButtonGroup>
+
+      {/* assign to user dialog */}
+
       <Dialog
         classes={{ paper: classes.paper }}
         maxWidth="sm"
-        fullScreen={fullScreen}
-        open={open}
-        onClose={handleClose}
+        fullScreen={AssignToUserFullScreen}
+        open={assignJobToUserDialogOpen}
+        onClose={handleClickAssignJobToUserDialogClose}
       >
-        <DialogTitle style={{ fontWeight: "bold" }}>
-          Assign Job to User
+        <DialogTitle style={{ fontWeight: "bold", fontSize: "4rem" }}>
+          Assign a Job to User
         </DialogTitle>
+
         <DialogContent>
-          <div
-            style={{
-              borderRadius: 10,
-              padding: "3rem",
-            }}
-          >
-            <form id="myform">
+          <Autocomplete
+            id="combo-box-demo"
+            onChange={(event, value) => {
+              console.log("value vvv:", value);
+              console.log("value.id: ", value.id);
+              setJobId(value.id);
+            }} // prints the selected value
+            // value={users || ""}
+            options={jobs || []}
+            getOptionLabel={(option) => option.name || ""}
+            sx={{ width: 860 }}
+            defaultValue={jobs?.find((v) => v.name[0])}
+            renderInput={(params) => (
               <TextField
-                id="outlined-basic"
-                className="mb-24"
-                required
+                {...params}
+                placeholder="Search Member"
                 fullWidth
-                variant="outlined"
-                value={level}
-                onChange={(e) => setLevel(e.target.value)}
-                placeholder="jjjj"
+                InputProps={{ ...params.InputProps, style: { fontSize: 17 } }}
+                InputLabelProps={{ style: { fontSize: 17 } }}
               />
-            </form>
-            <DialogContentText>
-              <FlagIcon
-                style={{ fontSize: 40, color: "#F8F9FA", paddingRight: "1rem" }}
+            )}
+          />
+        </DialogContent>
+        <DialogContent style={{ marginTop: "15rem", marginBottom: "10rem" }}>
+          <Autocomplete
+            id="combo-box-demo"
+            onChange={(event, value) => {
+              console.log("value vvv:", value);
+              console.log("value.id: ", value.level);
+              setLevel(value.level);
+            }} // prints the selected value
+            // value={users || ""}
+            options={levels || []}
+            getOptionLabel={(option) => option.level || ""}
+            sx={{ width: 860 }}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                placeholder="Search Member"
+                fullWidth
+                InputProps={{ ...params.InputProps, style: { fontSize: 17 } }}
+                InputLabelProps={{ style: { fontSize: 17 } }}
               />
-              Keep in mind that once the invoice is rejected you won’t be able
-              to proceed with it.
-            </DialogContentText>
-          </div>
+            )}
+          />
         </DialogContent>
         <DialogActions>
           <div style={{ paddingRight: "1rem" }}>
             <Button
-              onClick={handleClose}
+              onClick={handleClickAssignJobToUserDialogClose}
               style={{ color: "#dc3c24", fontWeight: 500 }}
               autoFocus
             >
               Cancel
             </Button>
+
             <Button
               onClick={(ev) => {
-                // dispatch(rejectInvoice(id?.id));
-                rejectInvoiceHandleClick(ev);
-                handleClose();
+                dispatch(assignJobToUser({ userId, jobId, level }));
+                assignToUserToApproveInvoiceHandleClick(ev);
+                handleClickAssignJobToUserDialogClose();
               }}
               style={{ color: "#212529", fontWeight: 500 }}
               color="primary"
               autoFocus
             >
-              Reject Invoice
+              Assign Job to user
             </Button>
           </div>
         </DialogActions>
       </Dialog>
-    </div>
+    </Fragment>
   );
 };
 
 export default AssignJobToUser;
+
+const levels = [
+  { id: 1, level: "senior" },
+  { id: 2, level: "mid_level" },
+  { id: 3, level: "junior" },
+];

@@ -6,6 +6,13 @@ import {
 import axios from "axios";
 import { getUserData } from "./userSlice";
 
+export const getJobs = async () => {
+  const response = await axios.get("/jobs");
+  const jobsRequestsData = await response.data.data;
+  console.log("Response: ", jobsRequestsData);
+  return jobsRequestsData;
+};
+
 export const getUsers = createAsyncThunk(
   "usersRequests/getUsersRequests",
   async (routeParams, { getState }) => {
@@ -18,6 +25,30 @@ export const getUsers = createAsyncThunk(
     const usersRequestsData = response.data.data;
     console.log("data inside Slice:", usersRequestsData);
     return usersRequestsData;
+  }
+);
+
+//  =
+
+export const assignJobToUser = createAsyncThunk(
+  "usersRequests/getUsersRequests/assignJobToUser",
+  async ({ userId, jobId, level }, { dispatch }) => {
+    console.log("hi in new function");
+    console.log("invoiceId, userId, message", userId, jobId, level);
+    const response = await axios
+      .patch(`/users/for-admin/${userId}/assign-job`, {
+        jobId,
+        level,
+      })
+      .catch((error) => {
+        console.log("error response: ", error);
+      });
+    const data = await response.data.data;
+    console.log("assign job to user: ", data);
+
+    // dispatch(getInvoice(data?.id));
+    dispatch(getUsers());
+    return data;
   }
 );
 

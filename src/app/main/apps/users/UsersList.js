@@ -6,17 +6,11 @@ import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import { useMemo, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { approveUser, rejectUser } from "./store/usersSlice";
 import UsersMultiSelectMenu from "./UsersMultiSelectMenu";
 import UsersTable from "./UsersTable";
 import { makeStyles } from "@material-ui/core/styles";
 import Slide from "@material-ui/core/Slide";
-import {
-  openEditContactDialog,
-  removeContact,
-  toggleStarredContact,
-  selectUsers,
-} from "./store/usersSlice";
+import { openEditContactDialog, selectUsers } from "./store/usersSlice";
 import { useSnackbar } from "notistack";
 import AssignJobToUser from "./AssignJob";
 
@@ -41,10 +35,6 @@ const useStyles = makeStyles({
   },
 });
 
-// const onRejectUser = useCallback((id) => {
-//   dispatch(rejectUser(id));
-// }, []);
-
 function UsersList(props) {
   const dispatch = useDispatch();
   const classes = useStyles();
@@ -55,34 +45,6 @@ function UsersList(props) {
   const [filteredData, setFilteredData] = useState(null);
 
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
-
-  const handleClick = () => {
-    enqueueSnackbar(
-      "User accepted",
-      { variant: "success" },
-      {
-        anchorOrigin: {
-          vertical: "top",
-          horizontal: "right",
-        },
-      },
-      { TransitionComponent: Slide }
-    );
-  };
-
-  const rejectHandleClick = () => {
-    enqueueSnackbar(
-      "User rejected",
-      { variant: "error" },
-      {
-        anchorOrigin: {
-          vertical: "top",
-          horizontal: "right",
-        },
-      },
-      { TransitionComponent: Slide }
-    );
-  };
 
   const columns = useMemo(
     () => [
@@ -142,7 +104,7 @@ function UsersList(props) {
         sortable: false,
         Cell: ({ row }) => (
           <div className="flex items-center">
-            {/* <IconButton
+            <IconButton
               onClick={(ev) => {
                 ev.stopPropagation();
                 // dispatch(approveUser(row.original.id));
@@ -152,9 +114,9 @@ function UsersList(props) {
               }}
             >
               <Icon>
-                <AssignJob />
+                <AssignJobToUser id={row.original.id} />
               </Icon>
-            </IconButton> */}
+            </IconButton>
             {/* <AssignJobToUser /> */}
             {/* <IconButton
               onClick={(ev) => {
