@@ -7,31 +7,22 @@ import { useFormContext } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
 import _ from "@lodash";
-import {
-  saveProduct,
-  removeProduct,
-  addSalaryScale,
-} from "../store/salaryScaleSlice";
+// import { addInvoice, removeProduct } from "../../store/invoiceSlice";
 
 function SalaryScaleHeader(props) {
   const dispatch = useDispatch();
   const methods = useFormContext();
-  const { formState, watch, getValues } = methods;
-  const { isValid, dirtyFields } = formState;
-  const featuredImageId = watch("featuredImageId");
-  const images = watch("images");
-  const name = watch("name");
   const theme = useTheme();
   const history = useHistory();
 
-  function handleSaveProduct() {
-    dispatch(addSalaryScale(getValues()));
+  function handleSaveInvoice() {
+    // dispatch(addInvoice(getValues()));
   }
 
   function handleRemoveProduct() {
-    dispatch(removeProduct()).then(() => {
-      history.push("/apps/salary-scales-section/salary-scales");
-    });
+    // dispatch(removeProduct()).then(() => {
+    //   history.push("/apps/e-commerce/products");
+    // });
   }
 
   return (
@@ -45,7 +36,7 @@ function SalaryScaleHeader(props) {
             className="flex items-center sm:mb-12"
             component={Link}
             role="button"
-            to="/apps/salary-scales-section/salary-scales"
+            to="/apps/invoices-section/invoices"
             color="inherit"
           >
             <Icon className="text-20">
@@ -58,6 +49,17 @@ function SalaryScaleHeader(props) {
         </motion.div>
 
         <div className="flex items-center max-w-full">
+          <motion.div
+            className="hidden sm:flex"
+            initial={{ scale: 0 }}
+            animate={{ scale: 1, transition: { delay: 0.3 } }}
+          >
+            <img
+              className="w-32 sm:w-48 rounded"
+              src="assets/images/ecommerce/product-image-placeholder.png"
+              alt="invoice"
+            />
+          </motion.div>
           <div className="flex flex-col min-w-0 mx-8 sm:mc-16">
             <motion.div
               initial={{ x: -20 }}
@@ -66,9 +68,9 @@ function SalaryScaleHeader(props) {
               <Typography className="text-16 sm:text-20 truncate font-semibold">
                 {name || "New Salary Scale"}
               </Typography>
-              <Typography variant="caption" className="font-medium">
-                Salary Scale Detail
-              </Typography>
+              {/* <Typography variant="caption" className="font-medium">
+                Invoice Detail
+              </Typography> */}
             </motion.div>
           </div>
         </div>

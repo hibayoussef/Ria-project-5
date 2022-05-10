@@ -3,6 +3,13 @@ import axios from "axios";
 import FuseUtils from "@fuse/utils";
 import { getSalaryScales } from "./salaryScalesSlice";
 
+export const getJobs = async () => {
+  const response = await axios.get("/jobs");
+  const jobsRequestsData = await response.data.data;
+  console.log("Response: ", jobsRequestsData);
+  return jobsRequestsData;
+};
+
 export const getSalaryScale = async (params) => {
   console.log("ppparams: ", params);
   const response = await axios.get(`/salary-scales/${params.salaryScaleId}`);

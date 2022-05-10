@@ -4,6 +4,9 @@ import { createSelector } from "@reduxjs/toolkit";
 import DocumentationNavigation from "../main/documentation/DocumentationNavigation";
 import RecentActorsIcon from "@material-ui/icons/RecentActors";
 import ReceiptIcon from "@material-ui/icons/Receipt";
+import SignalCellularAltIcon from "@material-ui/icons/SignalCellularAlt";
+import ContactMailSharpIcon from "@material-ui/icons/ContactMailSharp";
+import PeopleAltIcon from "@material-ui/icons/PeopleAlt";
 
 import ar from "./navigation-i18n/ar";
 import en from "./navigation-i18n/en";
@@ -45,30 +48,83 @@ const tempNavigation = [
       // ],
       // },
       {
-        auth: authRoles.super_admin,
-        id: "contacts",
-        title: "Registration requests",
-        translate: "Registration requests",
+        id: "profile",
+        title: "Profile",
         type: "item",
-        icon: "account_box",
-        url: "/apps/contacts/all",
+        icon: "person",
+        url: "/pages/profile",
       },
-
       {
         auth: authRoles.super_admin,
         id: "Users",
         title: "Users",
         translate: "Users",
         type: "item",
-        icon: "account_box",
+        icon: <PeopleAltIcon />,
         url: "/apps/users/all",
       },
       {
-        id: "profile",
-        title: "Profile",
+        auth: authRoles.super_admin,
+        id: "contacts",
+        title: "Registration requests",
+        translate: "Registration requests",
         type: "item",
-        icon: "person",
-        url: "/pages/profile",
+        icon: <ContactMailSharpIcon></ContactMailSharpIcon>,
+        url: "/apps/contacts/all",
+      },
+      {
+        id: "Jobs",
+        title: "Jobs",
+        translate: "Jobs",
+        type: "collapse",
+        icon: "work",
+        url: "/apps/jobs",
+        auth: authRoles.super_admin,
+        children: [
+          {
+            id: "display-jobs",
+            title: "Jobs Details",
+            type: "item",
+            url: "/apps/jobs",
+            exact: true,
+            auth: authRoles.super_admin,
+          },
+        ],
+      },
+      {
+        auth: authRoles.super_admin,
+        id: "salary-scales",
+        title: "Salary Scales",
+        translate: "Salary Scales",
+        type: "collapse",
+        icon: <SignalCellularAltIcon></SignalCellularAltIcon>,
+        url: "/apps/salary-scale-section",
+        children: [
+          {
+            id: "salary-scales-dispaly",
+            title: "Salary Scales",
+            type: "item",
+            url: "/apps/salary-scales-section/salary-scales",
+            exact: true,
+            auth: authRoles.super_admin,
+          },
+          {
+            id: "salary-scales-detail",
+            title: "Salary Scales Details",
+            type: "item",
+            url: "/apps/salary-scales-section/salary-scales/1",
+            exact: true,
+            auth: authRoles.super_admin,
+          },
+          {
+            id: "new-salary-scale",
+            title: "New Salary Scale",
+            type: "item",
+            url: "/apps/salary-scales-section/salary-scales/new",
+            exact: true,
+            auth: authRoles.super_admin,
+          },
+        ],
       },
 
       {
@@ -132,61 +188,6 @@ const tempNavigation = [
             url: "/apps/e-commerce-user/orders-user/1",
             exact: true,
             auth: authRoles.onlyUser,
-          },
-        ],
-      },
-
-      {
-        id: "Jobs",
-        title: "Jobs",
-        translate: "Jobs",
-        type: "collapse",
-        icon: "work",
-        url: "/apps/jobs",
-        auth: authRoles.super_admin,
-        children: [
-          {
-            id: "display-jobs",
-            title: "Jobs Details",
-            type: "item",
-            url: "/apps/jobs",
-            exact: true,
-            auth: authRoles.super_admin,
-          },
-        ],
-      },
-      {
-        auth: authRoles.super_admin,
-        id: "salary-scales",
-        title: "Salary Scales",
-        translate: "Salary Scales",
-        type: "collapse",
-        icon: "shopping_cart",
-        url: "/apps/salary-scale-section",
-        children: [
-          {
-            id: "salary-scales-dispaly",
-            title: "Salary Scales",
-            type: "item",
-            url: "/apps/salary-scales-section/salary-scales",
-            exact: true,
-            auth: authRoles.super_admin,
-          },
-          {
-            id: "salary-scales-detail",
-            title: "Salary Scales Details",
-            type: "item",
-            url: "/apps/salary-scales-section/salary-scales/1",
-            exact: true,
-            auth: authRoles.super_admin,
-          },
-          {
-            id: "new-salary-scale",
-            title: "New Salary Scale",
-            type: "item",
-            url: "/apps/salary-scales-section/salary-scales/new",
-            exact: true,
-            auth: authRoles.super_admin,
           },
         ],
       },

@@ -69,7 +69,7 @@ function SalaryScalesHeader(props) {
       >
         <Button
           component={Link}
-          to="/apps/salary-scales-section/salary-scales/new"
+          to="/apps/salary-scales-section/salary-scale/new-salary-scale"
           className="whitespace-nowrap"
           variant="contained"
           color="secondary"
