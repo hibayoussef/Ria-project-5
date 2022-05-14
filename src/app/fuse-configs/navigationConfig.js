@@ -228,6 +228,31 @@ const tempNavigation = [
         ],
       },
 
+      {
+        id: "e-commerce",
+        title: "Leaves",
+        translate: "Leaves",
+        type: "collapse",
+        icon: "radio_button_checked",
+        url: "/apps/e-commerce",
+        children: [
+          {
+            id: "e-commerce-orders",
+            title: "Orders",
+            type: "item",
+            url: "/apps/e-commerce/orders",
+            exact: true,
+          },
+          {
+            id: "e-commerce-order-detail",
+            title: "Order Detail",
+            type: "item",
+            url: "/apps/e-commerce/leaves/1",
+            exact: true,
+          },
+        ],
+      },
+
       // **************************
 
       // {

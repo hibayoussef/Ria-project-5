@@ -1,23 +1,18 @@
-import FuseScrollbars from "@fuse/core/FuseScrollbars";
 import _ from "@lodash";
 import Checkbox from "@material-ui/core/Checkbox";
-import Icon from "@material-ui/core/Icon";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
-import TablePagination from "@material-ui/core/TablePagination";
 import TableRow from "@material-ui/core/TableRow";
-import Button from "@material-ui/core/Typography";
 import Typography from "@material-ui/core/Button";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { withRouter } from "react-router-dom";
 import FuseLoading from "@fuse/core/FuseLoading";
-import { getInvoices, selectInvoices } from "../store/invoicesSlice";
-import InvoicesTableHead from "./InvoicesTableHead";
+import { getInvoices, selectInvoices } from "../../store/invoicesSlice";
+import InvoicesTableHead from "../InvoicesTableHead";
 import moment from "moment";
-import FaceIcon from "@mui/icons-material/Face";
 import Chip from "@mui/material/Chip";
 import VerifiedUserIcon from "@material-ui/icons/VerifiedUser";
 import VisibilityIcon from "@material-ui/icons/Visibility";
@@ -25,16 +20,7 @@ import CreditCardIcon from "@material-ui/icons/CreditCard";
 import CancelIcon from "@material-ui/icons/Cancel";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import React from "react";
-import Paper from "@material-ui/core/Paper";
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
-import Divider from "@material-ui/core/Divider";
 import { makeStyles } from "@material-ui/core/styles";
-import AllTable from "./tabs/all";
-import ReviewTable from "./tabs/review";
-import ApprovalTable from "./tabs/approval";
-import PaymentTable from "./tabs/payment";
-import CompleteTable from "./tabs/complete";
 
 const useStyles = makeStyles(() => ({
   divider: {
@@ -43,7 +29,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-function InvoicesTable(props) {
+function AllTable(props) {
   const classes = useStyles();
   const dispatch = useDispatch();
   const invoices = useSelector(selectInvoices);
@@ -56,7 +42,6 @@ function InvoicesTable(props) {
   const [data, setData] = useState(invoices);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [tabValue, setTabValue] = useState(0);
   const [order, setOrder] = useState({
     direction: "asc",
     id: null,
@@ -67,10 +52,6 @@ function InvoicesTable(props) {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-
-  function handleTabChange(event, value) {
-    setTabValue(value);
-  }
 
   useEffect(() => {
     dispatch(getInvoices()).then(() => setLoading(false));
@@ -179,69 +160,134 @@ function InvoicesTable(props) {
       </motion.div>
     );
   }
-
   return (
     <>
-      <div className="w-full flex flex-col">
-        <FuseScrollbars className="flex-grow overflow-x-auto">
-          {/* tabs */}
-          <Paper
-            square
-            style={{ backgroundColor: "#f6f7f9", padding: "1.3rem" }}
-          >
-            <Tabs
-              value={tabValue}
-              onChange={handleTabChange}
-              indicatorColor="primary"
-              textColor="primary"
-              aria-label="disabled tabs example"
-            >
-              <Tab label="All" />
-              <Tab label="Review" />
-              <Tab label="Approval" />
-              <Tab label="Payment" />
-              <Tab label="Complete" />
-            </Tabs>
-          </Paper>
-          {/* end tabs */}
-          <Divider classes={{ root: classes.divider }} />
-
-          <div className={tabValue !== 0 ? "hidden" : ""}>
-            <AllTable />
-          </div>
-          <div className={tabValue !== 1 ? "hidden" : ""}>
-            <ReviewTable />
-          </div>
-          <div className={tabValue !== 2 ? "hidden" : ""}>
-            <ApprovalTable />
-          </div>
-          <div className={tabValue !== 3 ? "hidden" : ""}>
-            <PaymentTable />
-          </div>
-
-          <div className={tabValue !== 4 ? "hidden" : ""}>
-            <CompleteTable />
-          </div>
-        </FuseScrollbars>
-
-        <TablePagination
-          className="flex-shrink-0 border-t-1"
-          component="div"
-          count={data.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          backIconButtonProps={{
-            "aria-label": "Previous Page",
-          }}
-          nextIconButtonProps={{
-            "aria-label": "Next Page",
-          }}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
+      <Table stickyHeader className="min-w-xl" aria-labelledby="tableTitle">
+        <InvoicesTableHead
+          selectedInvoiceIds={selected}
+          order={order}
+          onSelectAllClick={handleSelectAllClick}
+          onRequestSort={handleRequestSort}
+          rowCount={data.length}
+          onMenuItemClick={handleDeselect}
         />
-      </div>
+
+        <TableBody>
+          {_.orderBy(
+            data,
+            [
+              (o) => {
+                switch (order.id) {
+                  case "grossAmount": {
+                    return o.grossAmount[0];
+                  }
+                  default: {
+                    return o[order.id];
+                  }
+                }
+              },
+            ],
+            [order.direction]
+          )
+            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+            .map((n) => {
+              const isSelected = selected.indexOf(n.id) !== -1;
+              return (
+                <TableRow
+                  className="h-72 cursor-pointer"
+                  hover
+                  role="checkbox"
+                  aria-checked={isSelected}
+                  tabIndex={-1}
+                  key={n.id}
+                  selected={isSelected}
+                  onClick={(event) => handleClick(n)}
+                >
+                  <TableCell
+                    className="w-40 md:w-64 text-center"
+                    padding="none"
+                  >
+                    <Checkbox
+                      checked={isSelected}
+                      onClick={(event) => event.stopPropagation()}
+                      onChange={(event) => handleCheck(event, n.id)}
+                    />
+                  </TableCell>
+
+                  <TableCell
+                    className="w-52 px-4 md:px-0"
+                    component="th"
+                    scope="row"
+                    padding="none"
+                  >
+                    <img
+                      className="w-full block rounded"
+                      src="assets/images/ecommerce/invoice.png"
+                      alt="invoice"
+                    />
+                  </TableCell>
+                  <TableCell className="p-4 md:p-16" component="th" scope="row">
+                    {n.id}
+                  </TableCell>
+
+                  <TableCell
+                    className="p-4 md:p-16 truncate"
+                    component="th"
+                    scope="row"
+                  >
+                    {n.submittedBy.name}
+                  </TableCell>
+
+                  <TableCell
+                    className="p-4 md:p-16 truncate"
+                    component="th"
+                    scope="row"
+                  >
+                    <Chip
+                      style={{ fontSize: "1.2rem" }}
+                      icon={statusIcon(n.status)}
+                      label={n.status}
+                    />
+                  </TableCell>
+                  <TableCell
+                    className="p-4 md:p-16"
+                    component="th"
+                    scope="row"
+                    align="center"
+                  >
+                    {moment(moment.utc(n.issueDate).toDate())
+                      .local()
+                      .format("YYYY-MM-DD HH:mm:ss")}
+                  </TableCell>
+                  <TableCell
+                    className="p-4 md:p-16"
+                    component="th"
+                    scope="row"
+                    align="center"
+                  >
+                    <span>$</span>
+                    {n.grossAmount}
+                  </TableCell>
+
+                  {/* <TableCell
+                      className="p-4 md:p-16"
+                      component="th"
+                      scope="row"
+                      align="right"
+                    >
+                      {n.active ? (
+                        <Icon className="text-green text-20">check_circle</Icon>
+                      ) : (
+                        <Icon className="text-red text-20">remove_circle</Icon>
+                      )}
+                    </TableCell> */}
+                </TableRow>
+              );
+            })}
+        </TableBody>
+      </Table>
     </>
   );
 }
 
-export default withRouter(InvoicesTable);
+export default withRouter(AllTable);

@@ -4,6 +4,7 @@ import IconButton from "@material-ui/core/IconButton";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import Menu from "@material-ui/core/Menu";
+import Button from "@material-ui/core/Button";
 import MenuItem from "@material-ui/core/MenuItem";
 import MenuList from "@material-ui/core/MenuList";
 import { makeStyles } from "@material-ui/core/styles";
@@ -18,6 +19,10 @@ import { useDispatch } from "react-redux";
 import { removeInvoice } from "../store/invoicesSlice";
 import { useSnackbar } from "notistack";
 import Slide from "@material-ui/core/Slide";
+import * as React from "react";
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
+import Paper from "@material-ui/core/Paper";
 
 const rows = [
   {
@@ -112,87 +117,91 @@ function InvoicesTableHead(props) {
   };
 
   return (
-    <TableHead>
-      <TableRow className="h-48 sm:h-64">
-        <TableCell padding="none" className="w-40 md:w-64 text-center z-99">
-          <Checkbox
-            indeterminate={numSelected > 0 && numSelected < props.rowCount}
-            checked={props.rowCount !== 0 && numSelected === props.rowCount}
-            onChange={props.onSelectAllClick}
-          />
-          {numSelected > 0 && (
-            <div
-              className={clsx(
-                "flex items-center justify-center absolute w-64 top-0 ltr:left-0 rtl:right-0 mx-56 h-64 z-10 border-b-1",
-                classes.actionsButtonWrapper
-              )}
-            >
-              <IconButton
-                aria-owns={selectedInvoicesMenu ? "selectedInvoicesMenu" : null}
-                aria-haspopup="true"
-                onClick={openSelectedInvoicesMenu}
+    <>
+      <TableHead>
+        <TableRow className="h-48 sm:h-64">
+          <TableCell padding="none" className="w-40 md:w-64 text-center z-99">
+            <Checkbox
+              indeterminate={numSelected > 0 && numSelected < props.rowCount}
+              checked={props.rowCount !== 0 && numSelected === props.rowCount}
+              onChange={props.onSelectAllClick}
+            />
+            {numSelected > 0 && (
+              <div
+                className={clsx(
+                  "flex items-center justify-center absolute w-64 top-0 ltr:left-0 rtl:right-0 mx-56 h-64 z-10 border-b-1",
+                  classes.actionsButtonWrapper
+                )}
               >
-                <Icon>more_horiz</Icon>
-              </IconButton>
-              <Menu
-                id="selectedInvoicesMenu"
-                anchorEl={selectedInvoicesMenu}
-                open={Boolean(selectedInvoicesMenu)}
-                onClose={closeSelectedInvoicesMenu}
-              >
-                <MenuList>
-                  <MenuItem
-                    onClick={(ev) => {
-                      dispatch(removeInvoice(selectedInvoiceIds));
-                      props.onMenuItemClick();
-                      closeSelectedInvoicesMenu();
-                      deleteInvoiceHandleClick(ev);
-                    }}
-                  >
-                    <ListItemIcon className="min-w-40">
-                      <Icon>delete</Icon>
-                    </ListItemIcon>
-                    <ListItemText primary="Remove" />
-                  </MenuItem>
-                </MenuList>
-              </Menu>
-            </div>
-          )}
-        </TableCell>
-        {rows.map((row) => {
-          return (
-            <TableCell
-              className="p-4 md:p-16"
-              key={row.id}
-              align={row.align}
-              padding={row.disablePadding ? "none" : "normal"}
-              sortDirection={
-                props.order.id === row.id ? props.order.direction : false
-              }
-            >
-              {row.sort && (
-                <Tooltip
-                  title="Sort"
-                  placement={
-                    row.align === "right" ? "bottom-end" : "bottom-start"
+                <IconButton
+                  aria-owns={
+                    selectedInvoicesMenu ? "selectedInvoicesMenu" : null
                   }
-                  enterDelay={300}
+                  aria-haspopup="true"
+                  onClick={openSelectedInvoicesMenu}
                 >
-                  <TableSortLabel
-                    active={props.order.id === row.id}
-                    direction={props.order.direction}
-                    onClick={createSortHandler(row.id)}
-                    className="font-semibold"
+                  <Icon>more_horiz</Icon>
+                </IconButton>
+                <Menu
+                  id="selectedInvoicesMenu"
+                  anchorEl={selectedInvoicesMenu}
+                  open={Boolean(selectedInvoicesMenu)}
+                  onClose={closeSelectedInvoicesMenu}
+                >
+                  <MenuList>
+                    <MenuItem
+                      onClick={(ev) => {
+                        dispatch(removeInvoice(selectedInvoiceIds));
+                        props.onMenuItemClick();
+                        closeSelectedInvoicesMenu();
+                        deleteInvoiceHandleClick(ev);
+                      }}
+                    >
+                      <ListItemIcon className="min-w-40">
+                        <Icon>delete</Icon>
+                      </ListItemIcon>
+                      <ListItemText primary="Remove" />
+                    </MenuItem>
+                  </MenuList>
+                </Menu>
+              </div>
+            )}
+          </TableCell>
+          {rows.map((row) => {
+            return (
+              <TableCell
+                className="p-4 md:p-16"
+                key={row.id}
+                align={row.align}
+                padding={row.disablePadding ? "none" : "normal"}
+                sortDirection={
+                  props.order.id === row.id ? props.order.direction : false
+                }
+              >
+                {row.sort && (
+                  <Tooltip
+                    title="Sort"
+                    placement={
+                      row.align === "right" ? "bottom-end" : "bottom-start"
+                    }
+                    enterDelay={300}
                   >
-                    {row.label}
-                  </TableSortLabel>
-                </Tooltip>
-              )}
-            </TableCell>
-          );
-        }, this)}
-      </TableRow>
-    </TableHead>
+                    <TableSortLabel
+                      active={props.order.id === row.id}
+                      direction={props.order.direction}
+                      onClick={createSortHandler(row.id)}
+                      className="font-semibold"
+                    >
+                      {row.label}
+                    </TableSortLabel>
+                  </Tooltip>
+                )}
+              </TableCell>
+            );
+          }, this)}
+        </TableRow>
+      </TableHead>
+    </>
   );
 }
 
