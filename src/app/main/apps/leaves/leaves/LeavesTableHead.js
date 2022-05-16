@@ -26,33 +26,13 @@ const rows = [
     sort: true,
   },
   {
-    id: "reference",
+    id: "requester.name",
     align: "left",
     disablePadding: false,
-    label: "Reference",
+    label: "Requester Name",
     sort: true,
   },
-  {
-    id: "customer",
-    align: "left",
-    disablePadding: false,
-    label: "Customer",
-    sort: true,
-  },
-  {
-    id: "total",
-    align: "right",
-    disablePadding: false,
-    label: "Total",
-    sort: true,
-  },
-  {
-    id: "payment",
-    align: "left",
-    disablePadding: false,
-    label: "Payment",
-    sort: true,
-  },
+
   {
     id: "status",
     align: "left",
@@ -61,10 +41,10 @@ const rows = [
     sort: true,
   },
   {
-    id: "date",
+    id: "createdAt",
     align: "left",
     disablePadding: false,
-    label: "Date",
+    label: "Request Date",
     sort: true,
   },
 ];

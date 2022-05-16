@@ -5,6 +5,33 @@ import {
 } from "@reduxjs/toolkit";
 import axios from "axios";
 
+export const getLeaves = createAsyncThunk(
+  "leavesApp/leaves/getLeaves",
+  async () => {
+    const response = await axios.get("/leaves");
+    const data = await response.data.data;
+    console.log("leaves from backend:", data);
+
+    return data;
+  }
+);
+
+export const approveLeave = createAsyncThunk(
+  "leavesApp/leave/approveLeave",
+  async (id, { dispatch }) => {
+    const response = await axios
+      .patch(`/leaves/${id}/approve`)
+      .catch((err) => console.log(err));
+    const data = await response.data.data;
+
+    dispatch(getLeaves());
+    dispatch(getLeave());
+    console.log("user approve inside Slice: ", data);
+
+    return data;
+  }
+);
+
 export const getOrders = createAsyncThunk(
   "leavesApp/orders/getOrders",
   async () => {
@@ -24,14 +51,14 @@ export const removeOrders = createAsyncThunk(
   }
 );
 
-const ordersAdapter = createEntityAdapter({});
+const leavesAdapter = createEntityAdapter({});
 
-export const { selectAll: selectOrders, selectById: selectOrderById } =
-  ordersAdapter.getSelectors((state) => state.leavesApp.leaves);
+export const { selectAll: selectLeaves, selectById: selectLeaveById } =
+  leavesAdapter.getSelectors((state) => state.leavesApp.leaves);
 
 const leavesSlice = createSlice({
-  name: "leavesApp/orders",
-  initialState: ordersAdapter.getInitialState({
+  name: "leavesApp/leaves",
+  initialState: leavesAdapter.getInitialState({
     searchText: "",
   }),
   reducers: {
@@ -43,9 +70,13 @@ const leavesSlice = createSlice({
     },
   },
   extraReducers: {
-    [getOrders.fulfilled]: ordersAdapter.setAll,
+    [getOrders.fulfilled]: leavesAdapter.setAll,
+    [getLeaves.fulfilled]: leavesAdapter.setAll,
     [removeOrders.fulfilled]: (state, action) =>
-      ordersAdapter.removeMany(state, action.payload),
+      leavesAdapter.removeMany(state, action.payload),
+    [approveLeave.fulfilled]: (state, action) => {
+      leavesAdapter.addOne;
+    },
   },
 });
 

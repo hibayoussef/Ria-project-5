@@ -24,7 +24,7 @@ function LeavesHeader(props) {
           animate={{ scale: 1, transition: { delay: 0.2 } }}
           className="text-24 md:text-32"
         >
-          receipt
+          radio_button_checked
         </Icon>
         <Typography
           component={motion.span}
@@ -33,7 +33,7 @@ function LeavesHeader(props) {
           delay={300}
           className="text-16 md:text-24 mx-12 font-semibold"
         >
-          Orders
+          Leaves
         </Typography>
       </div>
 

@@ -1,35 +1,27 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import { getLeaves } from "./leavesSlice";
 
-export const getOrder = createAsyncThunk(
-  "leavesApp/order/getOrder",
+export const getLeave = createAsyncThunk(
+  "leavesApp/leave/getLeave",
   async (params) => {
-    const response = await axios.get("/api/e-commerce-app/order", { params });
+    console.log("paaarams: ", params);
+    const response = await axios.get(`/leaves/${params.orderId}`);
     const data = await response.data;
+    console.log("leave: ", data);
 
     return data === undefined ? null : data;
   }
 );
 
-export const saveOrder = createAsyncThunk(
-  "leavesApp/order/saveOrder",
-  async (order) => {
-    const response = await axios.post("/api/e-commerce-app/order/save", order);
-    const data = await response.data;
-
-    return data;
-  }
-);
-
 const leaveSlice = createSlice({
-  name: "leavesApp/order",
+  name: "leavesApp/leave",
   initialState: null,
   reducers: {
     resetOrder: () => null,
   },
   extraReducers: {
-    [getOrder.fulfilled]: (state, action) => action.payload,
-    [saveOrder.fulfilled]: (state, action) => action.payload,
+    [getLeave.fulfilled]: (state, action) => action.payload,
   },
 });
 

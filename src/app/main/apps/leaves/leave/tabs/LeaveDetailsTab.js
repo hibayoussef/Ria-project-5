@@ -10,18 +10,37 @@ import GoogleMap from "google-map-react";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import LeavesStatus from "../LeavesStatus";
-
-function Marker(props) {
-  return (
-    <Tooltip title={props.text} placement="top">
-      <Icon className="text-red">place</Icon>
-    </Tooltip>
-  );
-}
+import moment from "moment";
+import { motion } from "framer-motion";
+import Grid from "@material-ui/core/Grid";
+import Button from "@material-ui/core/Button";
+import { approveLeave } from "../../store/leavesSlice";
+import { useDispatch } from "react-redux";
+import Slide from "@material-ui/core/Slide";
+import { useSnackbar } from "notistack";
 
 function LeaveDetailsTab() {
+  const dispatch = useDispatch();
   const order = useSelector(({ leavesApp }) => leavesApp.leave);
+  console.log("order details: ", order);
+
   const [map, setMap] = useState("shipping");
+
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+
+  const handleApproveLeaveClick = () => {
+    enqueueSnackbar(
+      "Leave request has been successfully approved",
+      { variant: "success" },
+      {
+        anchorOrigin: {
+          vertical: "top",
+          horizontal: "right",
+        },
+      },
+      { TransitionComponent: Slide }
+    );
+  };
 
   return (
     <div>
@@ -29,7 +48,7 @@ function LeaveDetailsTab() {
         <div className="pb-16 flex items-center">
           <Icon color="action">account_circle</Icon>
           <Typography className="h2 mx-12 font-medium" color="textSecondary">
-            Customer
+            Requester Name
           </Typography>
         </div>
 
@@ -42,13 +61,13 @@ function LeaveDetailsTab() {
                     <Typography className="font-semibold">Name</Typography>
                   </th>
                   <th>
+                    <Typography className="font-semibold">Job Name</Typography>
+                  </th>
+                  <th>
                     <Typography className="font-semibold">Email</Typography>
                   </th>
                   <th>
                     <Typography className="font-semibold">Phone</Typography>
-                  </th>
-                  <th>
-                    <Typography className="font-semibold">Company</Typography>
                   </th>
                 </tr>
               </thead>
@@ -56,103 +75,30 @@ function LeaveDetailsTab() {
                 <tr>
                   <td>
                     <div className="flex items-center">
-                      <Avatar src={order.customer.avatar} />
+                      {/* <Avatar src={order.customer.avatar} /> */}
                       <Typography className="truncate mx-8">
-                        {`${order.customer.firstName} ${order.customer.lastName}`}
+                        {`${order?.data?.requester?.name} `}
                       </Typography>
                     </div>
                   </td>
                   <td>
-                    <Typography className="truncate">
-                      {order.customer.email}
-                    </Typography>
+                    <span className="truncate">{`${order?.data?.requester?.job?.name}`}</span>
                   </td>
                   <td>
                     <Typography className="truncate">
-                      {order.customer.phone}
+                      {`${order?.data?.requester?.email}`}
                     </Typography>
                   </td>
+
                   <td>
-                    <span className="truncate">{order.customer.company}</span>
+                    <Typography className="truncate">
+                      {`${order?.data?.requester?.phoneNumber}`}
+                    </Typography>
                   </td>
                 </tr>
               </tbody>
             </table>
           </div>
-
-          <Accordion
-            className="border-0 shadow-0 overflow-hidden"
-            expanded={map === "shipping"}
-            onChange={() => setMap(map !== "shipping" ? "shipping" : false)}
-          >
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              classes={{ root: "border border-solid rounded-16 mb-16" }}
-            >
-              <Typography className="font-semibold">
-                Shipping Address
-              </Typography>
-            </AccordionSummary>
-            <AccordionDetails className="flex flex-col md:flex-row -mx-8">
-              <Typography className="w-full md:max-w-256 mb-16 md:mb-0 mx-8 text-16">
-                {order.customer.shippingAddress.address}
-              </Typography>
-              <div className="w-full h-320 rounded-16 overflow-hidden mx-8">
-                <GoogleMap
-                  bootstrapURLKeys={{
-                    key: process.env.REACT_APP_MAP_KEY,
-                  }}
-                  defaultZoom={15}
-                  defaultCenter={[
-                    order.customer.shippingAddress.lat,
-                    order.customer.shippingAddress.lng,
-                  ]}
-                >
-                  <Marker
-                    text={order.customer.shippingAddress.address}
-                    lat={order.customer.shippingAddress.lat}
-                    lng={order.customer.shippingAddress.lng}
-                  />
-                </GoogleMap>
-              </div>
-            </AccordionDetails>
-          </Accordion>
-
-          <Accordion
-            className="shadow-0 border-0 overflow-hidden"
-            expanded={map === "invoice"}
-            onChange={() => setMap(map !== "invoice" ? "invoice" : false)}
-          >
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              classes={{ root: "border border-solid rounded-16 mb-16" }}
-            >
-              <Typography className="font-semibold">Invoice Address</Typography>
-            </AccordionSummary>
-            <AccordionDetails className="flex flex-col md:flex-row -mx-8">
-              <Typography className="w-full md:max-w-256 mb-16 md:mb-0 mx-8 text-16">
-                {order.customer.invoiceAddress.address}
-              </Typography>
-              <div className="w-full h-320 rounded-16 overflow-hidden mx-8">
-                <GoogleMap
-                  bootstrapURLKeys={{
-                    key: process.env.REACT_APP_MAP_KEY,
-                  }}
-                  defaultZoom={15}
-                  defaultCenter={[
-                    order.customer.invoiceAddress.lat,
-                    order.customer.invoiceAddress.lng,
-                  ]}
-                >
-                  <Marker
-                    text={order.customer.invoiceAddress.address}
-                    lat={order.customer.invoiceAddress.lat}
-                    lng={order.customer.invoiceAddress.lng}
-                  />
-                </GoogleMap>
-              </div>
-            </AccordionDetails>
-          </Accordion>
         </div>
       </div>
 
@@ -160,7 +106,7 @@ function LeaveDetailsTab() {
         <div className="pb-16 flex items-center">
           <Icon color="action">access_time</Icon>
           <Typography className="h2 mx-12 font-medium" color="textSecondary">
-            Order Status
+            Leave Status
           </Typography>
         </div>
 
@@ -169,72 +115,44 @@ function LeaveDetailsTab() {
             <thead>
               <tr>
                 <th>
-                  <Typography className="font-semibold">Status</Typography>
+                  <Typography className="font-semibold">Leave ID</Typography>
                 </th>
                 <th>
-                  <Typography className="font-semibold">Updated On</Typography>
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {order.status.map((status) => (
-                <tr key={status.id}>
-                  <td>
-                    <LeavesStatus name={status.name} />
-                  </td>
-                  <td>{status.date}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <div className="pb-48">
-        <div className="pb-16 flex items-center">
-          <Icon color="action">attach_money</Icon>
-          <Typography className="h2 mx-12 font-medium" color="textSecondary">
-            Payment
-          </Typography>
-        </div>
-
-        <div className="table-responsive">
-          <table className="simple">
-            <thead>
-              <tr>
-                <th>
-                  <Typography className="font-semibold">
-                    TransactionID
-                  </Typography>
+                  <Typography className="font-semibold">From Date</Typography>
                 </th>
                 <th>
-                  <Typography className="font-semibold">
-                    Payment Method
-                  </Typography>
+                  <Typography className="font-semibold">To Date</Typography>
                 </th>
                 <th>
-                  <Typography className="font-semibold">Amount</Typography>
-                </th>
-                <th>
-                  <Typography className="font-semibold">Date</Typography>
+                  <Typography className="font-semibold">Description</Typography>
                 </th>
               </tr>
             </thead>
             <tbody>
               <tr>
                 <td>
+                  <span className="truncate">{`${order?.data?.id}`}</span>
+                </td>
+                <td>
                   <span className="truncate">
-                    {order.payment.transactionId}
+                    {" "}
+                    {moment(moment.utc(order?.data?.fromDate).toDate())
+                      .local()
+                      .format("YYYY-MM-DD HH:mm:ss")}
                   </span>
                 </td>
                 <td>
-                  <span className="truncate">{order.payment.method}</span>
+                  <span className="truncate">
+                    {" "}
+                    {moment(moment.utc(order?.data?.toDate).toDate())
+                      .local()
+                      .format("YYYY-MM-DD HH:mm:ss")}
+                  </span>
                 </td>
                 <td>
-                  <span className="truncate">{order.payment.amount}</span>
-                </td>
-                <td>
-                  <span className="truncate">{order.payment.date}</span>
+                  <span className="truncate">
+                    {`${order?.data?.description}`}
+                  </span>
                 </td>
               </tr>
             </tbody>
@@ -242,61 +160,56 @@ function LeaveDetailsTab() {
         </div>
       </div>
 
-      <div className="pb-48">
-        <div className="pb-16 flex items-center">
-          <Icon color="action">local_shipping</Icon>
-          <Typography className="h2 mx-12 font-medium" color="textSecondary">
-            Shipping
-          </Typography>
-        </div>
-
-        <div className="table-responsive">
-          <table className="simple">
-            <thead>
-              <tr>
-                <th>
-                  <Typography className="font-semibold">
-                    Tracking Code
-                  </Typography>
-                </th>
-                <th>
-                  <Typography className="font-semibold">Carrier</Typography>
-                </th>
-                <th>
-                  <Typography className="font-semibold">Weight</Typography>
-                </th>
-                <th>
-                  <Typography className="font-semibold">Fee</Typography>
-                </th>
-                <th>
-                  <Typography className="font-semibold">Date</Typography>
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {order.shippingDetails.map((shipping) => (
-                <tr key={shipping.date}>
-                  <td>
-                    <span className="truncate">{shipping.tracking}</span>
-                  </td>
-                  <td>
-                    <span className="truncate">{shipping.carrier}</span>
-                  </td>
-                  <td>
-                    <span className="truncate">{shipping.weight}</span>
-                  </td>
-                  <td>
-                    <span className="truncate">{shipping.fee}</span>
-                  </td>
-                  <td>
-                    <span className="truncate">{shipping.date}</span>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
+      <motion.div
+        initial={{ opacity: 0, x: 20 }}
+        animate={{ opacity: 1, x: 0, transition: { delay: 0.3 } }}
+      >
+        <Grid
+          container
+          direction="row-reverse"
+          justifyContent="flex-start"
+          alignItems="flex-end"
+          style={{
+            paddingTop: "7rem",
+          }}
+        >
+          <Grid item>
+            <Button
+              className="whitespace-nowrap mx-4"
+              variant="contained"
+              color="secondary"
+              style={{
+                padding: "1rem",
+                paddingLeft: "3rem",
+                paddingRight: "3rem",
+              }}
+              // onClick={handleRemoveProduct}
+            >
+              Reject
+            </Button>
+          </Grid>
+          <Grid item>
+            <Button
+              className="whitespace-nowrap mx-4"
+              variant="contained"
+              color="secondary"
+              // disabled={_.isEmpty(dirtyFields) || !isValid}
+              style={{
+                padding: "1rem",
+                paddingLeft: "3rem",
+                paddingRight: "3rem",
+              }}
+              onClick={(ev) => {
+                dispatch(approveLeave(order?.data?.id));
+                ev.stopPropagation();
+                handleApproveLeaveClick(ev);
+              }}
+            >
+              Approve
+            </Button>
+          </Grid>
+        </Grid>
+      </motion.div>
     </div>
   );
 }

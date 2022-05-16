@@ -13,13 +13,16 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { withRouter } from "react-router-dom";
 import FuseLoading from "@fuse/core/FuseLoading";
-import LeavesStatus from "../leave/LeavesStatus";
-import { selectOrders, getOrders } from "../store/leavesSlice";
+import { selectLeaves, getLeaves } from "../store/leavesSlice";
 import LeavesTableHead from "./LeavesTableHead";
+import VerifiedUserIcon from "@material-ui/icons/VerifiedUser";
+import Chip from "@mui/material/Chip";
+import moment from "moment";
+import VisibilityIcon from "@material-ui/icons/Visibility";
 
 function LeavesTable(props) {
   const dispatch = useDispatch();
-  const orders = useSelector(selectOrders);
+  const orders = useSelector(selectLeaves);
   const searchText = useSelector(
     ({ leavesApp }) => leavesApp.leaves.searchText
   );
@@ -35,7 +38,7 @@ function LeavesTable(props) {
   });
 
   useEffect(() => {
-    dispatch(getOrders()).then(() => setLoading(false));
+    dispatch(getLeaves()).then(() => setLoading(false));
   }, [dispatch]);
 
   useEffect(() => {
@@ -105,6 +108,15 @@ function LeavesTable(props) {
     setRowsPerPage(event.target.value);
   }
 
+  const statusIcon = (status) => {
+    switch (status) {
+      case "pending_approval":
+        return <VisibilityIcon />;
+      default:
+        return <VerifiedUserIcon />;
+    }
+  };
+
   if (loading) {
     return <FuseLoading />;
   }
@@ -117,7 +129,7 @@ function LeavesTable(props) {
         className="flex flex-1 items-center justify-center h-full"
       >
         <Typography color="textSecondary" variant="h5">
-          There are no orders!
+          There are no Leaves!
         </Typography>
       </motion.div>
     );
@@ -145,12 +157,7 @@ function LeavesTable(props) {
                     case "id": {
                       return parseInt(o.id, 10);
                     }
-                    case "customer": {
-                      return o.customer.firstName;
-                    }
-                    case "payment": {
-                      return o.payment.method;
-                    }
+
                     case "status": {
                       return o.status[0].name;
                     }
@@ -200,7 +207,7 @@ function LeavesTable(props) {
                       component="th"
                       scope="row"
                     >
-                      {n.reference}
+                      {n.requester.name}
                     </TableCell>
 
                     <TableCell
@@ -208,41 +215,22 @@ function LeavesTable(props) {
                       component="th"
                       scope="row"
                     >
-                      {`${n.customer.firstName} ${n.customer.lastName}`}
+                      <Chip
+                        style={{ fontSize: "1.2rem" }}
+                        icon={statusIcon(n.status)}
+                        label={n.status}
+                      />
                     </TableCell>
 
                     <TableCell
                       className="p-4 md:p-16"
                       component="th"
                       scope="row"
-                      align="right"
+                      align="left"
                     >
-                      <span>$</span>
-                      {n.total}
-                    </TableCell>
-
-                    <TableCell
-                      className="p-4 md:p-16"
-                      component="th"
-                      scope="row"
-                    >
-                      {n.payment.method}
-                    </TableCell>
-
-                    <TableCell
-                      className="p-4 md:p-16"
-                      component="th"
-                      scope="row"
-                    >
-                      <LeavesStatus name={n.status[0].name} />
-                    </TableCell>
-
-                    <TableCell
-                      className="p-4 md:p-16"
-                      component="th"
-                      scope="row"
-                    >
-                      {n.date}
+                      {moment(moment.utc(n.createdAt).toDate())
+                        .local()
+                        .format("YYYY-MM-DD HH:mm:ss")}
                     </TableCell>
                   </TableRow>
                 );

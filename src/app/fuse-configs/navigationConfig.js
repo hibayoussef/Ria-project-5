@@ -238,14 +238,14 @@ const tempNavigation = [
         children: [
           {
             id: "e-commerce-orders",
-            title: "Orders",
+            title: "Laeaves",
             type: "item",
             url: "/apps/e-commerce/orders",
             exact: true,
           },
           {
             id: "e-commerce-order-detail",
-            title: "Order Detail",
+            title: "Leaves Detail",
             type: "item",
             url: "/apps/e-commerce/leaves/1",
             exact: true,

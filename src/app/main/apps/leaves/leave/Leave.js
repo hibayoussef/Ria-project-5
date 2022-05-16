@@ -12,14 +12,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import { useDeepCompareEffect } from "@fuse/hooks";
 import reducer from "../store";
-import { resetOrder, getOrder } from "../store/leaveSlice";
-import InvoiceTab from "./tabs/InvoiceTab";
+import { resetOrder, getLeave } from "../store/leaveSlice";
 import LeaveDetailsTab from "./tabs/LeaveDetailsTab";
-import ProductsTab from "./tabs/ProductsTab";
 
 function Leave(props) {
   const dispatch = useDispatch();
   const order = useSelector(({ leavesApp }) => leavesApp.leave);
+
+  console.log("order: ", order);
   const theme = useTheme();
 
   const routeParams = useParams();
@@ -27,7 +27,7 @@ function Leave(props) {
   const [noOrder, setNoOrder] = useState(false);
 
   useDeepCompareEffect(() => {
-    dispatch(getOrder(routeParams)).then((action) => {
+    dispatch(getLeave(routeParams)).then((action) => {
       if (!action.payload) {
         setNoOrder(true);
       }
@@ -53,7 +53,7 @@ function Leave(props) {
         className="flex flex-col flex-1 items-center justify-center h-full"
       >
         <Typography color="textSecondary" variant="h5">
-          There is no such order!
+          There is no such Leave!
         </Typography>
         <Button
           className="mt-24"
@@ -62,7 +62,7 @@ function Leave(props) {
           to="/apps/e-commerce/orders"
           color="inherit"
         >
-          Go to Orders Page
+          Go to Leaves Page
         </Button>
       </motion.div>
     );
@@ -92,7 +92,7 @@ function Leave(props) {
                   <Icon className="text-20">
                     {theme.direction === "ltr" ? "arrow_back" : "arrow_forward"}
                   </Icon>
-                  <span className="mx-4 font-medium">Orders</span>
+                  <span className="mx-4 font-medium">Leaves</span>
                 </Typography>
               </motion.div>
 
@@ -102,10 +102,10 @@ function Leave(props) {
                   animate={{ x: 0, opacity: 1, transition: { delay: 0.3 } }}
                 >
                   <Typography className="text-16 sm:text-20 truncate font-semibold">
-                    {`Order ${order.reference}`}
+                    {`Leave ${order?.data?.id}`}
                   </Typography>
                   <Typography variant="caption" className="font-medium">
-                    {`From ${order.customer.firstName} ${order.customer.lastName}`}
+                    {`From ${order?.data?.requester?.name}`}
                   </Typography>
                 </motion.div>
               </div>
@@ -124,16 +124,12 @@ function Leave(props) {
           classes={{ root: "w-full h-64" }}
         >
           <Tab className="h-64" label="Leave Details" />
-          <Tab className="h-64" label="Products" />
-          <Tab className="h-64" label="Invoice" />
         </Tabs>
       }
       content={
         order && (
           <div className="p-16 sm:p-24 max-w-2xl w-full">
             {tabValue === 0 && <LeaveDetailsTab />}
-            {tabValue === 1 && <ProductsTab />}
-            {tabValue === 2 && <InvoiceTab order={order} />}
           </div>
         )
       }
@@ -142,4 +138,4 @@ function Leave(props) {
   );
 }
 
-export default withReducer("eCommerceApp", reducer)(Leave);
+export default withReducer("leavesApp", reducer)(Leave);
