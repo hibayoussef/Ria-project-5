@@ -21,6 +21,11 @@ const InvoicesAppConfig = {
     },
 
     {
+      path: "/apps/invoices-section/archive",
+      component: lazy(() => import("./archive-invoices/ArchiveInvoices")),
+    },
+
+    {
       path: "/apps/invoices-section",
       component: () => <Redirect to="/apps/invoices-section/invoices" />,
     },

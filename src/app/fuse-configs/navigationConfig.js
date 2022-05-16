@@ -57,7 +57,7 @@ const tempNavigation = [
       {
         auth: authRoles.super_admin,
         id: "Users",
-        title: "Users",
+        title: "Users Management",
         translate: "Users",
         type: "item",
         icon: <PeopleAltIcon />,
@@ -74,7 +74,7 @@ const tempNavigation = [
       },
       {
         id: "Jobs",
-        title: "Jobs",
+        title: "Jobs Management",
         translate: "Jobs",
         type: "collapse",
         icon: "work",
@@ -94,7 +94,7 @@ const tempNavigation = [
       {
         auth: authRoles.super_admin,
         id: "salary-scales",
-        title: "Salary Scales",
+        title: "Salary Scales Management",
         translate: "Salary Scales",
         type: "collapse",
         icon: <SignalCellularAltIcon></SignalCellularAltIcon>,
@@ -129,7 +129,7 @@ const tempNavigation = [
 
       {
         id: "Receipts",
-        title: "Receipts",
+        title: "Receipts Management",
         translate: "Receipts",
         type: "collapse",
         icon: "receipts",
@@ -166,7 +166,7 @@ const tempNavigation = [
       // userrrrrrrrrr
       {
         id: "Receipts",
-        title: "Receipts",
+        title: "Receipts Management",
         translate: "Receipts",
         type: "collapse",
         icon: "receipts",
@@ -194,7 +194,7 @@ const tempNavigation = [
 
       {
         id: "invoice",
-        title: "Invoice",
+        title: "Invoice Management",
         translate: "Invoice",
         type: "collapse",
         icon: "description",
@@ -209,14 +209,23 @@ const tempNavigation = [
             exact: true,
             auth: authRoles.super_admin,
           },
+
           {
             id: "invoice-detail",
-            title: "Invoice Detail",
+            title: "Archive",
             type: "item",
-            url: "/apps/invoices-section/invoices/1",
+            url: "/apps/invoices-section/archive",
             exact: true,
             auth: authRoles.super_admin,
           },
+          // {
+          //   id: "invoice-detail",
+          //   title: "Invoice Detail",
+          //   type: "item",
+          //   url: "/apps/invoices-section/invoices/1",
+          //   exact: true,
+          //   auth: authRoles.super_admin,
+          // },
           {
             id: "new-invoice",
             title: "New Invoice",
@@ -554,7 +563,7 @@ const navigationConfig = [
       },
       {
         id: "invoice",
-        title: "Invoice",
+        title: "Invoice Management",
         type: "collapse",
         icon: "receipt",
         children: [

@@ -11,10 +11,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { withRouter } from "react-router-dom";
 import FuseLoading from "@fuse/core/FuseLoading";
 import {
-  getApprovalInvoices,
-  selectApprovalInvoices,
-} from "../../store/approvalInvoiceSlice";
-import InvoicesTableHead from "../InvoicesTableHead";
+  getCompleteInvoices,
+  selectCompleteInvoices,
+} from "../../store/completeInvoiceSlice";
+import InvoicesTableHead from "../ArchiveInvoicesTableHead";
 import moment from "moment";
 import Chip from "@mui/material/Chip";
 import VerifiedUserIcon from "@material-ui/icons/VerifiedUser";
@@ -32,12 +32,12 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-function ApprovalTable(props) {
+function CompleteTable(props) {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const invoices = useSelector(selectApprovalInvoices);
+  const invoices = useSelector(selectCompleteInvoices);
   const searchText = useSelector(
-    ({ invoicesApp }) => invoicesApp.approvalInvoices.searchText
+    ({ invoicesApp }) => invoicesApp.completeInvoices.searchText
   );
 
   const [loading, setLoading] = useState(true);
@@ -57,7 +57,7 @@ function ApprovalTable(props) {
   };
 
   useEffect(() => {
-    dispatch(getApprovalInvoices()).then(() => setLoading(false));
+    dispatch(getCompleteInvoices()).then(() => setLoading(false));
   }, [dispatch]);
 
   useEffect(() => {
@@ -157,12 +157,8 @@ function ApprovalTable(props) {
         animate={{ opacity: 1, transition: { delay: 0.1 } }}
         className="flex flex-1 items-center justify-center h-full"
       >
-        <Typography
-          color="textSecondary"
-          variant="h2"
-          style={{ paddingTop: "20rem" }}
-        >
-          There are no Approval Invoices!
+        <Typography color="textSecondary" variant="h5">
+          There are no Completed Invoices!
         </Typography>
       </motion.div>
     );
@@ -297,4 +293,4 @@ function ApprovalTable(props) {
   );
 }
 
-export default withRouter(ApprovalTable);
+export default withRouter(CompleteTable);

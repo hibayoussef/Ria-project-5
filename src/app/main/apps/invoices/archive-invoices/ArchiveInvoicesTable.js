@@ -15,10 +15,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { withRouter } from "react-router-dom";
 import FuseLoading from "@fuse/core/FuseLoading";
 import { getInvoices, selectInvoices } from "../store/invoicesSlice";
-import InvoicesTableHead from "./InvoicesTableHead";
-import moment from "moment";
-import FaceIcon from "@mui/icons-material/Face";
-import Chip from "@mui/material/Chip";
 import VerifiedUserIcon from "@material-ui/icons/VerifiedUser";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import CreditCardIcon from "@material-ui/icons/CreditCard";
@@ -30,10 +26,8 @@ import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Divider from "@material-ui/core/Divider";
 import { makeStyles } from "@material-ui/core/styles";
-import AllTable from "./tabs/all";
-import ReviewTable from "./tabs/review";
-import ApprovalTable from "./tabs/approval";
-import PaymentTable from "./tabs/payment";
+import CompleteTable from "./tabs/complete";
+import RejectedTable from "./tabs/rejected";
 
 const useStyles = makeStyles(() => ({
   divider: {
@@ -195,26 +189,22 @@ function InvoicesTable(props) {
               textColor="primary"
               aria-label="disabled tabs example"
             >
-              <Tab label="All" />
-              <Tab label="Review" />
-              <Tab label="Approval" />
-              <Tab label="Payment" />
+              <Tab label="Completed" />
+              <Tab label="Rejected" />
             </Tabs>
           </Paper>
           {/* end tabs */}
           <Divider classes={{ root: classes.divider }} />
-
           <div className={tabValue !== 0 ? "hidden" : ""}>
-            <AllTable />
+            <CompleteTable />
           </div>
+
           <div className={tabValue !== 1 ? "hidden" : ""}>
-            <ReviewTable />
+            <RejectedTable />
           </div>
-          <div className={tabValue !== 2 ? "hidden" : ""}>
-            <ApprovalTable />
-          </div>
-          <div className={tabValue !== 3 ? "hidden" : ""}>
-            <PaymentTable />
+
+          <div className={tabValue !== 4 ? "hidden" : ""}>
+            <CompleteTable />
           </div>
         </FuseScrollbars>
 

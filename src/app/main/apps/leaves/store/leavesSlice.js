@@ -71,7 +71,15 @@ const leavesSlice = createSlice({
   },
   extraReducers: {
     [getOrders.fulfilled]: leavesAdapter.setAll,
-    [getLeaves.fulfilled]: leavesAdapter.setAll,
+    // [getLeaves.fulfilled]: leavesAdapter.setAll,
+
+    [getLeaves.fulfilled]: (state, { payload }) => {
+      console.log("payload: ", payload);
+      const data = payload.filter((u) => u.status === "pending_approval");
+      console.log("data approval: ", data);
+      leavesAdapter.setAll(state, data);
+    },
+
     [removeOrders.fulfilled]: (state, action) =>
       leavesAdapter.removeMany(state, action.payload),
     [approveLeave.fulfilled]: (state, action) => {
