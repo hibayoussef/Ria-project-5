@@ -230,7 +230,7 @@ const tempNavigation = [
             id: "new-invoice",
             title: "New Invoice",
             type: "item",
-            url: "/apps/invoices-section/invoices/new",
+            url: "/apps/invoices-section/invoices/new-invoice",
             exact: true,
             auth: authRoles.super_admin,
           },

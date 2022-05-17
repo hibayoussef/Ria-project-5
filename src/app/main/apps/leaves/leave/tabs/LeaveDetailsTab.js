@@ -48,7 +48,7 @@ function LeaveDetailsTab() {
         <div className="pb-16 flex items-center">
           <Icon color="action">account_circle</Icon>
           <Typography className="h2 mx-12 font-medium" color="textSecondary">
-            Requester Name
+            Requester Information
           </Typography>
         </div>
 

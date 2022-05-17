@@ -7,6 +7,7 @@ import { motion } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
 import { selectMainTheme } from "app/store/fuse/settingsSlice";
 import { setOrdersSearchText } from "../store/leavesSlice";
+import Button from "@material-ui/core/Button";
 
 function LeavesHeader(props) {
   const dispatch = useDispatch();
@@ -61,6 +62,21 @@ function LeavesHeader(props) {
           </Paper>
         </ThemeProvider>
       </div>
+      <motion.div
+        initial={{ opacity: 0, x: 20 }}
+        animate={{ opacity: 1, x: 0, transition: { delay: 0.2 } }}
+      >
+        <Button
+          component={Link}
+          to="/apps/invoices-section/invoices/new-invoice"
+          className="whitespace-nowrap"
+          variant="contained"
+          color="secondary"
+        >
+          <span className="hidden sm:flex">Add New Invoice</span>
+          <span className="flex sm:hidden">New</span>
+        </Button>
+      </motion.div>
     </div>
   );
 }
