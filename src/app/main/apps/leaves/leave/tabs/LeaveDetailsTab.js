@@ -14,7 +14,7 @@ import moment from "moment";
 import { motion } from "framer-motion";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
-import { approveLeave } from "../../store/leavesSlice";
+import { approveLeave, rejectLeave } from "../../store/leavesSlice";
 import { useDispatch } from "react-redux";
 import Slide from "@material-ui/core/Slide";
 import { useSnackbar } from "notistack";
@@ -32,6 +32,20 @@ function LeaveDetailsTab() {
     enqueueSnackbar(
       "Leave request has been successfully approved",
       { variant: "success" },
+      {
+        anchorOrigin: {
+          vertical: "top",
+          horizontal: "right",
+        },
+      },
+      { TransitionComponent: Slide }
+    );
+  };
+
+  const handleRejectLeaveClick = () => {
+    enqueueSnackbar(
+      "Leave request has been successfully rejected",
+      { variant: "error" },
       {
         anchorOrigin: {
           vertical: "top",
@@ -183,7 +197,11 @@ function LeaveDetailsTab() {
                 paddingLeft: "3rem",
                 paddingRight: "3rem",
               }}
-              // onClick={handleRemoveProduct}
+              onClick={(ev) => {
+                dispatch(rejectLeave(order?.data?.id));
+                ev.stopPropagation();
+                handleRejectLeaveClick(ev);
+              }}
             >
               Reject
             </Button>

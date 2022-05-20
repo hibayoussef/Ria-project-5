@@ -6,11 +6,11 @@ import Typography from "@material-ui/core/Typography";
 import { motion } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
 import { selectMainTheme } from "app/store/fuse/settingsSlice";
-import { setOrdersSearchText } from "../store/leavesSlice";
+import { setOrdersSearchText } from "../store/approvalLeaveSlice";
 import Button from "@material-ui/core/Button";
 import { Link } from "react-router-dom";
 
-function LeavesHeader(props) {
+function ApprovalLeavesHeader(props) {
   const dispatch = useDispatch();
   const searchText = useSelector(
     ({ leavesApp }) => leavesApp.leaves.searchText
@@ -35,7 +35,7 @@ function LeavesHeader(props) {
           delay={300}
           className="text-16 md:text-24 mx-12 font-semibold"
         >
-          Leaves
+          Approved Leaves
         </Typography>
       </div>
 
@@ -67,4 +67,4 @@ function LeavesHeader(props) {
   );
 }
 
-export default LeavesHeader;
+export default ApprovalLeavesHeader;

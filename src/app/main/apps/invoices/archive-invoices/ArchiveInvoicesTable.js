@@ -1,13 +1,6 @@
 import FuseScrollbars from "@fuse/core/FuseScrollbars";
 import _ from "@lodash";
-import Checkbox from "@material-ui/core/Checkbox";
-import Icon from "@material-ui/core/Icon";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
 import TablePagination from "@material-ui/core/TablePagination";
-import TableRow from "@material-ui/core/TableRow";
-import Button from "@material-ui/core/Typography";
 import Typography from "@material-ui/core/Button";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
@@ -79,56 +72,6 @@ function InvoicesTable(props) {
       setData(invoices);
     }
   }, [invoices, searchText]);
-
-  function handleRequestSort(event, property) {
-    const id = property;
-    let direction = "desc";
-
-    if (order.id === property && order.direction === "desc") {
-      direction = "asc";
-    }
-
-    setOrder({
-      direction,
-      id,
-    });
-  }
-
-  function handleSelectAllClick(event) {
-    if (event.target.checked) {
-      setSelected(data.map((n) => n.id));
-      return;
-    }
-    setSelected([]);
-  }
-
-  function handleDeselect() {
-    setSelected([]);
-  }
-
-  function handleClick(item) {
-    props.history.push(`/apps/invoices-section/invoices/${item.id}`);
-  }
-
-  function handleCheck(event, id) {
-    const selectedIndex = selected.indexOf(id);
-    let newSelected = [];
-
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, id);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      );
-    }
-
-    setSelected(newSelected);
-  }
 
   function handleChangePage(event, value) {
     setPage(value);

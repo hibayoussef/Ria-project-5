@@ -15,7 +15,8 @@ import UsersAppConfig from "./users/UsersAppConfig";
 import JobsAppConfig from "./jobs/JobsAppConfig";
 import SalaryScalesAppConfig from "./salary-scales/SalaryScalesAppConfig";
 import InvoicesAppConfig from "./invoices/InvoicesAppConfig";
-import LeavesAppConfig from './leaves/LeavesAppConfig'
+import LeavesAppConfig from "./leaves/LeavesAppConfig";
+import DepartementsAppConfig from "./departements/DepartementAppConfig";
 
 const appsConfigs = [
   AnalyticsDashboardAppConfig,
@@ -36,7 +37,8 @@ const appsConfigs = [
   JobsAppConfig,
   SalaryScalesAppConfig,
   InvoicesAppConfig,
-  LeavesAppConfig
+  LeavesAppConfig,
+  DepartementsAppConfig,
 ];
 
 export default appsConfigs;

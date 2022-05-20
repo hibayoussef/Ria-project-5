@@ -6,7 +6,7 @@ export const getLeave = createAsyncThunk(
   "leavesApp/leave/getLeave",
   async (params) => {
     console.log("paaarams: ", params);
-    const response = await axios.get(`/leaves/${params.orderId}`);
+    const response = await axios.get(`/leaves/${params.leaveId}`);
     const data = await response.data;
     console.log("leave: ", data);
 

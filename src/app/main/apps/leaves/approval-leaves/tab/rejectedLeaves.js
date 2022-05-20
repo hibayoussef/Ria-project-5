@@ -1,3 +1,5 @@
+import React from "react";
+import { makeStyles } from "@material-ui/core/styles";
 import FuseScrollbars from "@fuse/core/FuseScrollbars";
 import FuseUtils from "@fuse/utils";
 import _ from "@lodash";
@@ -13,23 +15,35 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { withRouter } from "react-router-dom";
 import FuseLoading from "@fuse/core/FuseLoading";
-import { selectLeaves, getLeaves } from "../store/leavesSlice";
-import LeavesTableHead from "./LeavesTableHead";
+import {
+  selectRejectedLeaves,
+  getLeaves,
+} from "../../store/rejectedLeaveSlice";
+import ApprovalLeavesTableHead from "../ApprovalLeavesTableHead";
 import VerifiedUserIcon from "@material-ui/icons/VerifiedUser";
 import Chip from "@mui/material/Chip";
 import moment from "moment";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 
-function LeavesTable(props) {
+const useStyles = makeStyles(() => ({
+  divider: {
+    // Theme Color, or use css color in quote
+    background: "#e0e0e0",
+  },
+}));
+
+function RejectedLeaves(props) {
+  const classes = useStyles();
   const dispatch = useDispatch();
-  const orders = useSelector(selectLeaves);
+
+  const leaves = useSelector(selectRejectedLeaves);
   const searchText = useSelector(
-    ({ leavesApp }) => leavesApp.leaves.searchText
+    ({ leavesApp }) => leavesApp.rejectedLeaves.searchText
   );
 
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState([]);
-  const [data, setData] = useState(orders);
+  const [data, setData] = useState(leaves);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [order, setOrder] = useState({
@@ -37,18 +51,24 @@ function LeavesTable(props) {
     id: null,
   });
 
+  const [value, setValue] = React.useState(2);
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+
   useEffect(() => {
     dispatch(getLeaves()).then(() => setLoading(false));
   }, [dispatch]);
 
   useEffect(() => {
     if (searchText.length !== 0) {
-      setData(FuseUtils.filterArrayByString(orders, searchText));
+      setData(FuseUtils.filterArrayByString(leaves, searchText));
       setPage(0);
     } else {
-      setData(orders);
+      setData(leaves);
     }
-  }, [orders, searchText]);
+  }, [leaves, searchText]);
 
   function handleRequestSort(event, property) {
     const id = property;
@@ -129,7 +149,7 @@ function LeavesTable(props) {
         className="flex flex-1 items-center justify-center h-full"
       >
         <Typography color="textSecondary" variant="h5">
-          There are no Leaves!
+          There are no rejected Leaves!
         </Typography>
       </motion.div>
     );
@@ -139,7 +159,7 @@ function LeavesTable(props) {
     <div className="w-full flex flex-col">
       <FuseScrollbars className="flex-grow overflow-x-auto">
         <Table stickyHeader className="min-w-xl" aria-labelledby="tableTitle">
-          <LeavesTableHead
+          <ApprovalLeavesTableHead
             selectedLeaveIds={selected}
             order={order}
             onSelectAllClick={handleSelectAllClick}
@@ -238,24 +258,8 @@ function LeavesTable(props) {
           </TableBody>
         </Table>
       </FuseScrollbars>
-
-      <TablePagination
-        className="flex-shrink-0 border-t-1"
-        component="div"
-        count={data.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        backIconButtonProps={{
-          "aria-label": "Previous Page",
-        }}
-        nextIconButtonProps={{
-          "aria-label": "Next Page",
-        }}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
     </div>
   );
 }
 
-export default withRouter(LeavesTable);
+export default withRouter(RejectedLeaves);

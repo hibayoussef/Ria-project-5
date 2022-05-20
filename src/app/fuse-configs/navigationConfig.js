@@ -2,11 +2,6 @@ import { authRoles } from "app/auth";
 import i18next from "i18next";
 import { createSelector } from "@reduxjs/toolkit";
 import DocumentationNavigation from "../main/documentation/DocumentationNavigation";
-import RecentActorsIcon from "@material-ui/icons/RecentActors";
-import ReceiptIcon from "@material-ui/icons/Receipt";
-import SignalCellularAltIcon from "@material-ui/icons/SignalCellularAlt";
-import ContactMailSharpIcon from "@material-ui/icons/ContactMailSharp";
-import PeopleAltIcon from "@material-ui/icons/PeopleAlt";
 
 import ar from "./navigation-i18n/ar";
 import en from "./navigation-i18n/en";
@@ -60,7 +55,7 @@ const tempNavigation = [
         title: "Users Management",
         translate: "Users",
         type: "item",
-        icon: <PeopleAltIcon />,
+        icon: "people_alt",
         url: "/apps/users/all",
       },
       {
@@ -69,7 +64,7 @@ const tempNavigation = [
         title: "Registration requests",
         translate: "Registration requests",
         type: "item",
-        icon: <ContactMailSharpIcon></ContactMailSharpIcon>,
+        icon: "contact_mail",
         url: "/apps/contacts/all",
       },
       {
@@ -92,12 +87,29 @@ const tempNavigation = [
         ],
       },
       {
+        id: "departements",
+        title: "Departements",
+        translate: "Departements",
+        type: "collapse",
+        icon: "account_tree",
+        url: "/apps/departements-section",
+        children: [
+          {
+            id: "departements-departements",
+            title: "Departements",
+            type: "item",
+            url: "/apps/departements-section/departementss",
+            exact: true,
+          },
+        ],
+      },
+      {
         auth: authRoles.super_admin,
         id: "salary-scales",
         title: "Salary Scales Management",
         translate: "Salary Scales",
         type: "collapse",
-        icon: <SignalCellularAltIcon></SignalCellularAltIcon>,
+        icon: "signal_cellular_alt",
         url: "/apps/salary-scale-section",
         children: [
           {
@@ -238,25 +250,32 @@ const tempNavigation = [
       },
 
       {
-        id: "e-commerce",
+        id: "leaves-section",
         title: "Leaves",
         translate: "Leaves",
         type: "collapse",
         icon: "radio_button_checked",
-        url: "/apps/e-commerce",
+        url: "/apps/leaves-section",
         children: [
           {
-            id: "e-commerce-orders",
-            title: "Laeaves",
+            id: "leaves-section-leaves-requests",
+            title: "Leave requests",
             type: "item",
-            url: "/apps/e-commerce/orders",
+            url: "/apps/leaves-section/leaves",
             exact: true,
           },
           {
-            id: "e-commerce-order-detail",
-            title: "Leaves Detail",
+            id: "leaves-section-leaves",
+            title: "Archive Leaves",
             type: "item",
-            url: "/apps/e-commerce/leaves/1",
+            url: "/apps/leaves-section/approval-leaves",
+            exact: true,
+          },
+          {
+            id: "leaves-section-my-leaves",
+            title: "My Leaves",
+            type: "item",
+            url: "/apps/leaves-section/my-leaves",
             exact: true,
           },
         ],

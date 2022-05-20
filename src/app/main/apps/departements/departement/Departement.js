@@ -12,22 +12,24 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import { useDeepCompareEffect } from "@fuse/hooks";
 import reducer from "../store";
-import { resetOrder, getLeave } from "../store/leaveSlice";
-import LeaveDetailsTab from "./tabs/LeaveDetailsTab";
+import { resetOrder, getDepartement } from "../store/departementSlice";
+import DepartementDetailsTab from "./tabs/DepartementDetailsTab";
+import AddUserToDepartement from "./tabs/AddUserToDepartement";
 
-function Leave(props) {
+function Departement(props) {
   const dispatch = useDispatch();
-  const order = useSelector(({ leavesApp }) => leavesApp.leave);
-
-  console.log("order: ", order);
+  const order = useSelector(
+    ({ departementsApp }) => departementsApp.departement
+  );
   const theme = useTheme();
 
   const routeParams = useParams();
   const [tabValue, setTabValue] = useState(0);
   const [noOrder, setNoOrder] = useState(false);
 
+  console.log("ouuuuuuuuuuuuuuuuuuuuuu:", order);
   useDeepCompareEffect(() => {
-    dispatch(getLeave(routeParams)).then((action) => {
+    dispatch(getDepartement(routeParams)).then((action) => {
       if (!action.payload) {
         setNoOrder(true);
       }
@@ -53,16 +55,16 @@ function Leave(props) {
         className="flex flex-col flex-1 items-center justify-center h-full"
       >
         <Typography color="textSecondary" variant="h5">
-          There is no such Leave!
+          There is no such order!
         </Typography>
         <Button
           className="mt-24"
           component={Link}
           variant="outlined"
-          to="/apps/leaves-section/leaves"
+          to="/apps/departements-section/departements"
           color="inherit"
         >
-          Go to Leaves Page
+          Go to Departements Page
         </Button>
       </motion.div>
     );
@@ -86,13 +88,13 @@ function Leave(props) {
                   className="flex items-center sm:mb-12"
                   component={Link}
                   role="button"
-                  to="/apps/leaves-section/leaves"
+                  to="/apps/departements-section/departements"
                   color="inherit"
                 >
                   <Icon className="text-20">
                     {theme.direction === "ltr" ? "arrow_back" : "arrow_forward"}
                   </Icon>
-                  <span className="mx-4 font-medium">Leaves</span>
+                  <span className="mx-4 font-medium">Departements</span>
                 </Typography>
               </motion.div>
 
@@ -102,14 +104,15 @@ function Leave(props) {
                   animate={{ x: 0, opacity: 1, transition: { delay: 0.3 } }}
                 >
                   <Typography className="text-16 sm:text-20 truncate font-semibold">
-                    {`Leave ${order?.data?.id}`}
-                  </Typography>
-                  <Typography variant="caption" className="font-medium">
-                    {`From ${order?.data?.requester?.name}`}
+                    {`Departement Details 
+                   
+                    `}
                   </Typography>
                 </motion.div>
               </div>
             </div>
+
+            <AddUserToDepartement departmentId={order?.id} />
           </div>
         )
       }
@@ -123,13 +126,13 @@ function Leave(props) {
           scrollButtons="auto"
           classes={{ root: "w-full h-64" }}
         >
-          <Tab className="h-64" label="Leave Details" />
+          <Tab className="h-64" label="Departement Details" />
         </Tabs>
       }
       content={
         order && (
           <div className="p-16 sm:p-24 max-w-2xl w-full">
-            {tabValue === 0 && <LeaveDetailsTab />}
+            {tabValue === 0 && <DepartementDetailsTab />}
           </div>
         )
       }
@@ -138,4 +141,4 @@ function Leave(props) {
   );
 }
 
-export default withReducer("leavesApp", reducer)(Leave);
+export default withReducer("departementsApp", reducer)(Departement);

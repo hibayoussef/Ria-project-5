@@ -13,18 +13,18 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { withRouter } from "react-router-dom";
 import FuseLoading from "@fuse/core/FuseLoading";
-import { selectLeaves, getLeaves } from "../store/leavesSlice";
-import LeavesTableHead from "./LeavesTableHead";
-import VerifiedUserIcon from "@material-ui/icons/VerifiedUser";
-import Chip from "@mui/material/Chip";
+import {
+  selectDepartements,
+  getDepartements,
+} from "../store/departementsSlice";
+import DepartementsTableHead from "./DepartementsTableHead";
 import moment from "moment";
-import VisibilityIcon from "@material-ui/icons/Visibility";
 
-function LeavesTable(props) {
+function DepartementsTable(props) {
   const dispatch = useDispatch();
-  const orders = useSelector(selectLeaves);
+  const orders = useSelector(selectDepartements);
   const searchText = useSelector(
-    ({ leavesApp }) => leavesApp.leaves.searchText
+    ({ departementsApp }) => departementsApp.departements.searchText
   );
 
   const [loading, setLoading] = useState(true);
@@ -38,7 +38,7 @@ function LeavesTable(props) {
   });
 
   useEffect(() => {
-    dispatch(getLeaves()).then(() => setLoading(false));
+    dispatch(getDepartements()).then(() => setLoading(false));
   }, [dispatch]);
 
   useEffect(() => {
@@ -77,7 +77,7 @@ function LeavesTable(props) {
   }
 
   function handleClick(item) {
-    props.history.push(`/apps/leaves-section/leaves/${item.id}`);
+    props.history.push(`/apps/departements-section/departements/${item.id}`);
   }
 
   function handleCheck(event, id) {
@@ -108,15 +108,6 @@ function LeavesTable(props) {
     setRowsPerPage(event.target.value);
   }
 
-  const statusIcon = (status) => {
-    switch (status) {
-      case "pending_approval":
-        return <VisibilityIcon />;
-      default:
-        return <VerifiedUserIcon />;
-    }
-  };
-
   if (loading) {
     return <FuseLoading />;
   }
@@ -129,7 +120,7 @@ function LeavesTable(props) {
         className="flex flex-1 items-center justify-center h-full"
       >
         <Typography color="textSecondary" variant="h5">
-          There are no Leaves!
+          There are no Departements!
         </Typography>
       </motion.div>
     );
@@ -139,8 +130,8 @@ function LeavesTable(props) {
     <div className="w-full flex flex-col">
       <FuseScrollbars className="flex-grow overflow-x-auto">
         <Table stickyHeader className="min-w-xl" aria-labelledby="tableTitle">
-          <LeavesTableHead
-            selectedLeaveIds={selected}
+          <DepartementsTableHead
+            selectedDepartementIds={selected}
             order={order}
             onSelectAllClick={handleSelectAllClick}
             onRequestSort={handleRequestSort}
@@ -157,7 +148,12 @@ function LeavesTable(props) {
                     case "id": {
                       return parseInt(o.id, 10);
                     }
-
+                    case "customer": {
+                      return o.customer.firstName;
+                    }
+                    case "payment": {
+                      return o.payment.method;
+                    }
                     case "status": {
                       return o.status[0].name;
                     }
@@ -207,7 +203,7 @@ function LeavesTable(props) {
                       component="th"
                       scope="row"
                     >
-                      {n.requester.name}
+                      {n.title}
                     </TableCell>
 
                     <TableCell
@@ -215,18 +211,13 @@ function LeavesTable(props) {
                       component="th"
                       scope="row"
                     >
-                      <Chip
-                        style={{ fontSize: "1.2rem" }}
-                        icon={statusIcon(n.status)}
-                        label={n.status}
-                      />
+                      {n.maxNumberOfEmployees}
                     </TableCell>
 
                     <TableCell
                       className="p-4 md:p-16"
                       component="th"
                       scope="row"
-                      align="left"
                     >
                       {moment(moment.utc(n.createdAt).toDate())
                         .local()
@@ -258,4 +249,4 @@ function LeavesTable(props) {
   );
 }
 
-export default withRouter(LeavesTable);
+export default withRouter(DepartementsTable);

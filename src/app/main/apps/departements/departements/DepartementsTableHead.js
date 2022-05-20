@@ -15,7 +15,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 import clsx from "clsx";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { removeOrders } from "../store/leavesSlice";
+import { removeOrders } from "../store/departementsSlice";
 
 const rows = [
   {
@@ -26,25 +26,25 @@ const rows = [
     sort: true,
   },
   {
-    id: "requester.name",
+    id: "title",
     align: "left",
     disablePadding: false,
-    label: "Requester Name",
+    label: "Title",
+    sort: true,
+  },
+  {
+    id: "maxNumberOfEmployees",
+    align: "left",
+    disablePadding: false,
+    label: "Number of Employees",
     sort: true,
   },
 
   {
-    id: "status",
-    align: "left",
-    disablePadding: false,
-    label: "Status",
-    sort: true,
-  },
-  {
     id: "createdAt",
     align: "left",
     disablePadding: false,
-    label: "Request Date",
+    label: "Date created",
     sort: true,
   },
 ];
@@ -55,10 +55,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function LeavesTableHead(props) {
+function DepartementsTableHead(props) {
   const classes = useStyles(props);
-  const { selectedLeaveIds } = props;
-  const numSelected = selectedLeaveIds.length;
+  const { selectedDepartementIds } = props;
+  const numSelected = selectedDepartementIds.length;
 
   const [selectedOrdersMenu, setSelectedOrdersMenu] = useState(null);
 
@@ -110,7 +110,7 @@ function LeavesTableHead(props) {
                 <MenuList>
                   <MenuItem
                     onClick={() => {
-                      dispatch(removeOrders(selectedLeaveIds));
+                      dispatch(removeOrders(selectedOrderIds));
                       props.onMenuItemClick();
                       closeSelectedOrdersMenu();
                     }}
@@ -162,4 +162,4 @@ function LeavesTableHead(props) {
   );
 }
 
-export default LeavesTableHead;
+export default DepartementsTableHead;

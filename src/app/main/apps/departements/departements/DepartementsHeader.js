@@ -1,3 +1,4 @@
+import { React, useState } from "react";
 import Icon from "@material-ui/core/Icon";
 import Input from "@material-ui/core/Input";
 import Paper from "@material-ui/core/Paper";
@@ -6,14 +7,35 @@ import Typography from "@material-ui/core/Typography";
 import { motion } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
 import { selectMainTheme } from "app/store/fuse/settingsSlice";
-import { setOrdersSearchText } from "../store/leavesSlice";
+import { setOrdersSearchText } from "../store/departementsSlice";
 import Button from "@material-ui/core/Button";
+import { makeStyles } from "@material-ui/core/styles";
+import { useTheme } from "@material-ui/core/styles";
 import { Link } from "react-router-dom";
 
-function LeavesHeader(props) {
+const useStyles = makeStyles((theme) => ({
+  paper: { padding: "3rem", maxWidth: "990px", minWidth: "300px" },
+  textStyle: {
+    paddingLeft: "2rem",
+  },
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 120,
+  },
+  selectEmpty: {
+    marginTop: theme.spacing(2),
+  },
+  font: {
+    fontSize: "5rem",
+  },
+}));
+
+function DepartementsHeader(props) {
+  const theme = useTheme();
+  const classes = useStyles();
   const dispatch = useDispatch();
   const searchText = useSelector(
-    ({ leavesApp }) => leavesApp.leaves.searchText
+    ({ departementsApp }) => departementsApp.departements.searchText
   );
   const mainTheme = useSelector(selectMainTheme);
 
@@ -26,7 +48,7 @@ function LeavesHeader(props) {
           animate={{ scale: 1, transition: { delay: 0.2 } }}
           className="text-24 md:text-32"
         >
-          radio_button_checked
+          account_tree
         </Icon>
         <Typography
           component={motion.span}
@@ -35,7 +57,7 @@ function LeavesHeader(props) {
           delay={300}
           className="text-16 md:text-24 mx-12 font-semibold"
         >
-          Leaves
+          Departements
         </Typography>
       </div>
 
@@ -63,8 +85,27 @@ function LeavesHeader(props) {
           </Paper>
         </ThemeProvider>
       </div>
+
+      <motion.div
+        initial={{ opacity: 0, x: 20 }}
+        animate={{ opacity: 1, x: 0, transition: { delay: 0.2 } }}
+      >
+        <Button
+          component={Link}
+          to="/apps/departements-section/departements/new-departement"
+          className="whitespace-nowrap"
+          variant="contained"
+          color="secondary"
+          onClick={(ev) => {
+            handleAssignToUserDialogOpen();
+          }}
+        >
+          <span className="hidden sm:flex">Add New Departement</span>
+          <span className="flex sm:hidden">New</span>
+        </Button>
+      </motion.div>
     </div>
   );
 }
 
-export default LeavesHeader;
+export default DepartementsHeader;

@@ -13,18 +13,18 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { withRouter } from "react-router-dom";
 import FuseLoading from "@fuse/core/FuseLoading";
-import { selectLeaves, getLeaves } from "../store/leavesSlice";
-import LeavesTableHead from "./LeavesTableHead";
+import { selectMyLeaves, getMyLeaves } from "../store/myLeavesSlice";
+import MyLeavesTableHead from "./MyLeavesTableHead";
 import VerifiedUserIcon from "@material-ui/icons/VerifiedUser";
 import Chip from "@mui/material/Chip";
 import moment from "moment";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 
-function LeavesTable(props) {
+function MyLeavesTable(props) {
   const dispatch = useDispatch();
-  const orders = useSelector(selectLeaves);
+  const orders = useSelector(selectMyLeaves);
   const searchText = useSelector(
-    ({ leavesApp }) => leavesApp.leaves.searchText
+    ({ leavesApp }) => leavesApp.myLeaves.searchText
   );
 
   const [loading, setLoading] = useState(true);
@@ -38,7 +38,8 @@ function LeavesTable(props) {
   });
 
   useEffect(() => {
-    dispatch(getLeaves()).then(() => setLoading(false));
+    console.log("data.id: ", data?.requester?.id);
+    dispatch(getMyLeaves(data?.requester?.id)).then(() => setLoading(false));
   }, [dispatch]);
 
   useEffect(() => {
@@ -139,8 +140,8 @@ function LeavesTable(props) {
     <div className="w-full flex flex-col">
       <FuseScrollbars className="flex-grow overflow-x-auto">
         <Table stickyHeader className="min-w-xl" aria-labelledby="tableTitle">
-          <LeavesTableHead
-            selectedLeaveIds={selected}
+          <MyLeavesTableHead
+            selectedMyLeaveIds={selected}
             order={order}
             onSelectAllClick={handleSelectAllClick}
             onRequestSort={handleRequestSort}
@@ -258,4 +259,4 @@ function LeavesTable(props) {
   );
 }
 
-export default withRouter(LeavesTable);
+export default withRouter(MyLeavesTable);

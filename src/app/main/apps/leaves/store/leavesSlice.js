@@ -4,6 +4,7 @@ import {
   createEntityAdapter,
 } from "@reduxjs/toolkit";
 import axios from "axios";
+import { getLeave } from "./leaveSlice";
 
 export const getLeaves = createAsyncThunk(
   "leavesApp/leaves/getLeaves",
@@ -27,6 +28,22 @@ export const approveLeave = createAsyncThunk(
     dispatch(getLeaves());
     dispatch(getLeave());
     console.log("user approve inside Slice: ", data);
+
+    return data;
+  }
+);
+
+export const rejectLeave = createAsyncThunk(
+  "leavesApp/leave/rejectLeave",
+  async (id, { dispatch }) => {
+    const response = await axios
+      .patch(`/leaves/${id}/reject`)
+      .catch((err) => console.log(err));
+    const data = await response.data.data;
+
+    dispatch(getLeaves());
+    dispatch(getLeave());
+    console.log("user rejected inside Slice: ", data);
 
     return data;
   }
@@ -83,6 +100,9 @@ const leavesSlice = createSlice({
     [removeOrders.fulfilled]: (state, action) =>
       leavesAdapter.removeMany(state, action.payload),
     [approveLeave.fulfilled]: (state, action) => {
+      leavesAdapter.addOne;
+    },
+    [rejectLeave.fulfilled]: (state, action) => {
       leavesAdapter.addOne;
     },
   },

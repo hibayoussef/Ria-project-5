@@ -7,16 +7,24 @@ const LeavesAppConfig = {
   },
   routes: [
     {
-      path: "/apps/e-commerce/leaves/:orderId",
+      path: "/apps/leaves-section/leaves/:leaveId",
       component: lazy(() => import("./leave/Leave")),
     },
     {
-      path: "/apps/e-commerce/orders",
+      path: "/apps/leaves-section/leaves",
       component: lazy(() => import("./leaves/Leaves")),
     },
     {
-      path: "/apps/e-commerce",
-      component: () => <Redirect to="/apps/e-commerce/products" />,
+      path: "/apps/leaves-section/my-leaves",
+      component: lazy(() => import("./my-leaves/MyLeaves")),
+    },
+    {
+      path: "/apps/leaves-section/approval-leaves",
+      component: lazy(() => import("./approval-leaves/ApprovalLeaves")),
+    },
+    {
+      path: "/apps/leaves-section",
+      component: () => <Redirect to="/apps/leaves-section/leaves" />,
     },
   ],
 };

@@ -15,7 +15,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 import clsx from "clsx";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { removeOrders } from "../store/leavesSlice";
+// import { removeOrders } from "../store/approvalLeaveSlice";
 
 const rows = [
   {
@@ -55,7 +55,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function LeavesTableHead(props) {
+function ApprovalLeavesTableHead(props) {
   const classes = useStyles(props);
   const { selectedLeaveIds } = props;
   const numSelected = selectedLeaveIds.length;
@@ -110,7 +110,7 @@ function LeavesTableHead(props) {
                 <MenuList>
                   <MenuItem
                     onClick={() => {
-                      dispatch(removeOrders(selectedLeaveIds));
+                      // dispatch(removeOrders(selectedLeaveIds));
                       props.onMenuItemClick();
                       closeSelectedOrdersMenu();
                     }}
@@ -162,4 +162,4 @@ function LeavesTableHead(props) {
   );
 }
 
-export default LeavesTableHead;
+export default ApprovalLeavesTableHead;
