@@ -16,10 +16,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { withRouter } from "react-router-dom";
 import FuseLoading from "@fuse/core/FuseLoading";
 import {
-  selectRejectedLeaves,
+  selectApprovalLeaves,
   getLeaves,
-} from "../../store/rejectedLeaveSlice";
-import ApprovalLeavesTableHead from "../ApprovalLeavesTableHead";
+} from "../../store/approvalLeaveSlice";
+import ArchiveLeavesTableHead from "../ArchiveLeavesTableHead";
 import VerifiedUserIcon from "@material-ui/icons/VerifiedUser";
 import Chip from "@mui/material/Chip";
 import moment from "moment";
@@ -32,13 +32,13 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-function RejectedLeaves(props) {
+function ApprovalLeavesTable(props) {
   const classes = useStyles();
   const dispatch = useDispatch();
 
-  const leaves = useSelector(selectRejectedLeaves);
+  const leaves = useSelector(selectApprovalLeaves);
   const searchText = useSelector(
-    ({ leavesApp }) => leavesApp.rejectedLeaves.searchText
+    ({ leavesApp }) => leavesApp.approvalLeaves.searchText
   );
 
   const [loading, setLoading] = useState(true);
@@ -149,7 +149,7 @@ function RejectedLeaves(props) {
         className="flex flex-1 items-center justify-center h-full"
       >
         <Typography color="textSecondary" variant="h5">
-          There are no rejected Leaves!
+          There are no approval Leaves!
         </Typography>
       </motion.div>
     );
@@ -159,7 +159,7 @@ function RejectedLeaves(props) {
     <div className="w-full flex flex-col">
       <FuseScrollbars className="flex-grow overflow-x-auto">
         <Table stickyHeader className="min-w-xl" aria-labelledby="tableTitle">
-          <ApprovalLeavesTableHead
+          <ArchiveLeavesTableHead
             selectedLeaveIds={selected}
             order={order}
             onSelectAllClick={handleSelectAllClick}
@@ -262,4 +262,4 @@ function RejectedLeaves(props) {
   );
 }
 
-export default withRouter(RejectedLeaves);
+export default withRouter(ApprovalLeavesTable);

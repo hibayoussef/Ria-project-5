@@ -79,7 +79,6 @@ const useStyles = makeStyles((theme) => ({
 function InvoicesTableHead(props) {
   const classes = useStyles(props);
   const { selectedInvoiceIds } = props;
-  l;
   const numSelected = selectedInvoiceIds.length;
 
   console.log("numSelected: ", numSelected);

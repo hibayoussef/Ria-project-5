@@ -7,6 +7,10 @@ const LeavesAppConfig = {
   },
   routes: [
     {
+      path: "/apps/leaves-section/leaves/new-leave",
+      component: lazy(() => import("./add-leave/AddLeave")),
+    },
+    {
       path: "/apps/leaves-section/leaves/:leaveId",
       component: lazy(() => import("./leave/Leave")),
     },
@@ -20,7 +24,7 @@ const LeavesAppConfig = {
     },
     {
       path: "/apps/leaves-section/approval-leaves",
-      component: lazy(() => import("./approval-leaves/ApprovalLeaves")),
+      component: lazy(() => import("./archive-leaves/ArchiveLeaves")),
     },
     {
       path: "/apps/leaves-section",

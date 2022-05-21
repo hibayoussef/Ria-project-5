@@ -85,22 +85,6 @@ function ArchiveLeavesTable(props) {
         return <VerifiedUserIcon />;
     }
   };
-  // const statusIcon = (status) => {
-  //   switch (status) {
-  //     case "approval_pending":
-  //       return <VerifiedUserIcon />;
-  //     case "review_pending":
-  //       return <VisibilityIcon />;
-  //     case "payment_pending":
-  //       return <CreditCardIcon />;
-  //     case "completed":
-  //       return <CheckCircleIcon />;
-  //     case "rejected":
-  //       return <CancelIcon />;
-  //     default:
-  //       return <CancelIcon />;
-  //   }
-  // };
 
   if (loading) {
     return <FuseLoading />;

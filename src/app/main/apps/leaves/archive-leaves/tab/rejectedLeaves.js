@@ -16,10 +16,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { withRouter } from "react-router-dom";
 import FuseLoading from "@fuse/core/FuseLoading";
 import {
-  selectApprovalLeaves,
+  selectRejectedLeaves,
   getLeaves,
-} from "../../store/approvalLeaveSlice";
-import ApprovalLeavesTableHead from "../ApprovalLeavesTableHead";
+} from "../../store/rejectedLeaveSlice";
+import ArchiveLeavesTableHead from "../ArchiveLeavesTableHead";
 import VerifiedUserIcon from "@material-ui/icons/VerifiedUser";
 import Chip from "@mui/material/Chip";
 import moment from "moment";
@@ -32,13 +32,13 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-function ApprovalLeavesTable(props) {
+function RejectedLeaves(props) {
   const classes = useStyles();
   const dispatch = useDispatch();
 
-  const leaves = useSelector(selectApprovalLeaves);
+  const leaves = useSelector(selectRejectedLeaves);
   const searchText = useSelector(
-    ({ leavesApp }) => leavesApp.approvalLeaves.searchText
+    ({ leavesApp }) => leavesApp.rejectedLeaves.searchText
   );
 
   const [loading, setLoading] = useState(true);
@@ -149,7 +149,7 @@ function ApprovalLeavesTable(props) {
         className="flex flex-1 items-center justify-center h-full"
       >
         <Typography color="textSecondary" variant="h5">
-          There are no approval Leaves!
+          There are no rejected Leaves!
         </Typography>
       </motion.div>
     );
@@ -159,7 +159,7 @@ function ApprovalLeavesTable(props) {
     <div className="w-full flex flex-col">
       <FuseScrollbars className="flex-grow overflow-x-auto">
         <Table stickyHeader className="min-w-xl" aria-labelledby="tableTitle">
-          <ApprovalLeavesTableHead
+          <ArchiveLeavesTableHead
             selectedLeaveIds={selected}
             order={order}
             onSelectAllClick={handleSelectAllClick}
@@ -262,4 +262,4 @@ function ApprovalLeavesTable(props) {
   );
 }
 
-export default withRouter(ApprovalLeavesTable);
+export default withRouter(RejectedLeaves);

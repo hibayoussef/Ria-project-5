@@ -15,6 +15,12 @@ export const getReceipt = createAsyncThunk(
   }
 );
 
+export const getUsers = async () => {
+  const response = await axios.get("/users/for-admin");
+  console.log("get Users response:  ", response);
+  return response.data.data;
+};
+
 export const removeDeduction = createAsyncThunk(
   "Receipts/removeDeduction",
   async (params, { dispatch, getState }) => {

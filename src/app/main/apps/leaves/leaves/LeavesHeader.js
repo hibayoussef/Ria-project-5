@@ -63,6 +63,21 @@ function LeavesHeader(props) {
           </Paper>
         </ThemeProvider>
       </div>
+      <motion.div
+        initial={{ opacity: 0, x: 20 }}
+        animate={{ opacity: 1, x: 0, transition: { delay: 0.2 } }}
+      >
+        <Button
+          component={Link}
+          to="/apps/leaves-section/leaves/new-leave"
+          className="whitespace-nowrap"
+          variant="contained"
+          color="secondary"
+        >
+          <span className="hidden sm:flex">Add New Leave</span>
+          <span className="flex sm:hidden">New</span>
+        </Button>
+      </motion.div>
     </div>
   );
 }

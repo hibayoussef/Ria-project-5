@@ -14,6 +14,21 @@ export const getLeave = createAsyncThunk(
   }
 );
 
+export const addLeave = createAsyncThunk(
+  "leavesApp/leave/addLeave",
+  async (leave, { dispatch, getState }) => {
+    console.log("backend-1-invoice: ", leave);
+    const response = await axios.post("/leaves", leave);
+    console.log("response: ", response);
+
+    const data = await response.data.data;
+    console.log("Hi I am Here in add new leave: ", data);
+    dispatch(getLeaves());
+
+    return data;
+  }
+);
+
 const leaveSlice = createSlice({
   name: "leavesApp/leave",
   initialState: null,
@@ -22,6 +37,7 @@ const leaveSlice = createSlice({
   },
   extraReducers: {
     [getLeave.fulfilled]: (state, action) => action.payload,
+    [addLeave.fulfilled]: (state, action) => action.payload,
   },
 });
 

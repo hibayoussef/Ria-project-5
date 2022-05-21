@@ -55,7 +55,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function ApprovalLeavesTableHead(props) {
+function ArchiveLeavesTableHead(props) {
   const classes = useStyles(props);
   const { selectedLeaveIds } = props;
   const numSelected = selectedLeaveIds.length;
@@ -162,4 +162,4 @@ function ApprovalLeavesTableHead(props) {
   );
 }
 
-export default ApprovalLeavesTableHead;
+export default ArchiveLeavesTableHead;

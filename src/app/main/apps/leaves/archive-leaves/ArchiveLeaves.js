@@ -1,10 +1,10 @@
 import FusePageCarded from "@fuse/core/FusePageCarded";
 import withReducer from "app/store/withReducer";
 import reducer from "../store";
-import ApprovalLeavesHeader from "./ApprovalLeavesHeader";
-import ApprovalLeavesTable from "./ApprovalLeavesTable";
+import ArchiveLeavesHeader from "./ArchiveLeavesHeader";
+import ArchiveLeavesTable from "./ArchiveLeavesTable";
 
-function ApprovalLeaves() {
+function ArchiveLeaves() {
   return (
     <FusePageCarded
       classes={{
@@ -12,11 +12,11 @@ function ApprovalLeaves() {
         contentCard: "overflow-hidden",
         header: "min-h-72 h-72 sm:h-136 sm:min-h-136",
       }}
-      header={<ApprovalLeavesHeader />}
-      content={<ApprovalLeavesTable />}
+      header={<ArchiveLeavesHeader />}
+      content={<ArchiveLeavesTable />}
       innerScroll
     />
   );
 }
 
-export default withReducer("leavesApp", reducer)(ApprovalLeaves);
+export default withReducer("leavesApp", reducer)(ArchiveLeaves);

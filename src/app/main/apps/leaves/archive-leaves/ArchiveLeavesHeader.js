@@ -10,7 +10,7 @@ import { setOrdersSearchText } from "../store/approvalLeaveSlice";
 import Button from "@material-ui/core/Button";
 import { Link } from "react-router-dom";
 
-function ApprovalLeavesHeader(props) {
+function ArchiveLeavesHeader(props) {
   const dispatch = useDispatch();
   const searchText = useSelector(
     ({ leavesApp }) => leavesApp.leaves.searchText
@@ -67,4 +67,4 @@ function ApprovalLeavesHeader(props) {
   );
 }
 
-export default ApprovalLeavesHeader;
+export default ArchiveLeavesHeader;

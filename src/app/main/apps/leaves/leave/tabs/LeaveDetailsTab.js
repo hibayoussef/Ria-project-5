@@ -91,22 +91,24 @@ function LeaveDetailsTab() {
                     <div className="flex items-center">
                       {/* <Avatar src={order.customer.avatar} /> */}
                       <Typography className="truncate mx-8">
-                        {`${order?.data?.requester?.name} `}
+                        {`${order?.data?.requester?.name || "-"} `}
                       </Typography>
                     </div>
                   </td>
                   <td>
-                    <span className="truncate">{`${order?.data?.requester?.job?.name}`}</span>
+                    <span className="truncate">{`${
+                      order?.data?.requester?.job?.name || "-"
+                    }`}</span>
                   </td>
                   <td>
                     <Typography className="truncate">
-                      {`${order?.data?.requester?.email}`}
+                      {`${order?.data?.requester?.email || "-"}`}
                     </Typography>
                   </td>
 
                   <td>
                     <Typography className="truncate">
-                      {`${order?.data?.requester?.phoneNumber}`}
+                      {`${order?.data?.requester?.phoneNumber || "-"}`}
                     </Typography>
                   </td>
                 </tr>
@@ -150,7 +152,7 @@ function LeaveDetailsTab() {
                 <td>
                   <span className="truncate">
                     {" "}
-                    {moment(moment.utc(order?.data?.fromDate).toDate())
+                    {moment(moment.utc(order?.data?.fromDate || "-").toDate())
                       .local()
                       .format("YYYY-MM-DD HH:mm:ss")}
                   </span>
@@ -158,14 +160,14 @@ function LeaveDetailsTab() {
                 <td>
                   <span className="truncate">
                     {" "}
-                    {moment(moment.utc(order?.data?.toDate).toDate())
+                    {moment(moment.utc(order?.data?.toDate || "-").toDate())
                       .local()
                       .format("YYYY-MM-DD HH:mm:ss")}
                   </span>
                 </td>
                 <td>
                   <span className="truncate">
-                    {`${order?.data?.description}`}
+                    {`${order?.data?.description || "-"}`}
                   </span>
                 </td>
               </tr>

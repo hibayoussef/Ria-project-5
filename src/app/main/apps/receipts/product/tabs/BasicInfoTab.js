@@ -11,6 +11,7 @@ import NativeSelect from "@material-ui/core/NativeSelect";
 import InputBase from "@material-ui/core/InputBase";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { getUsers } from "../../store/receiptSlice";
 
 const BootstrapInput = withStyles((theme) => ({
   root: {
@@ -59,9 +60,9 @@ function BasicInfoTab(props) {
   const { errors } = formState;
   const classes = useStyles();
   const [age, setAge] = React.useState("");
+  const [users, setUsers] = useState([]);
   // const users = useSelector(selectUsers);
   // const user = useSelector(({ usersApp }) => usersApp.user);
-  console.log("reddd:", user);
   const dispatch = useDispatch();
 
   const handleChange = (event) => {
@@ -69,22 +70,25 @@ function BasicInfoTab(props) {
   };
 
   useEffect(() => {
-    dispatch(getUsers());
-  }, [dispatch]);
+    getUsers().then((response) => {
+      console.log("Users response in approve: ", response);
+      setUsers(response);
+    });
+  }, []);
 
   return (
     <div>
       <FormControl style={{ minWidth: "100rem" }} className={classes.margin}>
-        {/* {users.map((receipt) => { */}
-        <NativeSelect
-          id="demo-customized-select-native"
-          value={receipt.name}
-          onChange={handleChange}
-          input={<BootstrapInput />}
-        >
-          <option value={receipt.name}>{receipt.name}</option>
-        </NativeSelect>
-        {/* })} */}
+        {users.map((receipt) => {
+          <NativeSelect
+            id="demo-customized-select-native"
+            value={receipt.name}
+            onChange={handleChange}
+            input={<BootstrapInput />}
+          >
+            <option value={receipt.name}>{receipt.name}</option>
+          </NativeSelect>;
+        })}
       </FormControl>
     </div>
   );
