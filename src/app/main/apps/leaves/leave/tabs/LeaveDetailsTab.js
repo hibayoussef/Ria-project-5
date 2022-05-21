@@ -175,61 +175,62 @@ function LeaveDetailsTab() {
           </table>
         </div>
       </div>
-
-      <motion.div
-        initial={{ opacity: 0, x: 20 }}
-        animate={{ opacity: 1, x: 0, transition: { delay: 0.3 } }}
-      >
-        <Grid
-          container
-          direction="row-reverse"
-          justifyContent="flex-start"
-          alignItems="flex-end"
-          style={{
-            paddingTop: "7rem",
-          }}
+      {order?.data?.status === "pending_approval" && (
+        <motion.div
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0, transition: { delay: 0.3 } }}
         >
-          <Grid item>
-            <Button
-              className="whitespace-nowrap mx-4"
-              variant="contained"
-              color="secondary"
-              style={{
-                padding: "1rem",
-                paddingLeft: "3rem",
-                paddingRight: "3rem",
-              }}
-              onClick={(ev) => {
-                dispatch(rejectLeave(order?.data?.id));
-                ev.stopPropagation();
-                handleRejectLeaveClick(ev);
-              }}
-            >
-              Reject
-            </Button>
+          <Grid
+            container
+            direction="row-reverse"
+            justifyContent="flex-start"
+            alignItems="flex-end"
+            style={{
+              paddingTop: "7rem",
+            }}
+          >
+            <Grid item>
+              <Button
+                className="whitespace-nowrap mx-4"
+                variant="contained"
+                color="secondary"
+                style={{
+                  padding: "1rem",
+                  paddingLeft: "3rem",
+                  paddingRight: "3rem",
+                }}
+                onClick={(ev) => {
+                  dispatch(rejectLeave(order?.data?.id));
+                  ev.stopPropagation();
+                  handleRejectLeaveClick(ev);
+                }}
+              >
+                Reject
+              </Button>
+            </Grid>
+            <Grid item>
+              <Button
+                className="whitespace-nowrap mx-4"
+                variant="contained"
+                color="secondary"
+                // disabled={_.isEmpty(dirtyFields) || !isValid}
+                style={{
+                  padding: "1rem",
+                  paddingLeft: "3rem",
+                  paddingRight: "3rem",
+                }}
+                onClick={(ev) => {
+                  dispatch(approveLeave(order?.data?.id));
+                  ev.stopPropagation();
+                  handleApproveLeaveClick(ev);
+                }}
+              >
+                Approve
+              </Button>
+            </Grid>
           </Grid>
-          <Grid item>
-            <Button
-              className="whitespace-nowrap mx-4"
-              variant="contained"
-              color="secondary"
-              // disabled={_.isEmpty(dirtyFields) || !isValid}
-              style={{
-                padding: "1rem",
-                paddingLeft: "3rem",
-                paddingRight: "3rem",
-              }}
-              onClick={(ev) => {
-                dispatch(approveLeave(order?.data?.id));
-                ev.stopPropagation();
-                handleApproveLeaveClick(ev);
-              }}
-            >
-              Approve
-            </Button>
-          </Grid>
-        </Grid>
-      </motion.div>
+        </motion.div>
+      )}
     </div>
   );
 }

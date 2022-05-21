@@ -88,22 +88,12 @@ function Product(props) {
             classes={{ root: "w-full h-64" }}
           >
             <Tab className="h-64" label="Basic Info" />
-            <Tab className="h-64" label="Pricing" />
-            <Tab className="h-64" label="Shipping" />
           </Tabs>
         }
         content={
           <div className="p-16 sm:p-24 max-w-2xl">
             <div className={tabValue !== 0 ? "hidden" : ""}>
               <BasicInfoTab />
-            </div>
-
-            <div className={tabValue !== 1 ? "hidden" : ""}>
-              <PricingTab />
-            </div>
-
-            <div className={tabValue !== 2 ? "hidden" : ""}>
-              <ShippingTab />
             </div>
           </div>
         }
