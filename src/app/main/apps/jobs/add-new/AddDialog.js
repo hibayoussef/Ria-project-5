@@ -23,7 +23,8 @@ import { Controller, useForm } from "react-hook-form";
 import {addWork} from '../store/workSlice'
 
 const useStyles = makeStyles((theme) => ({
-  paper: { padding: "3rem", maxWidth: "990px", minWidth: "300px" },
+    
+  paper: { padding: "3rem", maxWidth: "990px", minWidth: "400px" },
   textStyle: {
     paddingLeft: "2rem",
 
