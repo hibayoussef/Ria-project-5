@@ -12,13 +12,15 @@ import NotesAppConfig from "./notes/NotesAppConfig";
 import ScrumboardAppConfig from "./scrumboard/ScrumboardAppConfig";
 import TodoAppConfig from "./todo/TodoAppConfig";
 import UsersAppConfig from "./users/UsersAppConfig";
-import JobsAppConfig from "./jobs/JobsAppConfig";
+// import JobsAppConfig from "./jobs/JobsAppConfig";
 import SalaryScalesAppConfig from "./salary-scales/SalaryScalesAppConfig";
 import InvoicesAppConfig from "./invoices/InvoicesAppConfig";
 import LeavesAppConfig from "./leaves/LeavesAppConfig";
 import DepartementsAppConfig from "./departements/DepartementAppConfig";
+import WorksAppConfig from './jobs/WorksAppConfig';
 
 const appsConfigs = [
+  
   AnalyticsDashboardAppConfig,
   ProjectDashboardAppConfig,
   MailAppConfig,
@@ -26,7 +28,7 @@ const appsConfigs = [
   FileManagerAppConfig,
   ContactsAppConfig,
   UsersAppConfig,
-  JobsAppConfig,
+  WorksAppConfig,
   CalendarAppConfig,
   ChatAppConfig,
   ReceiptsAppConfig,
@@ -34,11 +36,12 @@ const appsConfigs = [
   ScrumboardAppConfig,
   AcademyAppConfig,
   NotesAppConfig,
-  JobsAppConfig,
+  // JobsAppConfig,
   SalaryScalesAppConfig,
   InvoicesAppConfig,
   LeavesAppConfig,
   DepartementsAppConfig,
+ 
 ];
 
 export default appsConfigs;

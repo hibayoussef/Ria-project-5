@@ -13,18 +13,16 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { withRouter } from "react-router-dom";
 import FuseLoading from "@fuse/core/FuseLoading";
-import { selectMyLeaves, getMyLeaves } from "../store/myLeavesSlice";
-import MyLeavesTableHead from "./MyLeavesTableHead";
+import { selectWorks, getWorks } from "../store/worksSlice";
+import WorksTableHead from "./WorksTableHead";
 import VerifiedUserIcon from "@material-ui/icons/VerifiedUser";
-import Chip from "@mui/material/Chip";
 import moment from "moment";
-import VisibilityIcon from "@material-ui/icons/Visibility";
 
-function MyLeavesTable(props) {
+function WorksTable(props) {
   const dispatch = useDispatch();
-  const orders = useSelector(selectMyLeaves);
+  const orders = useSelector(selectWorks);
   const searchText = useSelector(
-    ({ leavesApp }) => leavesApp.myLeaves.searchText
+    ({ worksApp }) => worksApp.works.searchText
   );
 
   const [loading, setLoading] = useState(true);
@@ -38,8 +36,7 @@ function MyLeavesTable(props) {
   });
 
   useEffect(() => {
- 
-    dispatch(getMyLeaves(data?.managerId)).then(() => setLoading(false));
+    dispatch(getWorks()).then(() => setLoading(false));
   }, [dispatch]);
 
   useEffect(() => {
@@ -50,7 +47,9 @@ function MyLeavesTable(props) {
       setData(orders);
     }
   }, [orders, searchText]);
-  console.log("data.id: ", data);
+
+  console.log('the works data: ', data)
+
   function handleRequestSort(event, property) {
     const id = property;
     let direction = "desc";
@@ -78,7 +77,7 @@ function MyLeavesTable(props) {
   }
 
   function handleClick(item) {
-    props.history.push(`/apps/leaves-section/leaves/${item.id}`);
+    props.history.push(`/apps/jobs-section/leaves/${item.id}`);
   }
 
   function handleCheck(event, id) {
@@ -109,14 +108,6 @@ function MyLeavesTable(props) {
     setRowsPerPage(event.target.value);
   }
 
-  const statusIcon = (status) => {
-    switch (status) {
-      case "pending_approval":
-        return <VisibilityIcon />;
-      default:
-        return <VerifiedUserIcon />;
-    }
-  };
 
   if (loading) {
     return <FuseLoading />;
@@ -130,7 +121,7 @@ function MyLeavesTable(props) {
         className="flex flex-1 items-center justify-center h-full"
       >
         <Typography color="textSecondary" variant="h5">
-          There are no Leaves!
+          There are no Jobs!
         </Typography>
       </motion.div>
     );
@@ -140,8 +131,8 @@ function MyLeavesTable(props) {
     <div className="w-full flex flex-col">
       <FuseScrollbars className="flex-grow overflow-x-auto">
         <Table stickyHeader className="min-w-xl" aria-labelledby="tableTitle">
-          <MyLeavesTableHead
-            selectedMyLeaveIds={selected}
+          <WorksTableHead
+            selectedWorkIds={selected}
             order={order}
             onSelectAllClick={handleSelectAllClick}
             onRequestSort={handleRequestSort}
@@ -159,8 +150,8 @@ function MyLeavesTable(props) {
                       return parseInt(o.id, 10);
                     }
 
-                    case "status": {
-                      return o.status[0].name;
+                    case "name": {
+                      return o.name;
                     }
                     default: {
                       return o[order.id];
@@ -208,20 +199,27 @@ function MyLeavesTable(props) {
                       component="th"
                       scope="row"
                     >
-                      {n.manager.name}
+                      {n.name}
                     </TableCell>
 
                     <TableCell
-                      className="p-4 md:p-16 truncate"
+                      className="p-4 md:p-16"
                       component="th"
                       scope="row"
                     >
-                      <Chip
-                        style={{ fontSize: "1.2rem" }}
-                        icon={statusIcon(n.status)}
-                        label={n.status}
-                      />
+                      {n.description}
                     </TableCell>
+
+                    <TableCell
+                      // key={deduction.id}
+                      className="p-4  md:p-16"
+                      component="th"
+                      scope="row"
+                      align="left"
+                    >
+                      {n.departmentId || '-'}
+                    </TableCell>
+                    
 
                     <TableCell
                       className="p-4 md:p-16"
@@ -259,4 +257,4 @@ function MyLeavesTable(props) {
   );
 }
 
-export default withRouter(MyLeavesTable);
+export default withRouter(WorksTable);

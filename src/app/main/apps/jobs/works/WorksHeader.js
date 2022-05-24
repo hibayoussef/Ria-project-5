@@ -1,4 +1,3 @@
-import { React, useState } from "react";
 import Icon from "@material-ui/core/Icon";
 import Input from "@material-ui/core/Input";
 import Paper from "@material-ui/core/Paper";
@@ -7,35 +6,15 @@ import Typography from "@material-ui/core/Typography";
 import { motion } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
 import { selectMainTheme } from "app/store/fuse/settingsSlice";
-import { setOrdersSearchText } from "../store/departementsSlice";
+import { setOrdersSearchText } from "../store/worksSlice";
 import Button from "@material-ui/core/Button";
-import { makeStyles } from "@material-ui/core/styles";
-import { useTheme } from "@material-ui/core/styles";
 import { Link } from "react-router-dom";
+import AddDialog from '../add-new/AddDialog'
 
-const useStyles = makeStyles((theme) => ({
-  paper: { padding: "3rem", maxWidth: "990px", minWidth: "300px" },
-  textStyle: {
-    paddingLeft: "2rem",
-  },
-  formControl: {
-    margin: theme.spacing(1),
-    minWidth: 120,
-  },
-  selectEmpty: {
-    marginTop: theme.spacing(2),
-  },
-  font: {
-    fontSize: "5rem",
-  },
-}));
-
-function DepartementsHeader(props) {
-  const theme = useTheme();
-  const classes = useStyles();
+function WorksHeader(props) {
   const dispatch = useDispatch();
   const searchText = useSelector(
-    ({ departementsApp }) => departementsApp.departements.searchText
+    ({ worksApp }) => worksApp.works.searchText
   );
   const mainTheme = useSelector(selectMainTheme);
 
@@ -48,7 +27,7 @@ function DepartementsHeader(props) {
           animate={{ scale: 1, transition: { delay: 0.2 } }}
           className="text-24 md:text-32"
         >
-          account_tree
+         works
         </Icon>
         <Typography
           component={motion.span}
@@ -57,7 +36,7 @@ function DepartementsHeader(props) {
           delay={300}
           className="text-16 md:text-24 mx-12 font-semibold"
         >
-          Departements
+          Jobs
         </Typography>
       </div>
 
@@ -67,7 +46,8 @@ function DepartementsHeader(props) {
             component={motion.div}
             initial={{ y: -20, opacity: 0 }}
             animate={{ y: 0, opacity: 1, transition: { delay: 0.2 } }}
-            className="flex items-center w-full max-w-512 px-8 py-4 rounded-16 shadow"
+            className="flex items-center w-full max-w-512 px-8 py-4 rounded-16 shadow "
+            style={{ marginRight: '24rem'}}
           >
             <Icon color="action">search</Icon>
 
@@ -83,26 +63,15 @@ function DepartementsHeader(props) {
               onChange={(ev) => dispatch(setOrdersSearchText(ev))}
             />
           </Paper>
+
+    
+       <AddDialog  />
+     
         </ThemeProvider>
       </div>
-
-      <motion.div
-        initial={{ opacity: 0, x: 20 }}
-        animate={{ opacity: 1, x: 0, transition: { delay: 0.2 } }}
-      >
-        <Button
-          component={Link}
-          to="/apps/departements-section/departements/new-departement"
-          className="whitespace-nowrap"
-          variant="contained"
-          color="secondary"
-        >
-          <span className="hidden sm:flex">Add New Departement</span>
-          <span className="flex sm:hidden">New</span>
-        </Button>
-      </motion.div>
+      
     </div>
   );
 }
 
-export default DepartementsHeader;
+export default WorksHeader;

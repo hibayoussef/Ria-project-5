@@ -20,7 +20,7 @@ export const getMyLeaves = createAsyncThunk(
 const myLeavesAdapter = createEntityAdapter({});
 
 export const { selectAll: selectMyLeaves, selectById: selectMyLeaveById } =
-  myLeavesAdapter.getSelectors((state) => state.leavesApp.leaves);
+  myLeavesAdapter.getSelectors((state) => state.leavesApp.myLeaves);
 
 const leavesSlice = createSlice({
   name: "leavesApp/leaves",

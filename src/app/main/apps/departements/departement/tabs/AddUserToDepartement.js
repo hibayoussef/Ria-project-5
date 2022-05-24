@@ -43,9 +43,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const AddUserToDepartement = (id) => {
-  console.log("departmentId: ", id);
-  const departmentId = id?.departmentId;
+const AddUserToDepartement = (departmentId) => {
+  console.log("departmentId: ", departmentId);
+  const id = departmentId?.departmentId;
   //   console.log("log: ", invoiceId);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
@@ -191,34 +191,45 @@ const AddUserToDepartement = (id) => {
           Assign a member to approve
         </DialogTitle>
         <DialogContent>
-          {/* <Autocomplete
-            id="combo-box-demo"
+          <Autocomplete
+            id="tags-filled"
             onChange={(event, value) => {
               console.log("value vvv:", value);
               console.log("value.id: ", value.id);
-              setUsersIds(value.id);
+              setIds(value.id);
             }} // prints the selected value
             // value={users || ""}
-            options={users || []}
-            getOptionLabel={(option) => option.name || ""}
+            multiple
+            options={users.map((option) => option.name) || []}
             sx={{ width: 860 }}
-            defaultValue={users?.find((v) => v.name[0])}
+            renderTags={(value, getTagProps) =>
+              value.map((option, index) => (
+                <Chip
+                  variant="outlined"
+                  label={option}
+                  {...getTagProps({ index })}
+                  style={{ color: "black", backgroundColor: "yello" }}
+                />
+              ))
+            }
             renderInput={(params) => (
               <TextField
                 {...params}
-                placeholder="Search Member"
+                style={{ color: "black" }}
+                placeholder="Users"
                 fullWidth
                 InputProps={{ ...params.InputProps, style: { fontSize: 17 } }}
                 InputLabelProps={{ style: { fontSize: 17 } }}
               />
             )}
-          /> */}
+          />
 
-          <Autocomplete
+          {/* <Autocomplete
             value={value}
             onChange={(event, newValue) => {
               setValue(newValue);
               setIds(newValue.id);
+              console.log("newwwwwwww: ", newValue);
             }}
             multiple
             id="tags-filled"
@@ -242,7 +253,7 @@ const AddUserToDepartement = (id) => {
                 label="Users"
               />
             )}
-          />
+          /> */}
         </DialogContent>
 
         <DialogActions>
@@ -260,13 +271,13 @@ const AddUserToDepartement = (id) => {
                 console.log(
                   "I am inside function: ",
                   "id: ",
-                  departmentId,
+                  id,
                   ",users id: ",
                   ids
                 );
                 dispatch(
                   addUserToDepartement({
-                    departmentId,
+                    id,
                     ids,
                   })
                 );

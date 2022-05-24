@@ -4,7 +4,6 @@ import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
-import { addDepartement } from "../../store/departementSlice";
 import { motion } from "framer-motion";
 import { useDispatch } from "react-redux";
 import "react-datepicker/dist/react-datepicker.css";
@@ -12,6 +11,13 @@ import Slide from "@material-ui/core/Slide";
 import { useSnackbar } from "notistack";
 import SubtitlesIcon from "@material-ui/icons/Subtitles";
 import FormatListNumberedIcon from "@material-ui/icons/FormatListNumbered";
+import { addWork } from "../../store/workSlice";
+import "date-fns";
+import DateFnsUtils from "@date-io/date-fns";
+import {
+  KeyboardDatePicker,
+  MuiPickersUtilsProvider,
+} from "@material-ui/pickers";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -31,15 +37,29 @@ const useStyles = makeStyles((theme) => ({
 function ShippingTab(props) {
   const dispatch = useDispatch();
   const classes = useStyles();
-
-  const [title, setTitle] = useState("");
-  const [maxNumberOfEmployees, setMaxNumberOfEmployees] = useState();
+  const [fromDate, setFromDate] = useState(new Date());
+  const [toDate, setToDate] = useState(new Date());
+  const [description, setDescription] = useState("");
 
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
+  const handleFromDateChange = (date) => {
+    setFromDate(date);
+    console.log("date issssssssss: ", date);
+    console.log("date issssssssss: ", fromDate);
+  };
+
+  const handleToDateChange = (date) => {
+    setToDate(date);
+  };
+
+  const handleDescriptionChange = (event) => {
+    setDescription(event.target.value);
+  };
+
   const handleDepartementCreatedMessageClick = () => {
     enqueueSnackbar(
-      "Departement created successfully",
+      "Leave created successfully",
       { variant: "success" },
       {
         anchorOrigin: {
@@ -75,37 +95,52 @@ function ShippingTab(props) {
 
   return (
     <>
+      <MuiPickersUtilsProvider utils={DateFnsUtils}>
+        <div className="flex -mx-4">
+          <KeyboardDatePicker
+            inputVariant="outlined"
+            className="mt-8 mb-16"
+            margin="normal"
+            id="date-picker-dialog"
+            label="From Date"
+            format="MM/dd/yyyy"
+            KeyboardButtonProps={{
+              "aria-label": "change date",
+            }}
+            value={fromDate}
+            onChange={handleFromDateChange}
+          />
+
+          <KeyboardDatePicker
+            inputVariant="outlined"
+            className="mt-8 mb-16 ml-6"
+            margin="normal"
+            id="date-picker-dialog"
+            label="To Date"
+            format="MM/dd/yyyy"
+            KeyboardButtonProps={{
+              "aria-label": "change date",
+            }}
+            value={toDate}
+            onChange={handleToDateChange}
+          />
+        </div>
+      </MuiPickersUtilsProvider>
       <TextField
         className="mt-8 mb-16"
-        label="Title"
+        label="Description"
         id="extraShippingFee"
         variant="outlined"
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">
+              {" "}
               <SubtitlesIcon />
             </InputAdornment>
           ),
         }}
-        value={title}
-        onChange={handleTitleChange}
-        fullWidth
-      />
-
-      <TextField
-        className="mt-8 mb-16"
-        label="Max Number Of Employees"
-        id="extraShippingFee"
-        variant="outlined"
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <FormatListNumberedIcon />
-            </InputAdornment>
-          ),
-        }}
-        value={maxNumberOfEmployees}
-        onChange={handleMaxNumberOfEmployeesChange}
+        value={description}
+        onChange={handleDescriptionChange}
         fullWidth
       />
 
@@ -149,16 +184,9 @@ function ShippingTab(props) {
                 paddingRight: "3rem",
               }}
               onClick={(ev) => {
-                console.log(
-                  "I am inside dep: ",
-                  "title: ",
-                  title,
-                  ",maxNumberOfEmployees: ",
-                  maxNumberOfEmployees
-                );
-                dispatch(addDepartement({ maxNumberOfEmployees, title }));
+                dispatch(addWork({ fromDate, toDate, description }));
                 ev.stopPropagation();
-                // handleDepartementCreatedMessageClick(ev);
+                handleDepartementCreatedMessageClick(ev);
               }}
             >
               Create

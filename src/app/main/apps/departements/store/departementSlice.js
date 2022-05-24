@@ -18,14 +18,29 @@ export const getUsers = async () => {
   return response.data.data;
 };
 
+export const addDepartement = createAsyncThunk(
+  "departementsApp/departement/addDepartement",
+  async (departement, { dispatch, getState }) => {
+    console.log(departement)
+    const response = await axios.post("/departments", {maxNumberOfEmployees: +departement.maxNumberOfEmployees, title: departement.title});
+    console.log("response: ", response);
+
+    const data = await response.data.data;
+    console.log("Hi I am Here in add new invoice: ", data);
+    dispatch(getDepartements());
+
+    return data;
+  }
+);
+
 export const addUserToDepartement = createAsyncThunk(
   "departementsApp/departement/AddUserToDepartement",
   async ({ departmentId, usersIds }, { dispatch }) => {
     console.log("hi in new function");
-    console.log("invoiceId, userId, message", departmentId, usersIds);
+    console.log("invoiceId, userId, message", id, ids);
     const response = await axios
-      .post(`/departments/${departmentId}/add-user-to-departments`, {
-        usersIds,
+      .post(`/departments/${id}/add-user-to-departments`, {
+        ids,
       })
       .catch((error) => {
         console.log("error response: ", error);
@@ -39,24 +54,6 @@ export const addUserToDepartement = createAsyncThunk(
   }
 );
 
-export const addDepartement = createAsyncThunk(
-  "departementsApp/departements/addDepartement",
-  async ({ title, maxNumberOfEmployees }, { dispatch, getState }) => {
-    console.log("backend-1-departement: ", title, maxNumberOfEmployees);
-    const response = await axios.post("/departments", {
-      title,
-      maxNumberOfEmployees,
-    });
-    console.log("response: ", response);
-
-    const data = await response.data.data;
-    console.log("Hi I am Here in add new invoice: ", data);
-    dispatch(getDepartements());
-
-    return data;
-  }
-);
-
 const departementSlice = createSlice({
   name: "departementsApp/departement",
   initialState: null,
@@ -64,8 +61,8 @@ const departementSlice = createSlice({
     resetOrder: () => null,
   },
   extraReducers: {
-    [getDepartement.fulfilled]: (state, action) => action.payload,
     [addDepartement.fulfilled]: (state, action) => action.payload,
+    [getDepartement.fulfilled]: (state, action) => action.payload,
     [addUserToDepartement.fulfilled]: (state, action) => action.payload,
   },
 });

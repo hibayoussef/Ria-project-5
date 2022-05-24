@@ -1,10 +1,10 @@
 import { combineReducers } from "@reduxjs/toolkit";
-import jobs from "./jobsSlice";
-import user from "./userSlice";
+import work from "./workSlice";
+import works from "./worksSlice";
 
 const reducer = combineReducers({
-  jobs,
-  user,
+  works,
+  work,
 });
 
 export default reducer;
