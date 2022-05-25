@@ -71,7 +71,7 @@ function WorkDetailsTab() {
                 <tr>
                 <td>
                     <Typography className="truncate">
-                      {`${order?.id || "-"}`}
+                      {order?.id || "-"}
                     </Typography>
                   </td>
 
@@ -79,15 +79,15 @@ function WorkDetailsTab() {
                     <div className="flex items-center">
                       {/* <Avatar src={order.customer.avatar} /> */}
                       <Typography className="truncate mx-8">
-                        {`${order?.name || "-"} `}
+                       {order?.name || "-"}
                       </Typography>
                     </div>
                   </td>
                   
                   <td>
-                    <span className="truncate">{`${
+                    <span className="truncate">{
                       order?.description || "-"
-                    }`}</span>
+                    }</span>
                   </td>
                  
                 </tr>

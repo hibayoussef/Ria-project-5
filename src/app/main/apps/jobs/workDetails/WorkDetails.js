@@ -134,7 +134,7 @@ function WorkDetails(props) {
           scrollButtons="auto"
           classes={{ root: "w-full h-64" }}
         >
-          <Tab className="h-64" label="Leave Details" />
+          <Tab className="h-64" label="Job Details" />
         </Tabs>
       }
       content={

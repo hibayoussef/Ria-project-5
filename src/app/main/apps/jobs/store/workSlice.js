@@ -48,8 +48,8 @@ export const assignJobToUser = createAsyncThunk(
 
     // dispatch(getInvoice(data?.id));
     // dispatch(getUsers());
-    dispatch(getWork({jobId}))
-    // dispatch(getWorks())
+    // dispatch(getWork({jobId}))
+    dispatch(getWorks())
     return data;
   }
 );
