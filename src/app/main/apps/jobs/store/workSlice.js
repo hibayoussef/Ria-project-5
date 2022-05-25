@@ -1,6 +1,20 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { getWorks } from "./worksSlice";
+import { getWorks, getUsers } from "./worksSlice";
+
+
+
+export const getWork = createAsyncThunk(
+  "worksApp/work/getWork",
+  async (params) => {
+    console.log("paaarams: ", params);
+    const response = await axios.get(`/jobs/${params.id}`);
+    const data = await response.data.data;
+    console.log("work: ", data);
+
+    return data === undefined ? null : data;
+  }
+);
 
 
 export const addWork = createAsyncThunk(
@@ -12,6 +26,30 @@ export const addWork = createAsyncThunk(
     console.log("Hi I am Here in add new Job: ", data);
     dispatch(getWorks());
 
+    return data;
+  }
+);
+
+export const assignJobToUser = createAsyncThunk(
+  "worksApp/works/assignJobToUser",
+  async ({ userId, jobId, level }, { dispatch }) => {
+    console.log("hi in new function");
+    console.log("invoiceId, userId, message", userId, jobId, level);
+    const response = await axios
+      .patch(`/users/for-admin/${userId}/assign-job`, {
+        jobId,
+        level,
+      })
+      .catch((error) => {
+        console.log("error response: ", error);
+      });
+    const data = await response.data.data;
+    console.log("assign job to user: ", data);
+
+    // dispatch(getInvoice(data?.id));
+    // dispatch(getUsers());
+    dispatch(getWork({jobId}))
+    // dispatch(getWorks())
     return data;
   }
 );
@@ -40,6 +78,8 @@ const workSlice = createSlice({
   },
   extraReducers: {
     [addWork.fulfilled]: (state, action) => action.payload,
+    [getWork.fulfilled]: (state, action) => action.payload,
+    [assignJobToUser.fulfilled]: (state, action) => action.payload,
     [removeWork.fulfilled]: (state, action) => action.payload
   },
 });

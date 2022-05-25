@@ -77,7 +77,7 @@ function WorksTable(props) {
   }
 
   function handleClick(item) {
-    props.history.push(`/apps/jobs-section/leaves/${item.id}`);
+    props.history.push(`/apps/jobs/all/${item.id}`);
   }
 
   function handleCheck(event, id) {
@@ -210,16 +210,7 @@ function WorksTable(props) {
                       {n.description}
                     </TableCell>
 
-                    <TableCell
-                      // key={deduction.id}
-                      className="p-4  md:p-16"
-                      component="th"
-                      scope="row"
-                      align="left"
-                    >
-                      {n.departmentId || '-'}
-                    </TableCell>
-                    
+                  
 
                     <TableCell
                       className="p-4 md:p-16"

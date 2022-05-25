@@ -98,39 +98,39 @@ function UsersList(props) {
         accessor: "phoneNumber",
         sortable: true,
       },
-      {
-        id: "action",
-        width: 128,
-        sortable: false,
-        Cell: ({ row }) => (
-          <div className="flex items-center">
-            <IconButton
-              onClick={(ev) => {
-                ev.stopPropagation();
-                // dispatch(approveUser(row.original.id));
-                // dispatch(toggleStarredContact(row.original.id));
-                // handleClick(ev);
-                // dispatch(toggleStarredContact(row.original.id));
-              }}
-            >
-              <Icon>
-                <AssignJobToUser id={row.original.id} />
-              </Icon>
-            </IconButton>
-            {/* <AssignJobToUser /> */}
-            {/* <IconButton
-              onClick={(ev) => {
-                ev.stopPropagation();
-                // dispatch(rejectUser(row.original.id));
-                // rejectHandleClick(ev);
-              }}
-              className={classes.button2}
-            >
-              <Icon>delete</Icon>
-            </IconButton> */}
-          </div>
-        ),
-      },
+      // {
+      //   id: "action",
+      //   width: 128,
+      //   sortable: false,
+      //   Cell: ({ row }) => (
+      //     <div className="flex items-center">
+      //       <IconButton
+      //         onClick={(ev) => {
+      //           ev.stopPropagation();
+      //           // dispatch(approveUser(row.original.id));
+      //           // dispatch(toggleStarredContact(row.original.id));
+      //           // handleClick(ev);
+      //           // dispatch(toggleStarredContact(row.original.id));
+      //         }}
+      //       >
+      //         <Icon>
+      //           <AssignJobToUser id={row.original.id} />
+      //         </Icon>
+      //       </IconButton>
+      //       {/* <AssignJobToUser /> */}
+      //       {/* <IconButton
+      //         onClick={(ev) => {
+      //           ev.stopPropagation();
+      //           // dispatch(rejectUser(row.original.id));
+      //           // rejectHandleClick(ev);
+      //         }}
+      //         className={classes.button2}
+      //       >
+      //         <Icon>delete</Icon>
+      //       </IconButton> */}
+      //     </div>
+      //   ),
+      // },
     ],
     [dispatch, user.starred]
   );

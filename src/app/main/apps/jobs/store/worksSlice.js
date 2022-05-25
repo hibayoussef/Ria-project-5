@@ -21,6 +21,13 @@ export const getDepartments = async () => {
 };
 
 
+export const getUsers = async () => {
+  const response = await axios.get("/users/for-admin");
+  console.log("get Users response:  ", response);
+  return response.data.data;
+};
+
+
 export const removeOrders = createAsyncThunk(
   "leavesApp/orders/removeOrders",
   async (orderIds, { dispatch, getState }) => {

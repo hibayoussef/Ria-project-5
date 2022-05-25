@@ -1,6 +1,7 @@
-import { Fragment, useState } from "react";
-import { ButtonGroup } from "@material-ui/core";
+
+import {  useState, useEffect } from "react";
 import React from "react";
+import { ButtonGroup } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -10,24 +11,14 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useTheme } from "@material-ui/core/styles";
 import { useSnackbar } from "notistack";
-import Slide from "@material-ui/core/Slide";
-import { useDispatch, useSelector } from "react-redux";
 import TextField from "@material-ui/core/TextField";
 import FlagIcon from '@material-ui/icons/Flag';
 import { makeStyles } from "@material-ui/core/styles";
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import { getDepartments } from "../store/worksSlice";
-import { useEffect } from "react";
-import Icon from "@material-ui/core/Icon";
-import { Controller, useForm } from "react-hook-form";
-import {addWork} from '../store/workSlice';
-import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import WorkIcon from '@material-ui/icons/Work';
-import DescriptionIcon from '@material-ui/icons/Description';
-import PostAddIcon from '@material-ui/icons/PostAdd';
-import Typography from '@material-ui/core/Typography';
+import { getUsers } from "../../store/worksSlice";
+import Slide from "@material-ui/core/Slide";
+import { useDispatch } from "react-redux";
+import { assignJobToUser  } from '../../store/workSlice'
 
 const useStyles = makeStyles((theme) => ({
     
@@ -48,36 +39,36 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const AddDialog = () => {
+const AssignJobToUser = (id) => {
+    console.log('id:', id)
+    const jobId = id?.id;
+  const [users, setUsers] = useState([]);
+  const [userId, setUserId] = useState(0);
+  const [level, setLevel] = useState("");
+
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
-  const [assignToUserDialog, setAssignToUserDialog] = useState(false);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const dispatch = useDispatch();
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const classes = useStyles();
-
-  const [users, setUsers] = useState([]);
-  const [assignmentNote, setAssignmentNote] = useState("");
-  const [userId, setUserId] = useState(0);
   //   const jobDialog = useSelector(({ jobsApp }) => worksApp.works);
   const [departmentId, setDepartmentId] = useState(0);
   const [departments, setDepartments] = useState([]);
   const [name, setName] = useState('');
   const [description, setDescription] = useState('')
-
-
+// ----------------------------------------------
+  
 
   useEffect(() => {
-    getDepartments().then((response) => {
-      console.log("departements response in approve: ", response);
-      setDepartments(response);
+    getUsers().then((response) => {
+      console.log("Users response in Assssign: ", response);
+      setUsers(response);
     });
   }, []);
+  // confirm
 
-
- 
+  console.log("users: ", users);
  
   const handleDialogClose = () => setDialogOpen(false);
   const handleClickOpen = () => {
@@ -91,9 +82,9 @@ const AddDialog = () => {
   const handleDescriptionChange =(e) =>{
     setDescription(e.target.value)
   }
-   const addJobHandleClick = () => {
+  const assignToUserToApproveInvoiceHandleClick = () => {
     enqueueSnackbar(
-      "Job added successfully",
+      "A Job has been successfully assigned to the user",
       { variant: "success" },
       {
         anchorOrigin: {
@@ -104,7 +95,6 @@ const AddDialog = () => {
       { TransitionComponent: Slide }
     );
   };
- 
  
 
  
@@ -122,7 +112,7 @@ const AddDialog = () => {
           color="secondary"
           
         >
-          Add new Job
+          Assign Job to User 
         </Button>
        
       </ButtonGroup>
@@ -140,7 +130,7 @@ const AddDialog = () => {
         <DialogTitle sx={{ fontWeight: "bold", fontSize: "10rem", marginBottom: '2rem', color: "#212529" }}>
       
         
-         Add Job
+        Assign a Job to User
         </DialogTitle>
         <div
           style={{
@@ -162,85 +152,58 @@ const AddDialog = () => {
         </div>
 
         <DialogContent style={{ marginTop: "6rem" }}>
-        <div className="flex">
-           
-        
-                <TextField
-                  value={name} 
-                  onChange={handleNameChange}
-                  className="mb-24"
-                  label="Name"
-                  id="name"
-                  variant="outlined"
-                  required
-                  fullWidth
-                  color= 'primary'
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <WorkIcon />
-                      </InputAdornment>
-                    ),
-                  }}
-                />
-              
-          </div>
+        <div>
 
-          <div className="flex">
-            
-           
-                <TextField
-                  value={description}
-                  onChange={handleDescriptionChange}
-                  className="mb-5"
-                  label="description"
-                  id="description"
-                  variant="outlined"
-                  fullWidth
-                  color= 'primary'
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <DescriptionIcon />
-                      </InputAdornment>
-                    ),
-                  }}
-                />
-             
-          </div>
+        <Autocomplete
+            id="combo-box-demo"
+            onChange={(event, value) => {
+              console.log("value vvv:", value);
+              console.log("value.id: ", value.id);
+              setUserId(value.id);
+            }} // prints the selected value
+            // value={users || ""}
+            options={users || []}
+            getOptionLabel={(option) => option.name || ""}
+            sx={{ width: 860 }}
+            // defaultValue={users?.find((v) => v.name[0])}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                placeholder="Choose User"
+                variant="outlined"
+                fullWidth
+                InputProps={{ ...params.InputProps, style: { fontSize: 15 } }}
+                InputLabelProps={{ style: { fontSize: 15 } }}
+              />
+            )}
+          />
+        </div>
+
+       
 <div  className="mt-10" >
          
-          <Autocomplete
-              id="combo-box-demo"
-              onChange={(event, value) => {
-                console.log("value vvv:", value);
-                console.log("value.id: ", value.id);
-                setDepartmentId(value.id);
-              }} // prints the selected value
-              // value={users || ""}
-             
-              options={departments || []}
-              getOptionLabel={(option) => option.title || ""}
-              sx={{ width: 900 }}
-              // defaultValue={departments?.find((v) => v.title[0])}
-              renderInput={(params) => (
-                
-                <TextField
-                  {...params}
-                  variant="outlined"
-                  placeholder="Search Department"
-                  fullWidth
-                  InputProps={{ ...params.InputProps, style: { fontSize: 15  } ,  startAdornment: (
-                    <InputAdornment position="start">
-                      <PostAddIcon />
-                    </InputAdornment>
-                  )}}
-                  InputLabelProps={{ style: { fontSize: 15 } }}
-                  
-                 
-                />
-              )}
-            />
+<Autocomplete
+            id="combo-box-demo"
+            onChange={(event, value) => {
+              console.log("value vvv:", value);
+              console.log("value.id: ", value.level);
+              setLevel(value.level);
+            }} // prints the selected value
+            // value={users || ""}
+            options={levels || []}
+            getOptionLabel={(option) => option.level || ""}
+            sx={{ width: 860 }}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                placeholder="Choose Level"
+                variant="outlined"
+                fullWidth
+                InputProps={{ ...params.InputProps, style: { fontSize: 15 } }}
+                InputLabelProps={{ style: { fontSize: 15 } }}
+              />
+            )}
+          />
 
 </div>
   
@@ -261,11 +224,10 @@ const AddDialog = () => {
             <Button
 
                 onClick={(ev) => {
-                    ev.stopPropagation();
-                    addJobHandleClick(ev);
-                    dispatch(addWork({ name, description, departmentId }));
-                    handleDialogClose()
-                  }}
+                    dispatch(assignJobToUser({ userId, jobId, level }));
+                    assignToUserToApproveInvoiceHandleClick(ev);
+                    handleDialogClose();
+                }}
            
               style={{ color: "#212529", fontWeight: 500 }}
               color="primary"
@@ -280,4 +242,11 @@ const AddDialog = () => {
   );
 };
 
-export default AddDialog;
+export default AssignJobToUser;
+
+const levels = [
+    { id: 1, level: "senior" },
+    { id: 2, level: "mid_level" },
+    { id: 3, level: "junior" },
+  ];
+  

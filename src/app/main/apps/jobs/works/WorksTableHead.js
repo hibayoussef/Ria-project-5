@@ -42,13 +42,7 @@ const rows = [
     label: "Description",
     sort: true,
   },
-  {
-    id: "departmentId",
-    align: "left",
-    disablePadding: false,
-    label: "Department Name",
-    sort: true,
-  },
+
   {
     id: "createdAt",
     align: "left",

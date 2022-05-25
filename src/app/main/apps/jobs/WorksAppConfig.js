@@ -12,10 +12,10 @@ const WorksAppConfig = {
       path: "/apps/jobs/new-job",
       component: lazy(() => import("./add-work/AddWork")),
     },
-    // {
-    //   path: "/apps/jobs/:id",
-    //   component: lazy(() => import("./")),
-    // },
+    {
+      path: "/apps/jobs/all/:id",
+      component: lazy(() => import("./workDetails/WorkDetails")),
+    },
     {
       path: "/apps/jobs/all",
       component: lazy(() => import("./works/Works")),

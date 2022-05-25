@@ -47,7 +47,6 @@ function WorksHeader(props) {
             initial={{ y: -20, opacity: 0 }}
             animate={{ y: 0, opacity: 1, transition: { delay: 0.2 } }}
             className="flex items-center w-full max-w-512 px-8 py-4 rounded-16 shadow "
-            style={{ marginRight: '24rem'}}
           >
             <Icon color="action">search</Icon>
 
@@ -64,11 +63,13 @@ function WorksHeader(props) {
             />
           </Paper>
 
-    
-       <AddDialog  />
+        
      
         </ThemeProvider>
       </div>
+      <ThemeProvider theme={mainTheme}>
+       <AddDialog />
+       </ThemeProvider>
       
     </div>
   );
